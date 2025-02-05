@@ -17,16 +17,18 @@ Function to parse OpenLCA export Excel files
 def openlca_export_parser(export_folder_path: str, tab_of_interest: list) -> dict:
     """
     Parse OpenLCA export Excel files and extract data from specified tabs into a dictionary.
+    Also extracts unique flow values for Inputs and Outputs tabs.
     
     Args:
         export_folder_path: Path to folder containing OpenLCA export Excel files
         tab_of_interest: List of tab names to parse
         
     Returns:
-        Dictionary containing parsed data from specified tabs
+        Dictionary containing parsed data from specified tabs and unique flows
     """
     
     results = {}
+    unique_flows = {'Inputs': set(), 'Outputs': set()}
     
     # Loop through all Excel files in the export folder
     for file in os.listdir(export_folder_path):
@@ -42,6 +44,10 @@ def openlca_export_parser(export_folder_path: str, tab_of_interest: list) -> dic
                     # Remove empty rows
                     df = df.dropna(how='all')
                     
+                    # If tab is Inputs or Outputs, collect unique flows
+                    if tab in ['Inputs', 'Outputs'] and 'Flow' in df.columns:
+                        unique_flows[tab].update(df['Flow'].unique())
+                    
                     # Convert DataFrame to dictionary
                     tab_dict = df.to_dict('records')
                     
@@ -53,6 +59,7 @@ def openlca_export_parser(export_folder_path: str, tab_of_interest: list) -> dic
                     
                 except Exception as e:
                     print(f"Error processing tab {tab} in file {file}: {str(e)}")
+                    
     # Convert parsed data into DataFrames organized by tab
     merged_dfs = {}
     for tab in tab_of_interest:
@@ -67,11 +74,11 @@ def openlca_export_parser(export_folder_path: str, tab_of_interest: list) -> dic
             # Merge all DataFrames for this tab
             merged_dfs[tab] = pd.concat(tab_dfs, ignore_index=True)
     
-    # Add merged DataFrames to results
+    # Add merged DataFrames and unique flows to results
     results['merged_data'] = merged_dfs
+    results['unique_flows'] = {k: list(v) for k, v in unique_flows.items() if k in tab_of_interest}
     
     return results
-
 
 if __name__ == "__main__":
 
@@ -98,6 +105,16 @@ if __name__ == "__main__":
         # Export to CSV
         tab_df.to_csv(output_path, index=False)
         print(f"\nExported {tab_name} data to: {output_path}")
+
+    # Export unique flows data to CSV
+    unique_flows = parsed_data['unique_flows']
+    unique_flows_df = pd.DataFrame()
+    for tab_name, flows in unique_flows.items():
+        unique_flows_df[tab_name] = pd.Series(flows)
+    
+    unique_flows_path = os.path.join(output_dir, "unique_flows.csv")
+    unique_flows_df.to_csv(unique_flows_path, index=False)
+    print(f"\nExported unique flows data to: {unique_flows_path}")
     
     # Print results summary
     print("\nParsed Data Summary:")
