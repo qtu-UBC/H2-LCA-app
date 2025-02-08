@@ -1,10 +1,21 @@
 import streamlit as st
 import pandas as pd
 import os
+from config.config import (
+    IDEMAT_SHEET,
+    H2_LCI_FOLDER,
+    MAPPING_FILE,
+    INPUTS_FILE,
+    OUTPUTS_FILE,
+    UNIQUE_FLOWS_FILE,
+    GENERAL_INFO_FILE,
+    OUTPUT_DIR,
+)
 
 # Read the CSV files
-general_info_df = pd.read_csv("./output/general_information.csv")
-inputs_df = pd.read_csv("./output/inputs.csv")
+general_info_df = pd.read_csv(GENERAL_INFO_FILE)
+inputs_df = pd.read_csv(INPUTS_FILE)
+outputs_df = pd.read_csv(OUTPUTS_FILE)
 
 # Set up the Streamlit page
 st.title("H2 Manufacturing LCI Data Explorer")
@@ -23,7 +34,6 @@ if selected_source:
     filtered_inputs = inputs_df[inputs_df['Source_File'] == selected_source]
     
     # Filter outputs 
-    outputs_df = pd.read_csv("./output/outputs.csv")
     filtered_outputs = outputs_df[outputs_df['Source_File'] == selected_source]
     
     # Display inputs
@@ -90,9 +100,8 @@ if selected_source:
 
 st.markdown("### Mapping Inputs and Outputs to Idemat LCI Database")
 
-# Import mapping function and config
+# Import mapping function
 from utils.mapper import map_flows
-from config.config import MAPPING_FILE
 
 # Map both inputs and outputs to Idemat database
 for df_name, df in [('inputs', saved_df_inputs), ('outputs', saved_df_outputs)]:
@@ -103,7 +112,7 @@ for df_name, df in [('inputs', saved_df_inputs), ('outputs', saved_df_outputs)]:
         # Create a DataFrame to display mappings in a more readable format
         mapping_df = pd.DataFrame(list(flow_mappings.items()), columns=['Original Flow', 'Mapped Flow'])
         
-        # Display the mapping results in a nice table
+        # Display the mapping results in a table
         st.markdown(f"#### {df_name.title()} Flow Mapping Results")
         st.dataframe(
             mapping_df,
@@ -113,4 +122,5 @@ for df_name, df in [('inputs', saved_df_inputs), ('outputs', saved_df_outputs)]:
             },
             hide_index=True
         )
-
+    else:
+        st.info(f"No {df_name} data available for mapping.")
