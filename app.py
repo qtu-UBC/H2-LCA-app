@@ -103,14 +103,33 @@ st.markdown("### Mapping Inputs and Outputs to Idemat LCI Database")
 # Import mapping function
 from utils.mapper import map_flows
 
+# Initialize mapping DataFrames
+inputs_mapping_df = pd.DataFrame()
+outputs_mapping_df = pd.DataFrame()
+
 # Map both inputs and outputs to Idemat database
 for df_name, df in [('inputs', saved_df_inputs), ('outputs', saved_df_outputs)]:
     if 'df' in locals() and not df.empty:
         flow_mappings = map_flows(df, MAPPING_FILE)
         st.write(f"\nMapped {df_name} flows:")
         st.write(flow_mappings)
+        
         # Create a DataFrame to display mappings in a more readable format
-        mapping_df = pd.DataFrame(list(flow_mappings.items()), columns=['Original Flow', 'Mapped Flow'])
+        mapping_records = []
+        for orig_flow, mapping in flow_mappings.items():
+            mapping_records.append({
+                'Original Flow': orig_flow,
+                'Mapped Flow': mapping['mapped_flow'],
+                'Amount': mapping['amount'],
+                'Unit': mapping['unit']
+            })
+        mapping_df = pd.DataFrame(mapping_records)
+        
+        # Save mapping DataFrame based on df_name
+        if df_name == 'inputs':
+            inputs_mapping_df = mapping_df
+        else:
+            outputs_mapping_df = mapping_df
         
         # Display the mapping results in a table
         st.markdown(f"#### {df_name.title()} Flow Mapping Results")
@@ -118,9 +137,82 @@ for df_name, df in [('inputs', saved_df_inputs), ('outputs', saved_df_outputs)]:
             mapping_df,
             column_config={
                 "Original Flow": st.column_config.Column("Original Flow", help="Flow name from input data"),
-                "Mapped Flow": st.column_config.Column("Mapped Flow", help="Corresponding flow in Idemat database")
+                "Mapped Flow": st.column_config.Column("Mapped Flow", help="Corresponding flow in Idemat database"),
+                "Amount": st.column_config.NumberColumn("Amount", help="Quantity of the flow", format="%.2f"),
+                "Unit": st.column_config.Column("Unit", help="Unit of measurement")
             },
             hide_index=True
         )
     else:
         st.info(f"No {df_name} data available for mapping.")
+
+# Import calculation function 
+from utils.calculate import calculate_impacts
+
+st.markdown("### Impact Calculation Results")
+
+# Calculate impacts for inputs
+if not inputs_mapping_df.empty:
+    # specify the column of interest
+    column_of_interest = "Carbon footprint (kg CO2 equiv.)"
+    # Calculate impacts using CO2 footprint column
+    inputs_results_df = calculate_impacts(inputs_mapping_df, IDEMAT_SHEET, column_of_interest)
+    
+    if not inputs_results_df.empty:
+        st.markdown("#### Inputs Impact Results")
+        st.dataframe(
+            inputs_results_df,
+            column_config={
+                "Mapped Flow": st.column_config.Column("Mapped Flow", help="Flow in Idemat database"),
+                "Calculated Result": st.column_config.NumberColumn(
+                    "CO2 Footprint (kg CO2)", 
+                    help="Calculated CO2 impact",
+                    format="%.3f"
+                )
+            },
+            hide_index=True
+        )
+        
+        # Show total impact
+        inputs_total_impact = inputs_results_df['Calculated Result'].sum()
+        st.metric(
+            label="Total CO2 Impact for Inputs", 
+            value=f"{inputs_total_impact:.3f} kg CO2"
+        )
+    else:
+        st.warning("No impact results calculated for inputs")
+else:
+    st.info("No mapping data available for inputs impact calculation")
+
+# Calculate impacts for outputs
+if not outputs_mapping_df.empty:
+    # specify the column of interest
+    column_of_interest = "Carbon footprint (kg CO2 equiv.)"
+    # Calculate impacts using CO2 footprint column  
+    outputs_results_df = calculate_impacts(outputs_mapping_df, IDEMAT_SHEET, column_of_interest)
+    
+    if not outputs_results_df.empty:
+        st.markdown("#### Outputs Impact Results")
+        st.dataframe(
+            outputs_results_df,
+            column_config={
+                "Mapped Flow": st.column_config.Column("Mapped Flow", help="Flow in Idemat database"),
+                "Calculated Result": st.column_config.NumberColumn(
+                    "CO2 Footprint (kg CO2)", 
+                    help="Calculated CO2 impact",
+                    format="%.3f"
+                )
+            },
+            hide_index=True
+        )
+        
+        # Show total impact
+        outputs_total_impact = outputs_results_df['Calculated Result'].sum()
+        st.metric(
+            label="Total CO2 Impact for Outputs",
+            value=f"{outputs_total_impact:.3f} kg CO2"
+        )
+    else:
+        st.warning("No impact results calculated for outputs")
+else:
+    st.info("No mapping data available for outputs impact calculation")
