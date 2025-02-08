@@ -8,6 +8,7 @@ Import libraries
 """
 import os
 import pandas as pd
+from config.config import H2_LCI_FOLDER, OUTPUT_DIR
 
 """
 ======
@@ -82,25 +83,18 @@ def openlca_export_parser(export_folder_path: str, tab_of_interest: list) -> dic
 
 if __name__ == "__main__":
 
-    # Identify the folder containing the OpenLCA export files
-    H2_LCI_FOLDER = "../input/exported LCI models"
-    
     # Define tabs to parse
     tabs_to_parse = ["General information", "Inputs", "Outputs"]
     
     # Parse the OpenLCA export files
     parsed_data = openlca_export_parser(H2_LCI_FOLDER, tabs_to_parse)
 
-    # Create output directory if it doesn't exist
-    output_dir = "../output"
-    os.makedirs(output_dir, exist_ok=True)
-
     # Export merged data for each tab to separate CSV files
     merged_data = parsed_data['merged_data']
     for tab_name, tab_df in merged_data.items():
         # Create sanitized filename from tab name
         filename = tab_name.lower().replace(" ", "_") + ".csv"
-        output_path = os.path.join(output_dir, filename)
+        output_path = os.path.join(OUTPUT_DIR, filename)
         
         # Export to CSV
         tab_df.to_csv(output_path, index=False)
@@ -112,7 +106,7 @@ if __name__ == "__main__":
     for tab_name, flows in unique_flows.items():
         unique_flows_df[tab_name] = pd.Series(flows)
     
-    unique_flows_path = os.path.join(output_dir, "unique_flows.csv")
+    unique_flows_path = os.path.join(OUTPUT_DIR, "unique_flows.csv")
     unique_flows_df.to_csv(unique_flows_path, index=False)
     print(f"\nExported unique flows data to: {unique_flows_path}")
     
