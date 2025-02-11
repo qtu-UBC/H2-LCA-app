@@ -23,16 +23,40 @@ def calculate_impacts(mapped_df: pd.DataFrame, idemat_datasheet: str, column_of_
             idemat_df.set_index('Process')[column_of_interest]
         )
         
+        # Create lookup series for units from idemat datasheet
+        unit_series = pd.Series(
+            idemat_df.set_index('Process')['unit']
+        )
+        
+        # Initialize Pint unit registry
+        import pint
+        ureg = pint.UnitRegistry()
+        
         # Calculate results by multiplying Amount with looked up values
         results = []
         for _, row in mapped_df.iterrows():
             mapped_flow = row['Mapped Flow']
             if mapped_flow in lookup_series.index:
-                calculated_result = row['Amount'] * lookup_series[mapped_flow]
-                results.append({
-                    'Mapped Flow': mapped_flow,
-                    'Calculated Result': calculated_result
-                })
+                # Get units
+                source_unit = row['Unit'] # caution, capital U
+                dest_unit = unit_series[mapped_flow]
+                
+                try:
+                    # Convert amount to destination unit
+                    source_quantity = row['Amount'] * ureg(source_unit)
+                    dest_quantity = source_quantity.to(dest_unit)
+                    converted_amount = dest_quantity.magnitude
+                    print(f"Converting {row['Amount']} {source_unit} to {converted_amount} {dest_unit}")
+                    
+                    # Calculate result with converted amount
+                    calculated_result = converted_amount * lookup_series[mapped_flow]
+                    results.append({
+                        'Mapped Flow': mapped_flow,
+                        'Calculated Result': calculated_result
+                    })
+                except pint.errors.DimensionalityError:
+                    print(f"Cannot convert between units {source_unit} and {dest_unit}")
+                    continue
                 
         results_df = pd.DataFrame(results)
             
