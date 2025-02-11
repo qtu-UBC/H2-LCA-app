@@ -1,4 +1,6 @@
 import pandas as pd
+import pint
+
 def calculate_impacts(mapped_df: pd.DataFrame, idemat_datasheet: str, column_of_interest: str) -> pd.DataFrame:
     """
     Looks up values from Idemat datasheet and multiplies with Amount column to calculate results.
@@ -29,7 +31,6 @@ def calculate_impacts(mapped_df: pd.DataFrame, idemat_datasheet: str, column_of_
         )
         
         # Initialize Pint unit registry
-        import pint
         ureg = pint.UnitRegistry()
         
         # Calculate results by multiplying Amount with looked up values
