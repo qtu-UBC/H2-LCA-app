@@ -19,6 +19,8 @@ def calculate_impacts(mapped_df: pd.DataFrame, idemat_datasheet: str, column_of_
     try:
         # Read Idemat datasheet
         idemat_df = pd.read_excel(idemat_datasheet)
+        # Print dimensions of idemat datasheet
+        print(f"Idemat datasheet dimensions: {idemat_df.shape}")
         
         # Create lookup series from idemat datasheet
         lookup_series = pd.Series(

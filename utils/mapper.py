@@ -21,7 +21,6 @@ def map_flows(source_df: pd.DataFrame, destination_file: str) -> dict:
         dest_df = pd.read_csv(destination_file)
     except Exception as e:
         print(f"Error reading destination file {destination_file}: {str(e)}")
-        return flow_mappings
         
     # Create a copy of source_df
     mapped_df = source_df.copy()
@@ -36,9 +35,9 @@ def map_flows(source_df: pd.DataFrame, destination_file: str) -> dict:
         flow = row['Flow']
         mapped_flow = mapping_series.get(flow, None)
         
-        # # If no mapping found, use original flow
-        # if pd.isna(mapped_flow):
-        #     mapped_flow = flow
+        # If no mapping found, use original flow
+        if pd.isna(mapped_flow):
+            mapped_flow = flow
         
         flow_mappings[f"{flow}_{idx}"] = {
             'mapped_flow': mapped_flow,

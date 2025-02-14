@@ -10,6 +10,7 @@ from config.config import (
     UNIQUE_FLOWS_FILE,
     GENERAL_INFO_FILE,
     OUTPUT_DIR,
+    RECIPE_CF_FILE,
 )
 
 # Read the CSV files
@@ -107,44 +108,49 @@ from utils.mapper import map_flows
 inputs_mapping_df = pd.DataFrame()
 outputs_mapping_df = pd.DataFrame()
 
-# Map both inputs and outputs to Idemat database
-for df_name, df in [('inputs', saved_df_inputs), ('outputs', saved_df_outputs)]:
-    if 'df' in locals() and not df.empty:
-        flow_mappings = map_flows(df, MAPPING_FILE)
-        st.write(f"\nMapped {df_name} flows:")
-        st.write(flow_mappings)
-        
-        # Create a DataFrame to display mappings in a more readable format
-        mapping_records = []
-        for orig_flow, mapping in flow_mappings.items():
-            mapping_records.append({
-                'Original Flow': orig_flow,
-                'Mapped Flow': mapping['mapped_flow'],
-                'Amount': mapping['amount'],
-                'Unit': mapping['unit']
-            })
-        mapping_df = pd.DataFrame(mapping_records)
-        
-        # Save mapping DataFrame based on df_name
-        if df_name == 'inputs':
-            inputs_mapping_df = mapping_df
+# Map both inputs and outputs to database
+try:
+    # Map both inputs and outputs
+    for df_name, df in [('inputs', saved_df_inputs), ('outputs', saved_df_outputs)]:
+        if 'df' in locals() and not df.empty:
+            flow_mappings = map_flows(df, MAPPING_FILE)
+            st.write(f"\nMapped {df_name} flows:")
+            st.write(flow_mappings)
+            
+            # Create a DataFrame to display mappings in a more readable format
+            mapping_records = []
+            for orig_flow, mapping in flow_mappings.items():
+                mapping_records.append({
+                    'Original Flow': orig_flow,
+                    'Mapped Flow': mapping['mapped_flow'],
+                    'Amount': mapping['amount'],
+                    'Unit': mapping['unit']
+                })
+            mapping_df = pd.DataFrame(mapping_records)
+            
+            # Save mapping DataFrame based on df_name
+            if df_name == 'inputs':
+                inputs_mapping_df = mapping_df
+            else:
+                outputs_mapping_df = mapping_df
+            
+            # Display the mapping results in a table
+            st.markdown(f"#### {df_name.title()} Flow Mapping Results")
+            st.dataframe(
+                mapping_df,
+                column_config={
+                    "Original Flow": st.column_config.Column("Original Flow", help="Flow name from input data"),
+                    "Mapped Flow": st.column_config.Column("Mapped Flow", help="Corresponding flow in combined database"),
+                    "Amount": st.column_config.NumberColumn("Amount", help="Quantity of the flow", format="%.2f"),
+                    "Unit": st.column_config.Column("Unit", help="Unit of measurement")
+                },
+                hide_index=True
+            )
         else:
-            outputs_mapping_df = mapping_df
-        
-        # Display the mapping results in a table
-        st.markdown(f"#### {df_name.title()} Flow Mapping Results")
-        st.dataframe(
-            mapping_df,
-            column_config={
-                "Original Flow": st.column_config.Column("Original Flow", help="Flow name from input data"),
-                "Mapped Flow": st.column_config.Column("Mapped Flow", help="Corresponding flow in Idemat database"),
-                "Amount": st.column_config.NumberColumn("Amount", help="Quantity of the flow", format="%.2f"),
-                "Unit": st.column_config.Column("Unit", help="Unit of measurement")
-            },
-            hide_index=True
-        )
-    else:
-        st.info(f"No {df_name} data available for mapping.")
+            st.info(f"No {df_name} data available for mapping.")
+            
+except Exception as e:
+    st.error(f"Error processing mapping: {str(e)}")
 
 # Import calculation function 
 from utils.calculate import calculate_impacts
