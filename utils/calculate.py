@@ -20,7 +20,7 @@ def calculate_impacts(mapped_df: pd.DataFrame, idemat_datasheet: str, column_of_
         # Read Idemat datasheet
         idemat_df = pd.read_excel(idemat_datasheet)
         # Print dimensions of idemat datasheet
-        print(f"Idemat datasheet dimensions: {idemat_df.shape}")
+        # print(f"Idemat datasheet dimensions: {idemat_df.shape}")
         
         # Create lookup series from idemat datasheet
         lookup_series = pd.Series(
@@ -31,6 +31,8 @@ def calculate_impacts(mapped_df: pd.DataFrame, idemat_datasheet: str, column_of_
         unit_series = pd.Series(
             idemat_df.set_index('Process')['unit']
         )
+        # Import pubchempy for chemical name lookups
+        import pubchempy as pcp
         
         # Initialize Pint unit registry
         ureg = pint.UnitRegistry()
@@ -39,6 +41,32 @@ def calculate_impacts(mapped_df: pd.DataFrame, idemat_datasheet: str, column_of_
         results = []
         for _, row in mapped_df.iterrows():
             mapped_flow = row['Mapped Flow']
+            
+            # Get synonyms for mapped flow
+            try:
+                compounds = pcp.get_compounds(mapped_flow, 'name')
+                if compounds:
+                    # Check original mapped flow against lookup
+                    if mapped_flow in lookup_series.index:
+                        flow_to_use = mapped_flow
+                    else:
+                        # Try each synonym until we find a match
+                        flow_to_use = None
+                        for synonym in compounds[0].synonyms:
+                            if synonym in lookup_series.index:
+                                print(f"Found matching synonym: {synonym} for mapped flow: {mapped_flow}")
+                                flow_to_use = synonym
+                                break
+                        
+                        if not flow_to_use:
+                            flow_to_use = mapped_flow
+                else:
+                    flow_to_use = mapped_flow
+            except Exception as e:
+                print(f"Error getting synonyms for {mapped_flow}: {str(e)}")
+                flow_to_use = mapped_flow
+                
+            mapped_flow = flow_to_use
             if mapped_flow in lookup_series.index:
                 # Get units
                 source_unit = row['Unit'] # caution, capital U
