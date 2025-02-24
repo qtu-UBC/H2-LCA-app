@@ -39,7 +39,7 @@ if selected_source:
     
     # Display inputs
     if not filtered_inputs.empty:
-        display_df = filtered_inputs[['Flow', 'Category', 'Amount', 'Unit']]
+        display_df = filtered_inputs[['Flow', 'Category', 'Amount', 'Unit', 'Provider', 'Location']]
         edited_inputs = st.data_editor(
             display_df,
             column_config={
@@ -71,7 +71,7 @@ if selected_source:
         
     # Display outputs    
     if not filtered_outputs.empty:
-        display_df = filtered_outputs[['Flow', 'Category', 'Amount', 'Unit']]
+        display_df = filtered_outputs[['Flow', 'Category', 'Amount', 'Unit', 'Provider', 'Location']]
         edited_outputs = st.data_editor(
             display_df,
             column_config={

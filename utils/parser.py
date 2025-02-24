@@ -8,7 +8,6 @@ Import libraries
 """
 import os
 import pandas as pd
-from config.config import H2_LCI_FOLDER, OUTPUT_DIR
 
 """
 ======
@@ -18,18 +17,20 @@ Function to parse OpenLCA export Excel files
 def openlca_export_parser(export_folder_path: str, tab_of_interest: list) -> dict:
     """
     Parse OpenLCA export Excel files and extract data from specified tabs into a dictionary.
-    Also extracts unique flow values for Inputs and Outputs tabs.
+    Also extracts unique flow values, provider names, and locations for Inputs and Outputs tabs.
     
     Args:
         export_folder_path: Path to folder containing OpenLCA export Excel files
         tab_of_interest: List of tab names to parse
         
     Returns:
-        Dictionary containing parsed data from specified tabs and unique flows
+        Dictionary containing parsed data from specified tabs, unique flows, providers and locations
     """
     
     results = {}
     unique_flows = {'Inputs': set(), 'Outputs': set()}
+    unique_providers = {'Inputs': set(), 'Outputs': set()}
+    unique_locations = {'Inputs': set(), 'Outputs': set()}
     
     # Loop through all Excel files in the export folder
     for file in os.listdir(export_folder_path):
@@ -45,9 +46,14 @@ def openlca_export_parser(export_folder_path: str, tab_of_interest: list) -> dic
                     # Remove empty rows
                     df = df.dropna(how='all')
                     
-                    # If tab is Inputs or Outputs, collect unique flows
-                    if tab in ['Inputs', 'Outputs'] and 'Flow' in df.columns:
-                        unique_flows[tab].update(df['Flow'].unique())
+                    # If tab is Inputs, Outputs, Providers or Locations, collect unique flows, providers and locations
+                    if tab in ['Inputs', 'Outputs','Providers','Locations']:
+                        if 'Flow' in df.columns:
+                            unique_flows[tab].update(df['Flow'].unique())
+                        if 'Provider' in df.columns:
+                            unique_providers[tab].update(df['Provider'].dropna().unique())
+                        if 'Location' in df.columns:
+                            unique_locations[tab].update(df['Location'].dropna().unique())
                     
                     # Convert DataFrame to dictionary
                     tab_dict = df.to_dict('records')
@@ -75,16 +81,20 @@ def openlca_export_parser(export_folder_path: str, tab_of_interest: list) -> dic
             # Merge all DataFrames for this tab
             merged_dfs[tab] = pd.concat(tab_dfs, ignore_index=True)
     
-    # Add merged DataFrames and unique flows to results
+    # Add merged DataFrames, unique flows, providers and locations to results
     results['merged_data'] = merged_dfs
     results['unique_flows'] = {k: list(v) for k, v in unique_flows.items() if k in tab_of_interest}
+    results['unique_providers'] = {k: list(v) for k, v in unique_providers.items() if k in tab_of_interest}
+    results['unique_locations'] = {k: list(v) for k, v in unique_locations.items() if k in tab_of_interest}
     
     return results
 
 if __name__ == "__main__":
+    
+    from config.config import H2_LCI_FOLDER, OUTPUT_DIR
 
     # Define tabs to parse
-    tabs_to_parse = ["General information", "Inputs", "Outputs"]
+    tabs_to_parse = ["General information", "Inputs", "Outputs","Providers","Locations"]
     
     # Parse the OpenLCA export files
     parsed_data = openlca_export_parser(H2_LCI_FOLDER, tabs_to_parse)
@@ -100,15 +110,23 @@ if __name__ == "__main__":
         tab_df.to_csv(output_path, index=False)
         print(f"\nExported {tab_name} data to: {output_path}")
 
-    # Export unique flows data to CSV
+    # Export unique flows, providers and locations data to CSV
     unique_flows = parsed_data['unique_flows']
-    unique_flows_df = pd.DataFrame()
-    for tab_name, flows in unique_flows.items():
-        unique_flows_df[tab_name] = pd.Series(flows)
+    unique_providers = parsed_data['unique_providers']
+    unique_locations = parsed_data['unique_locations']
     
-    unique_flows_path = os.path.join(OUTPUT_DIR, "unique_flows.csv")
-    unique_flows_df.to_csv(unique_flows_path, index=False)
-    print(f"\nExported unique flows data to: {unique_flows_path}")
+    unique_data_df = pd.DataFrame()
+    for tab_name in ['Inputs', 'Outputs']:
+        if tab_name in unique_flows:
+            unique_data_df[f'{tab_name}_Flows'] = pd.Series(unique_flows[tab_name])
+        if tab_name in unique_providers:
+            unique_data_df[f'{tab_name}_Providers'] = pd.Series(unique_providers[tab_name])
+        if tab_name in unique_locations:
+            unique_data_df[f'{tab_name}_Locations'] = pd.Series(unique_locations[tab_name])
+    
+    unique_data_path = os.path.join(OUTPUT_DIR, "unique_flows_and_providers.csv")
+    unique_data_df.to_csv(unique_data_path, index=False)
+    print(f"\nExported unique flows, providers and locations data to: {unique_data_path}")
     
     # Print results summary
     print("\nParsed Data Summary:")
