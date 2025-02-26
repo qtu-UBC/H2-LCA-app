@@ -116,7 +116,7 @@ if __name__ == "__main__":
     unique_locations = parsed_data['unique_locations']
     
     unique_data_df = pd.DataFrame()
-    for tab_name in ['Inputs', 'Outputs']:
+    for tab_name in ['Inputs', 'Outputs','Providers','Locations']:
         if tab_name in unique_flows:
             unique_data_df[f'{tab_name}_Flows'] = pd.Series(unique_flows[tab_name])
         if tab_name in unique_providers:
