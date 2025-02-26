@@ -32,22 +32,44 @@ def map_flows(source_df: pd.DataFrame, destination_file: str) -> dict:
     
     # Iterate through rows and create mappings
     for idx, row in mapped_df.iterrows():
-        flow = row['Flow']
-        mapped_flow = mapping_series.get(flow, None)
-        
-        # If no mapping found, use original flow
-        if pd.isna(mapped_flow):
-            mapped_flow = flow
-        
-        flow_mappings[f"{flow}_{idx}"] = {
-            'mapped_flow': mapped_flow,
-            'amount': row['Amount'],
-            'unit': row['Unit'],
-            'original_flow': flow
-        }
-        
-        # Update the flow in mapped_df
-        mapped_df.at[idx, 'Flow'] = mapped_flow
+        try:
+            # Try mapping Provider first
+            flow = row['Provider']
+            mapped_flow = None
+            
+            # Check if Provider exists and has a mapping
+            if not pd.isna(flow) and flow in mapping_series:
+                mapped_flow = mapping_series[flow]
+            
+            # If no Provider mapping found, try mapping Flow
+            if mapped_flow is None:
+                flow = row['Flow']
+                if flow in mapping_series:
+                    mapped_flow = mapping_series[flow]
+                else:
+                    mapped_flow = flow
+            
+            flow_mappings[f"{flow}_{idx}"] = {
+                'mapped_flow': mapped_flow,
+                'amount': row['Amount'],
+                'unit': row['Unit'], 
+                'original_flow': flow
+            }
+            
+            # Update the flow in mapped_df
+            mapped_df.at[idx, 'Flow'] = mapped_flow
+            
+        except Exception as e:
+            print(f"Error mapping flow '{row['Flow']}': {str(e)}")
+            # # Use original flow as fallback
+            # flow = row['Flow']
+            # flow_mappings[f"{flow}_{idx}"] = {
+            #     'mapped_flow': flow,
+            #     'amount': row['Amount'],
+            #     'unit': row['Unit'],
+            #     'original_flow': flow  
+            # }
+            # mapped_df.at[idx, 'Flow'] = flow
             
     return flow_mappings
 
