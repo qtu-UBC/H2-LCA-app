@@ -46,12 +46,15 @@ def openlca_export_parser(export_folder_path: str, tab_of_interest: list) -> dic
                     # Remove empty rows
                     df = df.dropna(how='all')
                     
-                    # If tab is Inputs, Outputs, Providers or Locations, collect unique flows, providers and locations
-                    if tab in ['Inputs', 'Outputs','Providers','Locations']:
+                    # If tab is Inputs or Outputs, collect unique flows
+                    if tab in ['Inputs', 'Outputs']:
                         if 'Flow' in df.columns:
                             unique_flows[tab].update(df['Flow'].unique())
-                        if 'Provider' in df.columns:
-                            unique_providers[tab].update(df['Provider'].dropna().unique())
+                            
+                    # If tab is Providers, collect unique providers and locations        
+                    if tab == 'Providers':
+                        if 'Name' in df.columns:
+                            unique_providers[tab].update(df['Name'].dropna().unique())
                         if 'Location' in df.columns:
                             unique_locations[tab].update(df['Location'].dropna().unique())
                     
@@ -99,8 +102,16 @@ if __name__ == "__main__":
     # Parse the OpenLCA export files
     parsed_data = openlca_export_parser(H2_LCI_FOLDER, tabs_to_parse)
 
-    # Export merged data for each tab to separate CSV files
+    # Export merged data for each tab to separate CSV files and one Excel file
     merged_data = parsed_data['merged_data']
+    
+    # Export to Excel with each tab
+    excel_path = os.path.join(OUTPUT_DIR, "merged_data.xlsx")
+    with pd.ExcelWriter(excel_path) as writer:
+        for tab_name, tab_df in merged_data.items():
+            tab_df.to_excel(writer, sheet_name=tab_name, index=False)
+    print(f"\nExported all merged data to Excel: {excel_path}")
+    
     for tab_name, tab_df in merged_data.items():
         # Create sanitized filename from tab name
         filename = tab_name.lower().replace(" ", "_") + ".csv"
@@ -112,6 +123,7 @@ if __name__ == "__main__":
 
     # Export unique flows, providers and locations data to CSV
     unique_flows = parsed_data['unique_flows']
+    print(f"here is the unique flows: {unique_flows}")
     unique_providers = parsed_data['unique_providers']
     unique_locations = parsed_data['unique_locations']
     
