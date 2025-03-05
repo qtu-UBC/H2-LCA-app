@@ -27,6 +27,14 @@ def openlca_export_parser(export_folder_path: str, tab_of_interest: list) -> dic
         Dictionary containing parsed data from specified tabs, unique flows, providers and locations
     """
     
+    # Set up logging
+    from config.config import LOG_DIR
+    log_file = os.path.join(LOG_DIR, 'parser_errors.log')
+    os.makedirs(LOG_DIR, exist_ok=True)
+    
+    # Reset log file by opening in write mode
+    open(log_file, 'w').close()
+    
     results = {}
     unique_flows = {'Inputs': set(), 'Outputs': set()}
     unique_providers = {'Inputs': set(), 'Outputs': set()}
@@ -41,7 +49,18 @@ def openlca_export_parser(export_folder_path: str, tab_of_interest: list) -> dic
             for tab in tab_of_interest:
                 try:
                     # Read the Excel sheet into a DataFrame
-                    df = pd.read_excel(file_path, sheet_name=tab)
+                    try:
+                        df = pd.read_excel(file_path, sheet_name=tab)
+                    except ValueError as e:
+                        error_msg = f"Tab {tab} not found in file {file}"
+                        with open(log_file, 'a') as f:
+                            f.write(f"{error_msg}\n")
+                        continue
+                    except Exception as e:
+                        error_msg = f"Error reading tab {tab} in file {file}: {str(e)}"
+                        with open(log_file, 'a') as f:
+                            f.write(f"{error_msg}\n")
+                        continue
                     
                     # Remove empty rows
                     df = df.dropna(how='all')
@@ -51,13 +70,13 @@ def openlca_export_parser(export_folder_path: str, tab_of_interest: list) -> dic
                         if 'Flow' in df.columns:
                             unique_flows[tab].update(df['Flow'].unique())
                             
-                    # If tab is Providers, collect unique providers and locations        
+                    # If tab is Providers, collect unique providers and locations
                     if tab == 'Providers':
                         if 'Name' in df.columns:
                             unique_providers[tab].update(df['Name'].dropna().unique())
                         if 'Location' in df.columns:
                             unique_locations[tab].update(df['Location'].dropna().unique())
-                    
+                            
                     # Convert DataFrame to dictionary
                     tab_dict = df.to_dict('records')
                     
@@ -68,8 +87,10 @@ def openlca_export_parser(export_folder_path: str, tab_of_interest: list) -> dic
                     results[file_key][tab] = tab_dict
                     
                 except Exception as e:
-                    print(f"Error processing tab {tab} in file {file}: {str(e)}")
-                    
+                    error_msg = f"Error processing tab {tab} in file {file}: {str(e)}"
+                    with open(log_file, 'a') as f:
+                        f.write(f"{error_msg}\n")
+         
     # Convert parsed data into DataFrames organized by tab
     merged_dfs = {}
     for tab in tab_of_interest:
@@ -123,9 +144,14 @@ if __name__ == "__main__":
 
     # Export unique flows, providers and locations data to CSV
     unique_flows = parsed_data['unique_flows']
-    print(f"here is the unique flows: {unique_flows}")
     unique_providers = parsed_data['unique_providers']
     unique_locations = parsed_data['unique_locations']
+    
+    print("\nUnique Providers:")
+    for tab, providers in unique_providers.items():
+        print(f"\n{tab}:")
+        for provider in providers:
+            print(f"  {provider}")
     
     unique_data_df = pd.DataFrame()
     for tab_name in ['Inputs', 'Outputs','Providers','Locations']:
