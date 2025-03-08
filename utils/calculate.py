@@ -1,5 +1,7 @@
 import pandas as pd
 import pint
+import os
+from config.config import LOG_DIR
 
 def calculate_impacts(mapped_df: pd.DataFrame, idemat_datasheet: str, column_of_interest: str) -> pd.DataFrame:
     """
@@ -13,6 +15,15 @@ def calculate_impacts(mapped_df: pd.DataFrame, idemat_datasheet: str, column_of_
     Returns:
         DataFrame with Mapped Flow names and calculated results
     """
+    # Set up logging
+    # Create calculation results log file
+    log_file = os.path.join(LOG_DIR, 'calculation_results.log')
+    os.makedirs(LOG_DIR, exist_ok=True)
+    
+    # Reset log file by opening in write mode
+    with open(log_file, 'w') as f:
+        f.write("Calculation Results Log\n")
+        f.write("=====================\n\n")
     # Initialize results DataFrame
     results_df = pd.DataFrame(columns=['Mapped Flow', 'Calculated Result'])
     
@@ -41,6 +52,13 @@ def calculate_impacts(mapped_df: pd.DataFrame, idemat_datasheet: str, column_of_
         results = []
         for _, row in mapped_df.iterrows():
             mapped_flow = row['Mapped Flow']
+            
+            # Check if flow is reference flow
+            if 'Is reference?' in row and pd.notna(row['Is reference?']):
+                with open(log_file, 'a') as f:
+                    f.write(f"Reference product: {mapped_flow}, calculation skipped\n")
+                print(f"{mapped_flow} is reference flow, calculation skipped")
+                continue
             
             # Get synonyms for mapped flow
             try:
