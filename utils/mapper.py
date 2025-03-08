@@ -49,12 +49,18 @@ def map_flows(source_df: pd.DataFrame, destination_file: str) -> dict:
                 else:
                     mapped_flow = flow
             
-            flow_mappings[f"{flow}_{idx}"] = {
+            mapping_dict = {
                 'mapped_flow': mapped_flow,
                 'amount': row['Amount'],
                 'unit': row['Unit'], 
                 'original_flow': flow
             }
+            
+            # Add 'Is reference?' if it exists in source_df
+            if 'Is reference?' in row:
+                mapping_dict['is_reference'] = row['Is reference?']
+                
+            flow_mappings[f"{flow}_{idx}"] = mapping_dict
             
             # Update the flow in mapped_df
             mapped_df.at[idx, 'Flow'] = mapped_flow
