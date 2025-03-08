@@ -71,7 +71,7 @@ if selected_source:
         
     # Display outputs    
     if not filtered_outputs.empty:
-        display_df = filtered_outputs[['Flow', 'Category', 'Amount', 'Unit', 'Provider', 'Location']]
+        display_df = filtered_outputs[['Is reference?','Flow', 'Category', 'Amount', 'Unit', 'Provider', 'Location']]
         edited_outputs = st.data_editor(
             display_df,
             column_config={
@@ -120,12 +120,16 @@ try:
             # Create a DataFrame to display mappings in a more readable format
             mapping_records = []
             for orig_flow, mapping in flow_mappings.items():
-                mapping_records.append({
+                record = {
                     'Original Flow': orig_flow,
                     'Mapped Flow': mapping['mapped_flow'],
                     'Amount': mapping['amount'],
                     'Unit': mapping['unit']
-                })
+                }
+                # Add is_reference if it exists in the mapping
+                if 'is_reference' in mapping:
+                    record['Is reference?'] = mapping['is_reference']
+                mapping_records.append(record)
             mapping_df = pd.DataFrame(mapping_records)
             
             # Save mapping DataFrame based on df_name
