@@ -56,11 +56,22 @@ def openlca_export_parser(export_folder_path: str, tab_of_interest: list) -> dic
                         with open(log_file, 'a') as f:
                             f.write(f"{error_msg}\n")
                         continue
-                    except Exception as e:
-                        error_msg = f"Error reading tab {tab} in file {file}: {str(e)}"
+                    except pd.errors.EmptyDataError as e:
+                        error_msg = f"Empty data in tab {tab} in file {file}"
                         with open(log_file, 'a') as f:
                             f.write(f"{error_msg}\n")
                         continue
+                    except PermissionError as e:
+                        error_msg = f"Permission denied accessing file {file}"
+                        with open(log_file, 'a') as f:
+                            f.write(f"{error_msg}\n")
+                        continue
+                    except Exception as e:
+                        if "style" not in str(e).lower():  # Ignore style-related warnings
+                            error_msg = f"Error reading tab {tab} in file {file}: {str(e)}"
+                            with open(log_file, 'a') as f:
+                                f.write(f"{error_msg}\n")
+                            continue
                     
                     # Remove empty rows
                     df = df.dropna(how='all')
@@ -72,10 +83,32 @@ def openlca_export_parser(export_folder_path: str, tab_of_interest: list) -> dic
                             
                     # If tab is Providers, collect unique providers and locations
                     if tab == 'Providers':
+                        providers_log_file = os.path.join(LOG_DIR, 'providers_data.log')
+                        
+                        # Create/reset the providers log file
+                        open(providers_log_file, 'w').close()
+                        
                         if 'Name' in df.columns:
-                            unique_providers[tab].update(df['Name'].dropna().unique())
+                            providers_list = df['Name'].dropna().unique()
+                            unique_providers[tab].update(providers_list)
+                            with open(providers_log_file, 'a') as f:
+                                f.write(f"\nUnique providers found in {file}:\n")
+                                for provider in providers_list:
+                                    f.write(f"- {provider}\n")
+                        else:
+                            with open(providers_log_file, 'a') as f:
+                                f.write(f"\nWarning: 'Name' column not found in {file}\n")
+                            
                         if 'Location' in df.columns:
-                            unique_locations[tab].update(df['Location'].dropna().unique())
+                            locations_list = df['Location'].dropna().unique()
+                            unique_locations[tab].update(locations_list)
+                            with open(providers_log_file, 'a') as f:
+                                f.write(f"\nUnique locations found in {file}:\n")
+                                for location in locations_list:
+                                    f.write(f"- {location}\n")
+                        else:
+                            with open(providers_log_file, 'a') as f:
+                                f.write(f"\nWarning: 'Location' column not found in {file}\n")
                             
                     # Convert DataFrame to dictionary
                     tab_dict = df.to_dict('records')
