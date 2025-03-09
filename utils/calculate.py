@@ -101,7 +101,8 @@ def calculate_impacts(mapped_df: pd.DataFrame, idemat_datasheet: str, column_of_
                     calculated_result = converted_amount * lookup_series[mapped_flow]
                     results.append({
                         'Mapped Flow': mapped_flow,
-                        'Calculated Result': calculated_result
+                        'Calculated Result': calculated_result,
+                        'Category': row['Category']
                     })
                 except pint.errors.DimensionalityError:
                     print(f"Cannot convert between units {source_unit} and {dest_unit}")
