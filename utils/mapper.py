@@ -52,7 +52,8 @@ def map_flows(source_df: pd.DataFrame, destination_file: str) -> dict:
             mapping_dict = {
                 'mapped_flow': mapped_flow,
                 'amount': row['Amount'],
-                'unit': row['Unit'], 
+                'unit': row['Unit'],
+                'category': row['Category'],
                 'original_flow': flow
             }
             
