@@ -124,7 +124,8 @@ try:
                     'Original Flow': orig_flow,
                     'Mapped Flow': mapping['mapped_flow'],
                     'Amount': mapping['amount'],
-                    'Unit': mapping['unit']
+                    'Unit': mapping['unit'],
+                    'Category': mapping['category']
                 }
                 # Add is_reference if it exists in the mapping
                 if 'is_reference' in mapping:
@@ -146,7 +147,8 @@ try:
                     "Original Flow": st.column_config.Column("Original Flow", help="Flow name from input data"),
                     "Mapped Flow": st.column_config.Column("Mapped Flow", help="Corresponding flow in combined database"),
                     "Amount": st.column_config.NumberColumn("Amount", help="Quantity of the flow", format="%.2f"),
-                    "Unit": st.column_config.Column("Unit", help="Unit of measurement")
+                    "Unit": st.column_config.Column("Unit", help="Unit of measurement"),
+                    "Category": st.column_config.Column("Category", help="Category of the flow")
                 },
                 hide_index=True
             )
@@ -226,3 +228,26 @@ if not outputs_mapping_df.empty:
         st.warning("No impact results calculated for outputs")
 else:
     st.info("No mapping data available for outputs impact calculation")
+
+# Import visualization function
+from utils.visualize import generate_impact_piechart
+
+# Add subsection for visualization
+st.markdown("#### Visualize Results")
+
+# Create dropdown for chart selection
+chart_type = st.selectbox(
+    "Select chart type",
+    ["Pie Chart", "Bar Chart", "Line Chart"]
+)
+
+# Add button to generate chart
+if st.button("Generate Selected Chart"):
+    # Generate and display selected chart
+    if chart_type == "Pie Chart":
+        pie_chart = generate_impact_piechart(inputs_results_df)
+        st.pyplot(pie_chart)
+    elif chart_type == "Bar Chart":
+        st.info("Bar chart visualization coming soon!")
+    elif chart_type == "Line Chart": 
+        st.info("Line chart visualization coming soon!")
