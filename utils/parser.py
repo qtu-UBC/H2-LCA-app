@@ -37,8 +37,8 @@ def openlca_export_parser(export_folder_path: str, tab_of_interest: list) -> dic
     
     results = {}
     unique_flows = {'Inputs': set(), 'Outputs': set()}
-    unique_providers = {'Inputs': set(), 'Outputs': set()}
-    unique_locations = {'Inputs': set(), 'Outputs': set()}
+    unique_providers = {'Providers': set()}
+    unique_locations = {'Location': set()}
     
     # Loop through all Excel files in the export folder
     for file in os.listdir(export_folder_path):
@@ -90,7 +90,7 @@ def openlca_export_parser(export_folder_path: str, tab_of_interest: list) -> dic
                         
                         if 'Name' in df.columns:
                             providers_list = df['Name'].dropna().unique()
-                            unique_providers[tab].update(providers_list)
+                            unique_providers['Providers'].update(providers_list)
                             with open(providers_log_file, 'a') as f:
                                 f.write(f"\nUnique providers found in {file}:\n")
                                 for provider in providers_list:
@@ -101,7 +101,7 @@ def openlca_export_parser(export_folder_path: str, tab_of_interest: list) -> dic
                             
                         if 'Location' in df.columns:
                             locations_list = df['Location'].dropna().unique()
-                            unique_locations[tab].update(locations_list)
+                            unique_locations['Location'].update(locations_list)
                             with open(providers_log_file, 'a') as f:
                                 f.write(f"\nUnique locations found in {file}:\n")
                                 for location in locations_list:
@@ -120,9 +120,21 @@ def openlca_export_parser(export_folder_path: str, tab_of_interest: list) -> dic
                     results[file_key][tab] = tab_dict
                     
                 except Exception as e:
-                    error_msg = f"Error processing tab {tab} in file {file}: {str(e)}"
+                    # Get detailed error info
+                    import traceback
+                    error_trace = traceback.format_exc()
+                    
+                    # Create detailed error message
+                    error_msg = f"""Error processing tab {tab} in file {file}:
+                                Error type: {type(e).__name__}
+                                Error message: {str(e)}
+                                Traceback:
+                                {error_trace}
+                                """
+                    # Log the detailed error
                     with open(log_file, 'a') as f:
                         f.write(f"{error_msg}\n")
+                        f.write("-" * 80 + "\n")  # Add separator between errors
          
     # Convert parsed data into DataFrames organized by tab
     merged_dfs = {}
@@ -151,7 +163,7 @@ if __name__ == "__main__":
     from config.config import H2_LCI_FOLDER, OUTPUT_DIR
 
     # Define tabs to parse
-    tabs_to_parse = ["General information", "Inputs", "Outputs","Providers","Locations"]
+    tabs_to_parse = ["General information", "Inputs", "Outputs","Providers","Location"]
     
     # Parse the OpenLCA export files
     parsed_data = openlca_export_parser(H2_LCI_FOLDER, tabs_to_parse)
@@ -187,7 +199,7 @@ if __name__ == "__main__":
             print(f"  {provider}")
     
     unique_data_df = pd.DataFrame()
-    for tab_name in ['Inputs', 'Outputs','Providers','Locations']:
+    for tab_name in ['Inputs', 'Outputs','Providers','Location']:
         if tab_name in unique_flows:
             unique_data_df[f'{tab_name}_Flows'] = pd.Series(unique_flows[tab_name])
         if tab_name in unique_providers:
