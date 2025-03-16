@@ -110,7 +110,7 @@ def openlca_export_parser(export_folder_path: str, tab_of_interest: list) -> dic
                             with open(providers_log_file, 'a') as f:
                                 f.write(f"\nWarning: 'Location' column not found in {file}\n")
                             
-                    # Convert DataFrame to dictionary
+                    # Convert DataFrame to dictionary -> this perserves all the data of that tab
                     tab_dict = df.to_dict('records')
                     
                     # Store in results dictionary using file name and tab as keys
@@ -144,6 +144,15 @@ def openlca_export_parser(export_folder_path: str, tab_of_interest: list) -> dic
             if tab in file_data:
                 df = pd.DataFrame(file_data[tab])
                 df['Source_File'] = file_key  # Add source file column
+                
+                # For Inputs and Outputs tabs, look up Location from Providers tab
+                if tab in ["Inputs", "Outputs"] and "Providers" in file_data:
+                    providers_df = pd.DataFrame(file_data["Providers"])
+                    # Create mapping dictionary from Providers tab
+                    provider_location_map = dict(zip(providers_df["Name"], providers_df["Location"]))
+                    # Update Location based on Provider values
+                    df["Location"] = df["Provider"].map(provider_location_map)
+                
                 tab_dfs.append(df)
         
         if tab_dfs:
