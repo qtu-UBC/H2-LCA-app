@@ -17,6 +17,7 @@ from config.config import (
 general_info_df = pd.read_csv(GENERAL_INFO_FILE)
 inputs_df = pd.read_csv(INPUTS_FILE)
 outputs_df = pd.read_csv(OUTPUTS_FILE)
+unique_locations_df = pd.read_csv(UNIQUE_FLOWS_PROVIDERS_FILE)
 
 # Set up the Streamlit page with full width
 st.set_page_config(layout="wide")
@@ -40,7 +41,17 @@ with left_col:
         filtered_inputs = inputs_df[inputs_df['Source_File'] == selected_source]
         
         if not filtered_inputs.empty:
+            # Get available locations and ensure they're strings
+            available_locations = unique_locations_df['Location_Locations'].astype(str).unique().tolist()
+            
+            # Ensure the Location column values are in the available options
             display_df = filtered_inputs[['Flow', 'Category', 'Amount', 'Unit', 'Provider', 'Location']]
+            display_df['Location'] = display_df['Location'].astype(str)
+            
+            # Debug info
+            # st.write("Available locations:", available_locations)
+            # st.write("Current locations in data:", display_df['Location'].unique().tolist())
+            
             edited_inputs = st.data_editor(
                 display_df,
                 column_config={
@@ -48,6 +59,11 @@ with left_col:
                         "Amount",
                         help="Edit the amount value", 
                         step=0.01,
+                    ),
+                    "Location": st.column_config.SelectboxColumn(
+                        "Location",
+                        help="Select a location",
+                        options=available_locations,
                     )
                 },
                 hide_index=True,
@@ -70,7 +86,13 @@ with left_col:
         filtered_outputs = outputs_df[outputs_df['Source_File'] == selected_source]
         
         if not filtered_outputs.empty:
+            # Get available locations and ensure they're strings
+            available_locations = unique_locations_df['Location_Locations'].astype(str).unique().tolist()
+            
+            # Ensure the Location column values are in the available options
             display_df = filtered_outputs[['Is reference?','Flow', 'Category', 'Amount', 'Unit', 'Provider', 'Location']]
+            display_df['Location'] = display_df['Location'].astype(str)
+            
             edited_outputs = st.data_editor(
                 display_df,
                 column_config={
@@ -78,6 +100,11 @@ with left_col:
                         "Amount",
                         help="Edit the amount value",
                         step=0.01,
+                    ),
+                    "Location": st.column_config.SelectboxColumn(
+                        "Location",
+                        help="Select a location",
+                        options=available_locations,
                     )
                 },
                 hide_index=True,
