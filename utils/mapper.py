@@ -25,8 +25,15 @@ def map_flows(source_df: pd.DataFrame, destination_file: str) -> dict:
     # Create a copy of source_df
     mapped_df = source_df.copy()
     
-    # Create mapping series using merge
+    # Create mapping series using both 'Unique Flow Name' and 'Location'
+    # Create a composite key for more accurate mapping
+    dest_df['composite_key'] = dest_df['Unique Flow Name'] + '|' + dest_df['Location'].fillna('')
     mapping_series = pd.Series(
+        dest_df.set_index('composite_key')['Most Similar Process']
+    )
+    
+    # Also keep the original mapping for fallback
+    simple_mapping_series = pd.Series(
         dest_df.set_index('Unique Flow Name')['Most Similar Process']
     )
     
@@ -37,16 +44,29 @@ def map_flows(source_df: pd.DataFrame, destination_file: str) -> dict:
             flow = row['Provider']
             mapped_flow = None
             
-            # Check if Provider exists and has a mapping
-            if not pd.isna(flow) and flow in mapping_series:
-                mapped_flow = mapping_series[flow]
+            # Check if Provider exists and has a location for composite mapping
+            if not pd.isna(flow) and 'Location' in row:
+                composite_key = flow + '|' + (row['Location'] if not pd.isna(row['Location']) else '')
+                if composite_key in mapping_series:
+                    mapped_flow = mapping_series[composite_key]
+            
+            # If no composite mapping found, try simple Provider mapping
+            if mapped_flow is None and not pd.isna(flow) and flow in simple_mapping_series:
+                mapped_flow = simple_mapping_series[flow]
             
             # If no Provider mapping found, try mapping Flow
             if mapped_flow is None:
                 flow = row['Flow']
-                if flow in mapping_series:
-                    mapped_flow = mapping_series[flow]
-                else:
+                # Try composite mapping for Flow
+                if 'Location' in row:
+                    composite_key = flow + '|' + (row['Location'] if not pd.isna(row['Location']) else '')
+                    if composite_key in mapping_series:
+                        mapped_flow = mapping_series[composite_key]
+                
+                # Fallback to simple mapping
+                if mapped_flow is None and flow in simple_mapping_series:
+                    mapped_flow = simple_mapping_series[flow]
+                elif mapped_flow is None:
                     mapped_flow = flow
             
             mapping_dict = {
@@ -60,6 +80,10 @@ def map_flows(source_df: pd.DataFrame, destination_file: str) -> dict:
             # Add 'Is reference?' if it exists in source_df
             if 'Is reference?' in row:
                 mapping_dict['is_reference'] = row['Is reference?']
+                
+            # Add 'Location' if it exists in source_df
+            if 'Location' in row and not pd.isna(row['Location']):
+                mapping_dict['location'] = row['Location']
                 
             flow_mappings[f"{flow}_{idx}"] = mapping_dict
             
@@ -79,4 +103,3 @@ def map_flows(source_df: pd.DataFrame, destination_file: str) -> dict:
             # mapped_df.at[idx, 'Flow'] = flow
             
     return flow_mappings
-
