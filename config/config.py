@@ -28,3 +28,16 @@ OUTPUT_DIR = os.path.join(PROJECT_ROOT, "output")
 
 # Define the path to the log folder
 LOG_DIR = os.path.join(PROJECT_ROOT, "log")
+
+# Define the path to the cache folder for storing embeddings
+CACHE_DIR = os.path.join(PROJECT_ROOT, "cache")
+
+# Ollama API configuration
+# Can be overridden with environment variable: OLLAMA_HOST
+# Examples:
+#   - Local: http://localhost:11434 (default)
+#   - Remote: http://192.168.1.100:11434
+#   - Custom port: http://localhost:8080
+OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://localhost:11434")
+OLLAMA_API_URL = f"{OLLAMA_HOST}/api/embeddings"
+OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "nomic-embed-text")

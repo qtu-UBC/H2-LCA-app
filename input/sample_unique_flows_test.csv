@@ -1,0 +1,132 @@
+Inputs_Flows,Outputs_Flows,Providers_Providers,Location_Locations
+"electricity, high voltage",,"market for electricity, high voltage | electricity, high voltage | Cutoff, U",Global
+"electricity, medium voltage",,"market group for electricity, medium voltage | electricity, medium voltage | Cutoff, U","Canada, Québec"
+"electricity, low voltage",,"market for electricity, low voltage | electricity, low voltage | Cutoff, U","Canada, Alberta"
+"natural gas, high pressure",,"market for natural gas, high pressure | natural gas, high pressure | Cutoff, U","Canada, British Columbia"
+"natural gas, low pressure",,"market for natural gas, low pressure | natural gas, low pressure | Cutoff, U",Canada
+"water, deionised",,"market for water, deionised | water, deionised | Cutoff, U",Global
+"water, cooling, unspecified natural origin, CA",,"market for water, cooling | water, cooling | Cutoff, U","Canada, Québec"
+"water, tap",,"market for water, tap | water, tap | Cutoff, U",Global
+"sodium hydroxide, without water, in 50% solution state",,"market for sodium hydroxide, without water, in 50% solution state | sodium hydroxide, without water, in 50% solution state | Cutoff, U",Canada
+"sodium hydroxide, 50% in H2O",,"market for sodium hydroxide | sodium hydroxide | Cutoff, U",Global
+"copper oxide",,"market for copper oxide | copper oxide | Cutoff, U",Global
+"copper, primary",,"market for copper, primary | copper, primary | Cutoff, U","Canada, Alberta"
+"zinc oxide",,"market for zinc oxide | zinc oxide | Cutoff, U","Canada, British Columbia"
+"zinc, primary",,"market for zinc, primary | zinc, primary | Cutoff, U",Global
+"activated carbon, granular",,"market for activated carbon, granular | activated carbon, granular | Cutoff, U",Canada
+"carbon, activated",,"market for carbon, activated | carbon, activated | Cutoff, U",Global
+"aluminium oxide, metallurgical",,"market for aluminium oxide, metallurgical | aluminium oxide, metallurgical | Cutoff, U","Canada, Québec"
+"aluminium, primary",,"market for aluminium, primary | aluminium, primary | Cutoff, U",Global
+"heat, district or industrial, natural gas",,"market for heat, district or industrial, natural gas | heat, district or industrial, natural gas | Cutoff, U","Canada, Alberta"
+"heat, from natural gas",,"market for heat, from natural gas | heat, from natural gas | Cutoff, U",Canada
+"wood chips, wet, measured as dry mass",,"market for wood chips, wet, measured as dry mass | wood chips, wet, measured as dry mass | Cutoff, U",Global
+"wood chips, dry",,"market for wood chips, dry | wood chips, dry | Cutoff, U","Canada, British Columbia"
+"nickel, class 1",,"market for nickel, class 1 | nickel, class 1 | Cutoff, U",Global
+"nickel, primary",,"market for nickel, primary | nickel, primary | Cutoff, U",Canada
+"palladium",,"market for palladium | palladium | Cutoff, U",Global
+"palladium, primary",,"market for palladium, primary | palladium, primary | Cutoff, U","Canada, Québec"
+"sulfuric acid",,"market for sulfuric acid | sulfuric acid | Cutoff, U",Global
+"sulfuric acid, 98% in H2O",,"market for sulfuric acid, 98% | sulfuric acid, 98% | Cutoff, U","Canada, Alberta"
+"chlorine, liquid",,"market for chlorine, liquid | chlorine, liquid | Cutoff, U",Canada
+"chlorine, gas",,"market for chlorine, gas | chlorine, gas | Cutoff, U",Global
+"monoethanolamine",,"market for monoethanolamine | monoethanolamine | Cutoff, U","Canada, British Columbia"
+"ethanolamine",,"market for ethanolamine | ethanolamine | Cutoff, U",Global
+"acrylic acid",,"market for acrylic acid | acrylic acid | Cutoff, U",Canada
+"acrylic acid, 99%",,"market for acrylic acid, 99% | acrylic acid, 99% | Cutoff, U","Canada, Québec"
+"hydrogen, compressed, 200 bar",,"market for hydrogen, compressed | hydrogen, compressed | Cutoff, U",Global
+"hydrogen, liquid",,"market for hydrogen, liquid | hydrogen, liquid | Cutoff, U","Canada, Alberta"
+"carbon dioxide, liquid",,"market for carbon dioxide, liquid | carbon dioxide, liquid | Cutoff, U",Canada
+"carbon dioxide, compressed",,"market for carbon dioxide, compressed | carbon dioxide, compressed | Cutoff, U",Global
+"steam, from natural gas",,"market for steam, from natural gas | steam, from natural gas | Cutoff, U","Canada, British Columbia"
+"steam, industrial",,"market for steam, industrial | steam, industrial | Cutoff, U",Global
+"nitrogen, liquid",,"market for nitrogen, liquid | nitrogen, liquid | Cutoff, U",Canada
+"nitrogen, compressed",,"market for nitrogen, compressed | nitrogen, compressed | Cutoff, U","Canada, Québec"
+"oxygen, liquid",,"market for oxygen, liquid | oxygen, liquid | Cutoff, U",Global
+"oxygen, compressed",,"market for oxygen, compressed | oxygen, compressed | Cutoff, U","Canada, Alberta"
+"ammonia, liquid",,"market for ammonia, liquid | ammonia, liquid | Cutoff, U",Canada
+"ammonia, anhydrous",,"market for ammonia, anhydrous | ammonia, anhydrous | Cutoff, U",Global
+"methanol",,"market for methanol | methanol | Cutoff, U","Canada, British Columbia"
+"methanol, 99%",,"market for methanol, 99% | methanol, 99% | Cutoff, U",Global
+"ethanol",,"market for ethanol | ethanol | Cutoff, U",Canada
+"ethanol, 99%",,"market for ethanol, 99% | ethanol, 99% | Cutoff, U","Canada, Québec"
+"diesel",,"market for diesel | diesel | Cutoff, U",Global
+"diesel, low sulfur",,"market for diesel, low sulfur | diesel, low sulfur | Cutoff, U","Canada, Alberta"
+"gasoline",,"market for gasoline | gasoline | Cutoff, U",Canada
+"gasoline, unleaded",,"market for gasoline, unleaded | gasoline, unleaded | Cutoff, U",Global
+"wastewater, average",,"market for wastewater, average | wastewater, average | Cutoff, U","Canada, British Columbia"
+"wastewater, treated",,"market for wastewater, treated | wastewater, treated | Cutoff, U",Global
+"sludge, from wastewater treatment",,"market for sludge, from wastewater treatment | sludge, from wastewater treatment | Cutoff, U",Canada
+"waste, hazardous",,"market for waste, hazardous | waste, hazardous | Cutoff, U","Canada, Québec"
+"waste, non-hazardous",,"market for waste, non-hazardous | waste, non-hazardous | Cutoff, U",Global
+"iron ore",,"market for iron ore | iron ore | Cutoff, U","Canada, Alberta"
+"iron, primary",,"market for iron, primary | iron, primary | Cutoff, U",Canada
+"steel, primary",,"market for steel, primary | steel, primary | Cutoff, U",Global
+"steel, recycled",,"market for steel, recycled | steel, recycled | Cutoff, U","Canada, British Columbia"
+"cement, Portland",,"market for cement, Portland | cement, Portland | Cutoff, U",Global
+"cement, CEM I",,"market for cement, CEM I | cement, CEM I | Cutoff, U",Canada
+"lime",,"market for lime | lime | Cutoff, U","Canada, Québec"
+"limestone",,"market for limestone | limestone | Cutoff, U",Global
+"gravel",,"market for gravel | gravel | Cutoff, U","Canada, Alberta"
+"sand",,"market for sand | sand | Cutoff, U",Canada
+"clay",,"market for clay | clay | Cutoff, U",Global
+"polyethylene, high density, HDPE",,"market for polyethylene, high density | polyethylene, high density | Cutoff, U","Canada, British Columbia"
+"polyethylene, low density, LDPE",,"market for polyethylene, low density | polyethylene, low density | Cutoff, U",Global
+"polypropylene, PP",,"market for polypropylene | polypropylene | Cutoff, U",Canada
+"polyvinyl chloride, PVC",,"market for polyvinyl chloride | polyvinyl chloride | Cutoff, U","Canada, Québec"
+"polystyrene, PS",,"market for polystyrene | polystyrene | Cutoff, U",Global
+"glass, unprocessed",,"market for glass, unprocessed | glass, unprocessed | Cutoff, U","Canada, Alberta"
+"glass, container",,"market for glass, container | glass, container | Cutoff, U",Canada
+"paper, unbleached",,"market for paper, unbleached | paper, unbleached | Cutoff, U",Global
+"paper, bleached",,"market for paper, bleached | paper, bleached | Cutoff, U","Canada, British Columbia"
+"cardboard",,"market for cardboard | cardboard | Cutoff, U",Global
+"textile, cotton",,"market for textile, cotton | textile, cotton | Cutoff, U",Canada
+"textile, synthetic",,"market for textile, synthetic | textile, synthetic | Cutoff, U","Canada, Québec"
+"leather",,"market for leather | leather | Cutoff, U",Global
+"rubber, natural",,"market for rubber, natural | rubber, natural | Cutoff, U","Canada, Alberta"
+"rubber, synthetic",,"market for rubber, synthetic | rubber, synthetic | Cutoff, U",Canada
+"silicon",,"market for silicon | silicon | Cutoff, U",Global
+"silicon, metallurgical",,"market for silicon, metallurgical | silicon, metallurgical | Cutoff, U","Canada, British Columbia"
+"silicon, electronic grade",,"market for silicon, electronic grade | silicon, electronic grade | Cutoff, U",Global
+"phosphorus",,"market for phosphorus | phosphorus | Cutoff, U",Canada
+"potassium",,"market for potassium | potassium | Cutoff, U","Canada, Québec"
+"calcium carbonate",,"market for calcium carbonate | calcium carbonate | Cutoff, U",Global
+"magnesium",,"market for magnesium | magnesium | Cutoff, U","Canada, Alberta"
+"titanium dioxide",,"market for titanium dioxide | titanium dioxide | Cutoff, U",Canada
+"titanium",,"market for titanium | titanium | Cutoff, U",Global
+"chromium",,"market for chromium | chromium | Cutoff, U","Canada, British Columbia"
+"manganese",,"market for manganese | manganese | Cutoff, U",Global
+"cobalt",,"market for cobalt | cobalt | Cutoff, U",Canada
+"molybdenum",,"market for molybdenum | molybdenum | Cutoff, U","Canada, Québec"
+"tungsten",,"market for tungsten | tungsten | Cutoff, U",Global
+"vanadium",,"market for vanadium | vanadium | Cutoff, U","Canada, Alberta"
+"platinum",,"market for platinum | platinum | Cutoff, U",Canada
+"rhodium",,"market for rhodium | rhodium | Cutoff, U",Global
+"ruthenium",,"market for ruthenium | ruthenium | Cutoff, U","Canada, British Columbia"
+"silver",,"market for silver | silver | Cutoff, U",Global
+"gold",,"market for gold | gold | Cutoff, U",Canada
+"bauxite",,"market for bauxite | bauxite | Cutoff, U","Canada, Québec"
+"phosphate rock",,"market for phosphate rock | phosphate rock | Cutoff, U",Global
+"potash",,"market for potash | potash | Cutoff, U","Canada, Alberta"
+"gypsum",,"market for gypsum | gypsum | Cutoff, U",Canada
+"salt",,"market for salt | salt | Cutoff, U",Global
+"boron",,"market for boron | boron | Cutoff, U","Canada, British Columbia"
+"lithium carbonate",,"market for lithium carbonate | lithium carbonate | Cutoff, U",Global
+"lithium",,"market for lithium | lithium | Cutoff, U",Canada
+"rare earth elements",,"market for rare earth elements | rare earth elements | Cutoff, U","Canada, Québec"
+"neodymium",,"market for neodymium | neodymium | Cutoff, U",Global
+"dysprosium",,"market for dysprosium | dysprosium | Cutoff, U","Canada, Alberta"
+"terbium",,"market for terbium | terbium | Cutoff, U",Canada
+"gadolinium",,"market for gadolinium | gadolinium | Cutoff, U",Global
+"cerium",,"market for cerium | cerium | Cutoff, U","Canada, British Columbia"
+"lanthanum",,"market for lanthanum | lanthanum | Cutoff, U",Global
+"praseodymium",,"market for praseodymium | praseodymium | Cutoff, U",Canada
+"samarium",,"market for samarium | samarium | Cutoff, U","Canada, Québec"
+"europium",,"market for europium | europium | Cutoff, U",Global
+"yttrium",,"market for yttrium | yttrium | Cutoff, U","Canada, Alberta"
+"scandium",,"market for scandium | scandium | Cutoff, U",Canada
+"holmium",,"market for holmium | holmium | Cutoff, U",Global
+"erbium",,"market for erbium | erbium | Cutoff, U","Canada, British Columbia"
+"thulium",,"market for thulium | thulium | Cutoff, U",Global
+"ytterbium",,"market for ytterbium | ytterbium | Cutoff, U",Canada
+"lutetium",,"market for lutetium | lutetium | Cutoff, U","Canada, Québec"
+"promethium",,"market for promethium | promethium | Cutoff, U",Global

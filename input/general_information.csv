@@ -1,0 +1,421 @@
+General information,Unnamed: 1,Source_File
+UUID,55a13444-e072-4a55-8625-0e0ff6a98026,hydrogen_alkaline_electrolysis_at_plant_99_9_33_ba
+Name,"hydrogen; alkaline electrolysis, at plant, 99.9%, 33 bar",hydrogen_alkaline_electrolysis_at_plant_99_9_33_ba
+Category,NRC LCI/Hydrogen pathways/Hydrogen production,hydrogen_alkaline_electrolysis_at_plant_99_9_33_ba
+Description,"This unit process produces hydrogen from electricity and deionized water via alkaline electrolysis pathway.
+
+The functional unit of the process is the production of 1 kg of hydrogen at 200 bar and 25°C with a purity of >99.9 vol%.
+
+The gate-to-gate system boundary starts with the inputs of deionized water as feedstock and ends with the production of industrial grade of hydrogen at gate, purity of 99.9%.
+
+The flow values are based on mass and energy balance data obtained from I-BIOREF software (https://www.nrcan.gc.ca/maps-tools-publications/publications/energy-publications/publications/i-bioref-software-modeling-and-analysis-technical-economic-and-environmental-assessment-biorefinery/17887).
+The modelling of the electrolysis itself is based on kinetic modelling for the calculation of cell potential according to the Ulleberg method using semi-empirical equations (Ulleberg, 2003).
+
+The process has a significant amount of by-product oxygen is generated in the electrolyser. It can be utilized in some real application scenarios such as those integrating the electrolysis system with an existing host site (e.g. oil refinery, bio refinery producing renewable and sustainable fuels, etc.). However, the recovery of oxygen is out of the work scope of this study, so the oxygen is assumed to be vented directly out to the atmosphere and all of the environmental impacts are allocated to hydrogen productin.",hydrogen_alkaline_electrolysis_at_plant_99_9_33_ba
+Version,00.01.002,hydrogen_alkaline_electrolysis_at_plant_99_9_33_ba
+Last change,2025-02-17 10:56:25.854000,hydrogen_alkaline_electrolysis_at_plant_99_9_33_ba
+Tags,,hydrogen_alkaline_electrolysis_at_plant_99_9_33_ba
+Time,,hydrogen_alkaline_electrolysis_at_plant_99_9_33_ba
+Valid from,2009-07-01 00:00:00,hydrogen_alkaline_electrolysis_at_plant_99_9_33_ba
+Valid until,,hydrogen_alkaline_electrolysis_at_plant_99_9_33_ba
+Description,,hydrogen_alkaline_electrolysis_at_plant_99_9_33_ba
+Geography,,hydrogen_alkaline_electrolysis_at_plant_99_9_33_ba
+Location,"Canada, Québec",hydrogen_alkaline_electrolysis_at_plant_99_9_33_ba
+Description,"This process is developed based on inputs and electricty info from Quebec, CA hence it is representiave of this region. However, the process may be used in other regions, in which the composition of electricity is similar. ",hydrogen_alkaline_electrolysis_at_plant_99_9_33_ba
+Technology,,hydrogen_alkaline_electrolysis_at_plant_99_9_33_ba
+Description,"The alkaline electrolysis system is the core unit of the plant, and requires electricity and deionized water as inputs. High purity deionized water produced by a water demineralization system upstream of the electrolyser is needed to achieve long-term stability. Reverse osmosis (RO) technology is often used in the water demineralization process, in which the main operation inputs are electricity and chemicals. In addition to the product of purified water, the remaining brine, which is a mixture of water and solid wastes, has to be discharged. Since the final product from the plant is hydrogen at 200 bar and 25°C with a purity of >99.9 vol%, as already described in Section 6, this hypothetical hydrogen production plant will be complemented with a compression and cooling step after the electrolyser system. In addition to the primary product of hydrogen, a significant amount of by-product oxygen is generated in the electrolyser. It can be utilized in some real application scenarios such as those integrating the electrolysis system with an existing host site (e.g. oil refinery, bio refinery producing renewable and sustainable fuels, etc.). However, the recovery of oxygen is out of the work scope of this study, so the oxygen is assumed to be vented directly out to the atmosphere.",hydrogen_alkaline_electrolysis_at_plant_99_9_33_ba
+Data quality,,hydrogen_alkaline_electrolysis_at_plant_99_9_33_ba
+Process schema,,hydrogen_alkaline_electrolysis_at_plant_99_9_33_ba
+Data quality entry,,hydrogen_alkaline_electrolysis_at_plant_99_9_33_ba
+Flow schema,,hydrogen_alkaline_electrolysis_at_plant_99_9_33_ba
+Social schema,,hydrogen_alkaline_electrolysis_at_plant_99_9_33_ba
+UUID,2781f8aa-bb23-4f91-937e-a1b542116655,"hydrogen_autothermal reforming of natural gas, without carbon capture; at plant; 99.9%, 62.2 bar"
+Name,"hydrogen; autothermal reforming of natural gas, without carbon capture; at plant; 99.9%, 62.2 bar","hydrogen_autothermal reforming of natural gas, without carbon capture; at plant; 99.9%, 62.2 bar"
+Category,NRC LCI/Hydrogen pathways/Hydrogen production,"hydrogen_autothermal reforming of natural gas, without carbon capture; at plant; 99.9%, 62.2 bar"
+Description,"This unit process produces hydrogen from deionized water, electricity and natural gas via autothermal reforming (ATR) pathway without carbon capture._x000D_
+_x000D_
+The functional unit of the process is the production of 1 kg of hydrogen at a default pressure level equal to 62.2 bar._x000D_
+_x000D_
+The gate-to-gate system boundary starts with the inputs of deionized water, electricity and natural gas as feedstock and ends with the production of industrial grade of hydrogen at gate, purity of 99.9%._x000D_
+_x000D_
+The ATR process combines partial oxidation and catalytic reforming to convert feed gas and oxygen into syngas within a single unit, generating both heat and hydrogen-rich gas. The resulting 99.99% pure hydrogen is pressurized and cooled before use, and the remaining tail gas is utilized to recover heat and offset electricity demand in the ATR system._x000D_
+_x000D_
+The process does not have co-products and all the environmental impacts are allocated to hydrogen production.","hydrogen_autothermal reforming of natural gas, without carbon capture; at plant; 99.9%, 62.2 bar"
+Version,00.01.001,"hydrogen_autothermal reforming of natural gas, without carbon capture; at plant; 99.9%, 62.2 bar"
+Last change,2025-02-17 10:58:33.874000,"hydrogen_autothermal reforming of natural gas, without carbon capture; at plant; 99.9%, 62.2 bar"
+Tags,,"hydrogen_autothermal reforming of natural gas, without carbon capture; at plant; 99.9%, 62.2 bar"
+Time,,"hydrogen_autothermal reforming of natural gas, without carbon capture; at plant; 99.9%, 62.2 bar"
+Valid from,2002-01-01 00:00:00,"hydrogen_autothermal reforming of natural gas, without carbon capture; at plant; 99.9%, 62.2 bar"
+Valid until,2022-01-01 00:00:00,"hydrogen_autothermal reforming of natural gas, without carbon capture; at plant; 99.9%, 62.2 bar"
+Description,"This process was designed based on state-of-art ATR hydrogen production from deionized water, electricity and natural gas. The process parameters were collected based on industrial technical reports and scientific literature from 2002 to 2022.","hydrogen_autothermal reforming of natural gas, without carbon capture; at plant; 99.9%, 62.2 bar"
+Geography,,"hydrogen_autothermal reforming of natural gas, without carbon capture; at plant; 99.9%, 62.2 bar"
+Location,"Canada, Alberta","hydrogen_autothermal reforming of natural gas, without carbon capture; at plant; 99.9%, 62.2 bar"
+Description,"This process is developed based on natural gas and electricty info from Alberta, CA hence it is representiave of this region. However, the process may be used in other regions, in which the composition of electricity is similar. ","hydrogen_autothermal reforming of natural gas, without carbon capture; at plant; 99.9%, 62.2 bar"
+Technology,,"hydrogen_autothermal reforming of natural gas, without carbon capture; at plant; 99.9%, 62.2 bar"
+Description,"The autothermal reforming (ATR) system is a conventional thermochemical plant requiring three stages to achieve the conversion of methane to high-purity hydrogen (>99.9 vol.%), a natural gas (NG) conditioning section (pressurization, heating and de-sulphurization units), a reforming train (pre-reformer, ATR and water-gas shift reactors) and a purification section (dehumidifier and PSA system). In addition, due to the excess heat from NG processing, an Organic Rankine Cycle, fueled by hot process streams and flue gases from the combustion of the PSA reject, is included in the ATR system for the generation of electricity using gas and  steam turbines. ","hydrogen_autothermal reforming of natural gas, without carbon capture; at plant; 99.9%, 62.2 bar"
+Data quality,,"hydrogen_autothermal reforming of natural gas, without carbon capture; at plant; 99.9%, 62.2 bar"
+Process schema,,"hydrogen_autothermal reforming of natural gas, without carbon capture; at plant; 99.9%, 62.2 bar"
+Data quality entry,,"hydrogen_autothermal reforming of natural gas, without carbon capture; at plant; 99.9%, 62.2 bar"
+Flow schema,,"hydrogen_autothermal reforming of natural gas, without carbon capture; at plant; 99.9%, 62.2 bar"
+Social schema,,"hydrogen_autothermal reforming of natural gas, without carbon capture; at plant; 99.9%, 62.2 bar"
+UUID,3a588371-8785-4271-87c5-b44e24292a37,hydrogen_autothermal_reforming_of_natural_gas_with
+Name,"hydrogen; autothermal reforming of natural gas, with carbon capture; at plant; 99.9%, 62.2 bar",hydrogen_autothermal_reforming_of_natural_gas_with
+Category,NRC LCI/Hydrogen pathways/Hydrogen production,hydrogen_autothermal_reforming_of_natural_gas_with
+Description,"This unit process produces hydrogen from deionized water, electricity and natural gas via autothermal reforming (ATR) pathway with carbon capture.
+
+The functional unit of the process is the production of 1 kg of hydrogen at a default pressure level equal to 62.2 bar.
+
+The gate-to-gate system boundary starts with the inputs of deionized water, electricity and natural gas as feedstock and ends with the production of industrial grade of hydrogen at gate, purity of 99.9%.
+
+The ATR process combines partial oxidation and catalytic reforming to convert feed gas and oxygen into syngas within a single unit, generating both heat and hydrogen-rich gas. After leaving the ATR, the syngas undergoes water gas shift reactions, CO2 capture, and hydrogen purification. The captured CO2 is compressed, while the resulting 99.99% pure hydrogen is pressurized and cooled before use, and the remaining tail gas is utilized to recover heat and offset electricity demand in the ATR system.
+
+The process does not have co-products and all the environmental impacts are allocated to hydrogen production.",hydrogen_autothermal_reforming_of_natural_gas_with
+Version,00.01.001,hydrogen_autothermal_reforming_of_natural_gas_with
+Last change,2025-02-17 10:57:36.389000,hydrogen_autothermal_reforming_of_natural_gas_with
+Tags,,hydrogen_autothermal_reforming_of_natural_gas_with
+Time,,hydrogen_autothermal_reforming_of_natural_gas_with
+Valid from,2002-01-01 00:00:00,hydrogen_autothermal_reforming_of_natural_gas_with
+Valid until,2022-01-01 00:00:00,hydrogen_autothermal_reforming_of_natural_gas_with
+Description,"This process was designed based on state-of-art ATR hydrogen production from deionized water, electricity and natural gas. The process parameters were collected based on industrial technical reports and scientific literature from 2002 to 2022.",hydrogen_autothermal_reforming_of_natural_gas_with
+Geography,,hydrogen_autothermal_reforming_of_natural_gas_with
+Location,"Canada, Alberta",hydrogen_autothermal_reforming_of_natural_gas_with
+Description,"This process is developed based on natural gas and electricty info from Alberta, CA hence it is representiave of this region. However, the process may be used in other regions, in which the composition of electricity is similar. ",hydrogen_autothermal_reforming_of_natural_gas_with
+Technology,,hydrogen_autothermal_reforming_of_natural_gas_with
+Description,"The autothermal reforming (ATR) system is a conventional thermochemical plant requiring three stages to achieve the conversion of methane to high-purity hydrogen (>99.99 vol.%), a natural gas (NG) conditioning section (pressurization, heating and de-sulphurization units), a reforming train (pre-reformer, ATR and water-gas shift reactors), and a purification section (carbon capture and PSA systems). In addition, due to the excess heat from NG processing, an energy recovery unit, fueled by hot process streams and flue gases from the combustion of the PSA reject, is included in the ATR system for the generation of electricity using gas and  steam turbines. ",hydrogen_autothermal_reforming_of_natural_gas_with
+Data quality,,hydrogen_autothermal_reforming_of_natural_gas_with
+Process schema,,hydrogen_autothermal_reforming_of_natural_gas_with
+Data quality entry,,hydrogen_autothermal_reforming_of_natural_gas_with
+Flow schema,,hydrogen_autothermal_reforming_of_natural_gas_with
+Social schema,,hydrogen_autothermal_reforming_of_natural_gas_with
+UUID,3b5cc54c-fe74-422a-802b-1ea2da7eb32a,hydrogen_pem_electrolysis_at_plant_99_9_62_3_bar
+Name,"hydrogen; PEM electrolysis; at plant; 99.9%, 62.3 bar",hydrogen_pem_electrolysis_at_plant_99_9_62_3_bar
+Category,NRC LCI/Hydrogen pathways/Hydrogen production,hydrogen_pem_electrolysis_at_plant_99_9_62_3_bar
+Description,"This unit process produces hydrogen from deionized water and electricity via PEM electrolysis pathway.
+
+The functional unit of the process is the production of 1 kg of hydrogen at a default pressure level equal to 62.2 bar.
+
+The gate-to-gate system boundary starts with the inputs of deionized water and electricity as feedstock and ends with the production of industrial grade of hydrogen at gate, purity of 99.9%.
+
+The technology is a low-temperature electrolyzer that transforms deionized water into hydrogen (H2) and oxygen (O2) by applying direct current (DC). To achieve this, mulitple unit operations including pumps, heat exchangers, flash tanks, compressor and dryers are employed to produce a H2 gas with a purity >99.99%.
+
+The system bundary is a PEM plant composed of seven distinctive sections, including: 1) fresh input, 2) oxygen tank, 3) cooling system, 4) electrolyzer (and its internal cooling system), 5) H2 conditioning, 6) purging and 7) H2 compression.
+
+The process does not have co-products and all the environmental impacts are allocated to hydrogen production. ",hydrogen_pem_electrolysis_at_plant_99_9_62_3_bar
+Version,00.01.001,hydrogen_pem_electrolysis_at_plant_99_9_62_3_bar
+Last change,2025-02-17 11:05:02.588000,hydrogen_pem_electrolysis_at_plant_99_9_62_3_bar
+Tags,,hydrogen_pem_electrolysis_at_plant_99_9_62_3_bar
+Time,,hydrogen_pem_electrolysis_at_plant_99_9_62_3_bar
+Valid from,2009-01-01 00:00:00,hydrogen_pem_electrolysis_at_plant_99_9_62_3_bar
+Valid until,2020-12-01 00:00:00,hydrogen_pem_electrolysis_at_plant_99_9_62_3_bar
+Description,This process was designed based on state-of-art PEM electrolysis production. The process parameters were collected based on industrial technical reports and scientific literature from 2009 to 2020.,hydrogen_pem_electrolysis_at_plant_99_9_62_3_bar
+Geography,,hydrogen_pem_electrolysis_at_plant_99_9_62_3_bar
+Location,"Canada, Québec",hydrogen_pem_electrolysis_at_plant_99_9_62_3_bar
+Description,This technology is versatile and can be utilized regardless of location.,hydrogen_pem_electrolysis_at_plant_99_9_62_3_bar
+Technology,,hydrogen_pem_electrolysis_at_plant_99_9_62_3_bar
+Description,"The PEM plant starts in the fresh input section, where deionized water is fed to the system using a centrifugal pump. Afterward, water is collected in the oxygen tank, where multiple streams converge, including the fresh water and the returns from the anode and cathode. In the oxygen tank, a gaseous stream is stripped of water and released from the overhead to produce an oxygen stream of 99.2% purity. For this, chilled water is used to lower the temperature of the oxygen to 25°C. The collected water in the oxygen tank is sent to a centrifugal pump, which then feeds to the H2O-cooler unit (in the cooling system section) to lower the temperature of the water input to the need (68°C) at the electrolyzer anode inlet.
+Once in the electrolyzer, water undergoes the electrolysis reaction to produce H2 and O2, while considering a conversion of 5%. In the H2 conditioning section, the hydrogen-rich gas from the cathode side, still containing a high concentration of water (8-10%) and oxygen (800 ppm), undergoes multiple purification steps, including cooling, oxygen removal (De-oxo) and drying, to generate a product stream with a hydrogen concentration above 99.99 vol%. Before entering into the De-oxo unit, a heating step (pre-heater) is applied to the partially dried stream to the set temperature of 60°C. Meanwhile, to favor the strong adsorption of water in the molecular sieve, a cooling step using a refrigerant system (pre-cooler) is applied to reach the low temperature of 5°C. For the regeneration of the molecular sieve, water is removed in the form of steam at 250°C. After passing the colling system, the high-purity hydrogen is sent to the hydrogen compression section, where it undergoes one step of compression followed by two steps of cooling. The first step is done using an air-cooled system; meanwhile, the second step is done using chilled water (cooler). The final product is delivered at 62.3 bar and 25°C.
+
+* IRENA (2019) Hydrogen: a Renewable Energy Perspective
+* Peterson D, Vickers J, Dan D (2020) Hydrogen Production Cost from PEM Electrolysis - 2019
+* Marangio F, Santarelli M, Calì M (2009) Theoretical model and experimental analysis of a high pressure PEM water electrolyser for hydrogen production. Int J Hydrogen Energy 34:1143–1158. https://doi.org/10.1016/j.ijhydene.2008.11.083
+* Salman P, Fellinger T, Sartory M, et al (2017) ScienceDirect Theoretical and experimental analysis of an asymmetric high pressure PEM water electrolyser up to 155 bar. 2:. https://doi.org/10.1016/j.ijhydene.2017.10.112
+* TikTak Joris (2019) Heat management for PEM electrolysis. Delft Univ
+* Falcão DS, Pinto AMFR (2020) A review on PEM electrolyzer modelling: Guidelines for beginners. J Clean Prod 261:. https://doi.org/10.1016/j.jclepro.2020.121184
+* Sánchez M, Amores E, Abad D, et al (2020) Aspen Plus model of an alkaline electrolysis system for hydrogen production. Int J Hydrogen Energy 45:3916–3929. https://doi.org/10.1016/j.ijhydene.2019.12.027
+* Giovanna G-C, Jianjun Y, Jalil S, et al (2022) Life cycle assessment of hydrogen production pathways in Canada
+* BASF (2022) Data Sheet: 0.3% Pd/AS R4578
+* van Kampen J, Boon J, van Berkel F, et al (2019) Steam separation enhanced reactions: Review and outlook. Chem Eng J 374:1286–1303. https://doi.org/10.1016/j.cej.2019.06.031",hydrogen_pem_electrolysis_at_plant_99_9_62_3_bar
+Data quality,,hydrogen_pem_electrolysis_at_plant_99_9_62_3_bar
+Process schema,,hydrogen_pem_electrolysis_at_plant_99_9_62_3_bar
+Data quality entry,,hydrogen_pem_electrolysis_at_plant_99_9_62_3_bar
+Flow schema,,hydrogen_pem_electrolysis_at_plant_99_9_62_3_bar
+Social schema,,hydrogen_pem_electrolysis_at_plant_99_9_62_3_bar
+UUID,1741c4dd-7d17-4e3e-8cf6-c7b22996ac75,hydrogen_plasma_pyrolysis_of_natural_gas_at_plant_
+Name,"Hydrogen; plasma pyrolysis of natural gas; at plant; 99.9%, 62.2 bar",hydrogen_plasma_pyrolysis_of_natural_gas_at_plant_
+Category,NRC LCI/Hydrogen pathways/Hydrogen production,hydrogen_plasma_pyrolysis_of_natural_gas_at_plant_
+Description,"This unit process produces hydrogen from plasma pyrolysis of natural gas. 
+
+The functional unit and reference flow of the process is 1 kg of compressed gaseous hydrogen at 62.2 bar and ambient temperature (30◦C). The purity of industrial grade of hydrogen at gate is equal to 99.9%”.
+
+The gate-to-gate system boundary starts with intake of natural gas and electricity and ends with production of high purity hydrogen and carbon black.
+
+The input natural gas undergoes pre-heating before entering the plasma reactor. At the reactor, a plasma torch that creates a high temperature plasma jet (generally hydrogen or hydrogen rich gaseous mixture) is used to decompose methane. The product is mixture is cooled and carbon black is separeted. Gas mixture is further cooled and tail gases are separated using PSA unit. Tail gas and part of hydronge product is used as plasma gas. Remaining hydrogen is compressed and cooled to produce final product. Excess heat is recovered in steam generation unit to produce electricity. The process was simulated using Aspen Hysis to generate mass and energy balances.
+
+The process has carbon black as a co-product. Either system expansion or physical/economic allocation can be used to handle allocation.",hydrogen_plasma_pyrolysis_of_natural_gas_at_plant_
+Version,00.00.008,hydrogen_plasma_pyrolysis_of_natural_gas_at_plant_
+Last change,2025-02-17 11:05:36.642000,hydrogen_plasma_pyrolysis_of_natural_gas_at_plant_
+Tags,,hydrogen_plasma_pyrolysis_of_natural_gas_at_plant_
+Time,,hydrogen_plasma_pyrolysis_of_natural_gas_at_plant_
+Valid from,2002-01-01 00:00:00,hydrogen_plasma_pyrolysis_of_natural_gas_at_plant_
+Valid until,2022-12-31 00:00:00,hydrogen_plasma_pyrolysis_of_natural_gas_at_plant_
+Description,This process was designed based on literature and patents that were published from 2002 to 2022. ,hydrogen_plasma_pyrolysis_of_natural_gas_at_plant_
+Geography,,hydrogen_plasma_pyrolysis_of_natural_gas_at_plant_
+Location,"Canada, Alberta",hydrogen_plasma_pyrolysis_of_natural_gas_at_plant_
+Description,"The location of the process is assumed to be in Alberta Canada, with natural gas inlet composition matched to Canada.",hydrogen_plasma_pyrolysis_of_natural_gas_at_plant_
+Technology,,hydrogen_plasma_pyrolysis_of_natural_gas_at_plant_
+Description,"Plasma gas (generally hydrogen or hydrogen rich gaseous mixture) is introduced into a plasma torch to generate heat and H radicals. Plasma is mixed with feed natural gas in a plasma reactor. in the reactor, natural gas dissociates into hydrogen and carbon black. Both natural gas and plasma gas are preheated utilizing waste heat from the process. Non-contact, rapid and uniform heating at very high temperature and low pressure using plasma gas is the core of the process for hydrogen production from natural gas pyrolysis. The plasma torch uses electricity from the grid or renewables sources to generate the plasma. Carbon black quality depends on process conditions, such as temperature, mixing, residence time, plasma-feed ratio etc. Due to high endothermic nature, exit temperature of the products reduces significantly. The product is further cooled and carbon black is seperated. The heat form exit gaseous stream is recovered for pre-heating the natural gas and plasma gas streams as well as for generating electricity. Product gas is seperated from carbon black using separator. Geaseous streams then pass through cooling and compresion and hydrogen purification process. The designed process needs preheating which can be done through heat recovery of streams using several heat exchangers. The main advantage of the thermal plasma method is the ability to co-produce hydrogen and high value carbon black.",hydrogen_plasma_pyrolysis_of_natural_gas_at_plant_
+Data quality,,hydrogen_plasma_pyrolysis_of_natural_gas_at_plant_
+Process schema,,hydrogen_plasma_pyrolysis_of_natural_gas_at_plant_
+Data quality entry,,hydrogen_plasma_pyrolysis_of_natural_gas_at_plant_
+Flow schema,ecoinvent Data Quality System,hydrogen_plasma_pyrolysis_of_natural_gas_at_plant_
+Social schema,,hydrogen_plasma_pyrolysis_of_natural_gas_at_plant_
+UUID,b47bb586-5085-4986-879a-5b6000b0c520,hydrogen_soec_electrolysis_with_electric_boiler_op
+Name,"Hydrogen; SOEC electrolysis with electric boiler option; at plant; 99.9%, 65 bar",hydrogen_soec_electrolysis_with_electric_boiler_op
+Category,NRC LCI/Hydrogen pathways/Hydrogen production,hydrogen_soec_electrolysis_with_electric_boiler_op
+Description,"This unit process produces hydrogen from water via SOEC (solid oxide electrolysis cell) electrolysis pathway.
+
+The functional unit of the process is the production of 1 kg of hydrogen at 99.9% purity and a default pressure level equal to 65 bar.
+
+The gate-to-gate system boundary starts with the water and electricity as feedstock and ends with the production of industrial grade of hydrogen at gate, purity of 99.9%.
+
+The technology is Solid Oxide Electrolysis Cells (SOEC) process operates at high temperatures (600-1000℃), using steam rather than water on the anode side, and a solid electrolyte such as ceramic to conduct oxygen ions through the cell. In order to provide the necessary heat, an electric boiler is used. It also includes a reverse osmosis unit to treat the water feed, and a hydrogen compression unit.
+
+The process does not have co-products and all the environmental impacts are allocated to hydrogen production. ",hydrogen_soec_electrolysis_with_electric_boiler_op
+Version,00.01.002,hydrogen_soec_electrolysis_with_electric_boiler_op
+Last change,2025-02-17 11:10:13.977000,hydrogen_soec_electrolysis_with_electric_boiler_op
+Tags,,hydrogen_soec_electrolysis_with_electric_boiler_op
+Time,,hydrogen_soec_electrolysis_with_electric_boiler_op
+Valid from,2018-01-01 00:00:00,hydrogen_soec_electrolysis_with_electric_boiler_op
+Valid until,2022-12-31 00:00:00,hydrogen_soec_electrolysis_with_electric_boiler_op
+Description,"Key SOEC parameters comes from publications between 2018 and 2022
+",hydrogen_soec_electrolysis_with_electric_boiler_op
+Geography,,hydrogen_soec_electrolysis_with_electric_boiler_op
+Location,Canada,hydrogen_soec_electrolysis_with_electric_boiler_op
+Description,"Water quality used is typical for Canada. The process can be used in other regions as well.
+",hydrogen_soec_electrolysis_with_electric_boiler_op
+Technology,,hydrogen_soec_electrolysis_with_electric_boiler_op
+Description,"Compared to all other electrolysis systems, Solid Oxide Electrolysis Cells (SOEC) process operates at high temperatures (600-1000℃), using steam rather than water on the anode side, and a solid electrolyte such as ceramic to conduct oxygen ions through the cell. In order to reach the operating temperature of the electrolysis cell, water is heated through a sequence of heat exchangers that use the energy of hot streams within the process, which is complemented by heat from flue gases produced in an electric boiler. The use of an electric boiler is preferred in this configuration (rather than a natural gas boiler) to fit contexts where electricity with a low-carbon intensity is available (e.g. when hydroelectricity is used).  After steam is decomposed into hydrogen and oxygen ions, gaseous hydrogen leaves the electrolysis cell at the cathode side, while the oxygen gas moves trough the SOEC and leaves on the anode side. 
+
+Steam dissociation requires less energy than water, and electricity consumption by the SOEC is lower compared to other technologies, for similar capacities. In this process configuration, air is used as sweep gas to displace the oxygen from the anode channel. Moreover, it is used as a heating medium to convey heat between the cathode and the anode. 
+
+Hydrogen exiting the SOEC is cooled in the heat exhanger network, and part of its water content is removed to be recirculated to the feedwater section. The hydrogen stream then goes through a refrigerated dryer, a twin tower desiccant dryer, and a series of compressor to reach its final specification at 99.99% purity, 325 °C and 65 bar.
+
+The technology is still at R&D development, so not enough information available for simulations, durability or costs (TRL: 7 vs 9 for AE and PEM).",hydrogen_soec_electrolysis_with_electric_boiler_op
+Data quality,,hydrogen_soec_electrolysis_with_electric_boiler_op
+Process schema,,hydrogen_soec_electrolysis_with_electric_boiler_op
+Data quality entry,,hydrogen_soec_electrolysis_with_electric_boiler_op
+Flow schema,,hydrogen_soec_electrolysis_with_electric_boiler_op
+Social schema,,hydrogen_soec_electrolysis_with_electric_boiler_op
+UUID,08d158c6-38a4-4d9a-ba92-7ee5ce114ecb,hydrogen_soec_electrolysis_with_hydrogen_combustio
+Name,"Hydrogen; SOEC electrolysis with hydrogen combustion option; at plant; 99.9%, 65 bar",hydrogen_soec_electrolysis_with_hydrogen_combustio
+Category,NRC LCI/Hydrogen pathways/Hydrogen production,hydrogen_soec_electrolysis_with_hydrogen_combustio
+Description,"This unit process produces hydrogen from water via SOEC (solid oxide electrolysis cell) electrolysis pathway.
+
+The functional unit of the process is the production of 1 kg of hydrogen at 99.9% purity and a default pressure level equal to 65 bar.
+
+The gate-to-gate system boundary starts with the water and electricity as feedstock and ends with the production of industrial grade of hydrogen at gate, purity of 99.9%.
+
+The technology is Solid Oxide Electrolysis Cells (SOEC) process operates at high temperatures (600-1000℃), using steam rather than water on the anode side, and a solid electrolyte such as ceramic to conduct oxygen ions through the cell. In order to provide the necessary heat, a part of hydrogen product is combuted. It also includes a reverse osmosis unit to treat the water feed, and a hydrogen compression unit.
+
+The process does not have co-products and all the environmental impacts are allocated to hydrogen production. ",hydrogen_soec_electrolysis_with_hydrogen_combustio
+Version,00.01.002,hydrogen_soec_electrolysis_with_hydrogen_combustio
+Last change,2025-02-17 11:11:42.859000,hydrogen_soec_electrolysis_with_hydrogen_combustio
+Tags,,hydrogen_soec_electrolysis_with_hydrogen_combustio
+Time,,hydrogen_soec_electrolysis_with_hydrogen_combustio
+Valid from,2018-01-01 00:00:00,hydrogen_soec_electrolysis_with_hydrogen_combustio
+Valid until,2022-12-31 00:00:00,hydrogen_soec_electrolysis_with_hydrogen_combustio
+Description,"Key SOEC parameters comes from publications between 2018 and 2022
+",hydrogen_soec_electrolysis_with_hydrogen_combustio
+Geography,,hydrogen_soec_electrolysis_with_hydrogen_combustio
+Location,Canada,hydrogen_soec_electrolysis_with_hydrogen_combustio
+Description,"Water quality used is typical for Canada. The process can be used in other regions as well.
+",hydrogen_soec_electrolysis_with_hydrogen_combustio
+Technology,,hydrogen_soec_electrolysis_with_hydrogen_combustio
+Description,"Compared to all other electrolysis systems, Solid Oxide Electrolysis Cells (SOEC) process operates at high temperatures (600-1000℃), using steam rather than water on the anode side, and a solid electrolyte such as ceramic to conduct oxygen ions through the cell. In order to reach the operating temperature of the electrolysis cell, water is heated through a sequence of heat exchangers that use the energy of hot streams within the process, which is complemented by heat from flue gases produced in a hydrogen fed boiler. The use of hydrogen as fuel is preferred in this configuration (rather than a natural gas) in order to minimize GHG emissions associated to the process, thus lowering the carbon footprint of the hydrogen product. In this process configuration, the capacity of the SOEC cell needs to be increase to include the additional hydrogen required for energy needs. This implies higher amounts of feedwater to the process and higher electricity consumed at the SOEC; therefore such configuration fits better with contexts where electricity with a low-carbon intensity is available (e.g. when hydroelectricity is used).  After steam is decomposed into hydrogen and oxygen ions, gaseous hydrogen leaves the electrolysis cell at the cathode side, while the oxygen gas moves trough the SOEC and leaves on the anode side. 
+
+Steam dissociation requires less energy than water, and electricity consumption by the SOEC is lower compared to other technologies, for similar capacities. In this process configuration, air is used as sweep gas to displace the oxygen from the anode channel. Moreover, it is used as a heating medium to convey heat between the cathode and the anode. 
+
+Hydrogen exiting the SOEC is cooled in the heat exhanger network, and part of its water content is removed to be recirculated to the feedwater section. The hydrogen stream then goes through a refrigerated dryer, a twin tower desiccant dryer, and a series of compressor to reach its final specification at 99.99% purity, 325 °C and 65 bar.
+
+The technology is still at R&D development, so not enough information available for simulations, durability or costs (TRL: 7 vs 9 for AE and PEM).",hydrogen_soec_electrolysis_with_hydrogen_combustio
+Data quality,,hydrogen_soec_electrolysis_with_hydrogen_combustio
+Process schema,,hydrogen_soec_electrolysis_with_hydrogen_combustio
+Data quality entry,,hydrogen_soec_electrolysis_with_hydrogen_combustio
+Flow schema,,hydrogen_soec_electrolysis_with_hydrogen_combustio
+Social schema,,hydrogen_soec_electrolysis_with_hydrogen_combustio
+UUID,5fe30c86-94ff-4ffc-8df0-5f7f15fc1e1a,hydrogen_soec_electrolysis_with_natual_gas_combust
+Name,"Hydrogen; SOEC electrolysis with natual gas combustion option; at plant; 99.9%, 65 bar",hydrogen_soec_electrolysis_with_natual_gas_combust
+Category,NRC LCI/Hydrogen pathways/Hydrogen production,hydrogen_soec_electrolysis_with_natual_gas_combust
+Description,"This unit process produces hydrogen from water via SOEC (solid oxide electrolysis cell) electrolysis pathway.
+
+The functional unit of the process is the production of 1 kg of hydrogen at 99.9% purity and a default pressure level equal to 65 bar.
+
+The gate-to-gate system boundary starts with the water and electricity as feedstock and ends with the production of industrial grade of hydrogen at gate, purity of 99.9%.
+
+The technology is Solid Oxide Electrolysis Cells (SOEC) process operates at high temperatures (600-1000℃), using steam rather than water on the anode side, and a solid electrolyte such as ceramic to conduct oxygen ions through the cell. In order to provide the necessary heat, natutal gas is combuted. It also includes a reverse osmosis unit to treat the water feed, and a hydrogen compression unit.
+
+The process does not have co-products and all the environmental impacts are allocated to hydrogen production. ",hydrogen_soec_electrolysis_with_natual_gas_combust
+Version,00.01.003,hydrogen_soec_electrolysis_with_natual_gas_combust
+Last change,2025-02-17 11:12:32.412000,hydrogen_soec_electrolysis_with_natual_gas_combust
+Tags,,hydrogen_soec_electrolysis_with_natual_gas_combust
+Time,,hydrogen_soec_electrolysis_with_natual_gas_combust
+Valid from,2018-01-01 00:00:00,hydrogen_soec_electrolysis_with_natual_gas_combust
+Valid until,2022-12-31 00:00:00,hydrogen_soec_electrolysis_with_natual_gas_combust
+Description,"Key SOEC parameters comes from publications between 2018 and 2022
+",hydrogen_soec_electrolysis_with_natual_gas_combust
+Geography,,hydrogen_soec_electrolysis_with_natual_gas_combust
+Location,Canada,hydrogen_soec_electrolysis_with_natual_gas_combust
+Description,"Water quality used is typical for Canada. The process can be used in other regions as well.
+",hydrogen_soec_electrolysis_with_natual_gas_combust
+Technology,,hydrogen_soec_electrolysis_with_natual_gas_combust
+Description,"Compared to all other electrolysis systems, Solid Oxide Electrolysis Cells (SOEC) process operates at high temperatures (600-1000℃), using steam rather than water on the anode side, and a solid electrolyte such as ceramic to conduct oxygen ions through the cell. In order to reach the operating temperature of the electrolysis cell, water is heated through a sequence of heat exchangers that use the energy of hot streams within the process, which is complemented by heat from flue gases produced in a natural gas boiler. After steam is decomposed into hydrogen and oxygen ions, gaseous hydrogen leaves the electrolysis cell at the cathode side, while the oxygen gas moves trough the SOEC and leaves on the anode side. 
+
+Steam dissociation requires less energy than water, and electricity consumption by the SOEC is lower compared to other technologies, for similar capacities. In this process configuration, air is used as sweep gas to displace the oxygen from the anode channel. Moreover, it is used as a heating medium to convey heat between the cathode and the anode. 
+
+Hydrogen exiting the SOEC is cooled in the heat exhanger network, and part of its water content is removed to be recirculated to the feedwater section. The hydrogen stream then goes through a refrigerated dryer, a twin tower desiccant dryer, and a series of compressor to reach its final specification at 99.99% purity, 325 °C and 65 bar.
+
+The technology is still at R&D development, so not enough information available for simulations, durability or costs (TRL: 7 vs 9 for AE and PEM).",hydrogen_soec_electrolysis_with_natual_gas_combust
+Data quality,,hydrogen_soec_electrolysis_with_natual_gas_combust
+Process schema,,hydrogen_soec_electrolysis_with_natual_gas_combust
+Data quality entry,,hydrogen_soec_electrolysis_with_natual_gas_combust
+Flow schema,,hydrogen_soec_electrolysis_with_natual_gas_combust
+Social schema,,hydrogen_soec_electrolysis_with_natual_gas_combust
+UUID,4236e6a7-b6d7-437f-8e3e-35bcd3071844,"hydrogen_steam methane reforming of natural gas, without carbon capture; at plant; 99.9%,60 bar"
+Name,"hydrogen; steam methane reforming of natural gas, without carbon capture; at plant; 99.9%,60 bar","hydrogen_steam methane reforming of natural gas, without carbon capture; at plant; 99.9%,60 bar"
+Category,NRC LCI/Hydrogen pathways/Hydrogen production,"hydrogen_steam methane reforming of natural gas, without carbon capture; at plant; 99.9%,60 bar"
+Description,"This unit process produces hydrogen from activated carbon, allumina oxide, copper oxide, electricity, natural gas, water, zinc oxide, nickel, allumina oxide, monoethanolamine via Steam-methane reforming (SMR) pathway without carbon capture._x000D_
+_x000D_
+The FU and reference flow are 1 kg of compressed gaseous hydrogen (LHV) at a default pressure level greater than or equal to 60 bar and ambient temperature (25◦C). _x000D_
+_x000D_
+The gate-to-gate system boundary starts with the inputs of activated carbon, allumina oxide, copper oxide, electricity, natural gas, water, zinc oxide, nickel, allumina oxide, monoethanolamine and ends with the production of industrial grade of hydrogen at gate, purity of 99.9%._x000D_
+_x000D_
+The foreground system comprises three subsystems: 1) considers the extraction and production of the feedstock, i.e. natural gas and its transportation through pipelines to the SMR plant; 2) includes the feedstock pre-treatment (sulfur removal) and the hydrogen production and purification; and 3) refers to hydrogen compression to obtain hydrogen product that complies with the minimum specifications. The natural gas feedstock goes through a chemical desulfurization process using solvents and catalysts to further reduce the sulfur content in the gas._x000D_
+_x000D_
+The process does not have co-products and all the environmental impacts are allocated to hydrogen production.","hydrogen_steam methane reforming of natural gas, without carbon capture; at plant; 99.9%,60 bar"
+Version,00.01.001,"hydrogen_steam methane reforming of natural gas, without carbon capture; at plant; 99.9%,60 bar"
+Last change,2025-02-17 11:35:08.872000,"hydrogen_steam methane reforming of natural gas, without carbon capture; at plant; 99.9%,60 bar"
+Tags,,"hydrogen_steam methane reforming of natural gas, without carbon capture; at plant; 99.9%,60 bar"
+Time,,"hydrogen_steam methane reforming of natural gas, without carbon capture; at plant; 99.9%,60 bar"
+Valid from,2009-01-01 00:00:00,"hydrogen_steam methane reforming of natural gas, without carbon capture; at plant; 99.9%,60 bar"
+Valid until,2022-01-01 00:00:00,"hydrogen_steam methane reforming of natural gas, without carbon capture; at plant; 99.9%,60 bar"
+Description,This process was designed based on state-of-art steam-methane reforming (SMR) hydrogen production. The process parameters were collected based on industrial technical reports and scientific literature from 2009 to 2022.,"hydrogen_steam methane reforming of natural gas, without carbon capture; at plant; 99.9%,60 bar"
+Geography,,"hydrogen_steam methane reforming of natural gas, without carbon capture; at plant; 99.9%,60 bar"
+Location,"Canada, Alberta","hydrogen_steam methane reforming of natural gas, without carbon capture; at plant; 99.9%,60 bar"
+Description,"This process uses natural gas composition available in Alberta, Canada, and hence representiave of Canadian context. However, the process may be used in other regions, in which the composition of natural gas is similar. _x000D_
+Natural gas weight composition (Enbridge, 2021):_x000D_
+Nitrogen (0.8%)_x000D_
+Carbon Dioxide (0.8%)_x000D_
+Methane (90%)_x000D_
+Ethane (7.6%)_x000D_
+Propane (0.5%)_x000D_
+Butane (0.1%)_x000D_
+Pentane (0.1%)_x000D_
+Hexane (0.04%)_x000D_
+Hydrogen Sulfide (0.04%)_x000D_
+Oxygen (0.02%)","hydrogen_steam methane reforming of natural gas, without carbon capture; at plant; 99.9%,60 bar"
+Technology,,"hydrogen_steam methane reforming of natural gas, without carbon capture; at plant; 99.9%,60 bar"
+Description,"A zinc-oxide sulfur-guard bed was used to remove 98% of the sulfur in the feed, resulting in a maximum sulfur content of 0.1 ppm post-sulfur guard bed. The clean gas – generally referred to as sweet gas – is rich in methane and therefore reformed in the pre-reformer using steam as a reforming agent and in the presence of a Nickel-Alumina (Ni (15%) –Al2O3 (85%)) in the reformer. Steam used in pre-reformer is produced by heat recovery from combustion flue gases (after gaining heat from syngas). Steam reforming as an endothermic reaction requires heating energy, which is provided by combusting process off-gases from the downstream Pressure Swing Adsorption (PSA) unit, as well as natural gas as fuel. Methane as well as other alkanes are transformed into syngas components via the reforming process and exit the reactor at a high temperature (above 900 C) which passes through a heat recovery unit system to exchange their heat, cool down somewhat and produce steam. The product gas passes through three Water-Gas-Shift (WGS) reaction steps. The WGS hydrogen-adjusted product goes through an adsorption process within the PSA unit, where hydrogen gas is separated. Finally, hydrogen gas is compressed using medium pressure compressors to 60 bar followed by cooling to reach the storage conditions. The emissions from this SMR process are off-gases from the reforming unit, primarily carbon dioxide (CO2) that are completely emitted to the air. The carbon capture and sequestration unit (CCS) process is excluded from this pathway system boundary. ","hydrogen_steam methane reforming of natural gas, without carbon capture; at plant; 99.9%,60 bar"
+Data quality,,"hydrogen_steam methane reforming of natural gas, without carbon capture; at plant; 99.9%,60 bar"
+Process schema,,"hydrogen_steam methane reforming of natural gas, without carbon capture; at plant; 99.9%,60 bar"
+Data quality entry,,"hydrogen_steam methane reforming of natural gas, without carbon capture; at plant; 99.9%,60 bar"
+Flow schema,,"hydrogen_steam methane reforming of natural gas, without carbon capture; at plant; 99.9%,60 bar"
+Social schema,,"hydrogen_steam methane reforming of natural gas, without carbon capture; at plant; 99.9%,60 bar"
+UUID,8bdb58cd-b7d5-4867-bac3-450096053630,hydrogen_steam_methane_reforming_of_natural_gas_wi
+Name,"hydrogen; steam methane reforming of natural gas, with carbon capture, with CO2 compression; at plant; 99.9%, 60 bar",hydrogen_steam_methane_reforming_of_natural_gas_wi
+Category,NRC LCI/Hydrogen pathways/Hydrogen production,hydrogen_steam_methane_reforming_of_natural_gas_wi
+Description,"This unit process produces hydrogen from activated carbon, allumina oxide, copper oxide, electricity, natural gas, water, zinc oxide, nickel, allumina oxide, monoethanolamine via Steam-methane reforming (SMR) pathway with carbon capture  and with CO2 compression.
+
+The FU and reference flow are stated as “Production of 1 kg of compressed gaseous hydrogen (LHV) at a default pressure level greater than or equal to 60 bar and ambient temperature (25◦C). 
+
+The gate-to-gate system boundary starts with the inputs ofactivated carbon, allumina oxide, copper oxide, electricity, natural gas, water, zinc oxide, nickel, allumina oxide, monoethanolamine and ends with the production of industrial grade of hydrogen at gate, purity of 99.9%.
+
+SMR with carbon capture, coined “blue” hydrogen, is a potential clean energy technology to produce hydrogen. The foreground system comprises three subsystems: 1) considers the extraction and production of the feedstock, i.e. natural gas and its transportation through pipelines to the SMR plant; 2) includes the feedstock pre-treatment (sulfur removal) and the hydrogen production and purification, carbon capture and storage process is included; and 3) refers to hydrogen compression to obtain hydrogen product that complies with the minimum specifications. The natural gas feedstock goes through a chemical desulfurization process using solvents and catalysts to further reduce the sulfur content in the gas.
+
+The process does not have co-products and all the environmental impacts are allocated to hydrogen production.",hydrogen_steam_methane_reforming_of_natural_gas_wi
+Version,00.01.004,hydrogen_steam_methane_reforming_of_natural_gas_wi
+Last change,2025-02-23 08:00:45.723000,hydrogen_steam_methane_reforming_of_natural_gas_wi
+Tags,,hydrogen_steam_methane_reforming_of_natural_gas_wi
+Time,,hydrogen_steam_methane_reforming_of_natural_gas_wi
+Valid from,2009-01-01 00:00:00,hydrogen_steam_methane_reforming_of_natural_gas_wi
+Valid until,2022-01-01 00:00:00,hydrogen_steam_methane_reforming_of_natural_gas_wi
+Description,This process was designed based on state-of-art steam-methane reforming (SMR) hydrogen production. The process parameters were collected based on industrial technical reports and scientific literature from 2009 to 2022.,hydrogen_steam_methane_reforming_of_natural_gas_wi
+Geography,,hydrogen_steam_methane_reforming_of_natural_gas_wi
+Location,"Canada, Alberta",hydrogen_steam_methane_reforming_of_natural_gas_wi
+Description,"This process uses natural gas composition available in Alberta, Canada, and hence representiave of Canadian context. However, the process may be used in other regions, in which the composition of natural gas is similar. 
+Natural gas weight composition (Enbridge, 2021):
+Nitrogen (0.8%)
+Carbon Dioxide (0.8%)
+Methane (90%)
+Ethane (7.6%)
+Propane (0.5%)
+Butane (0.1%)
+Pentane (0.1%)
+Hexane (0.04%)
+Hydrogen Sulfide (0.04%)
+Oxygen (0.02%)",hydrogen_steam_methane_reforming_of_natural_gas_wi
+Technology,,hydrogen_steam_methane_reforming_of_natural_gas_wi
+Description,"A zinc-oxide sulfur-guard bed was used to remove 98% of the sulfur in the feed, resulting in a maximum sulfur content of 0.1 ppm post-sulfur guard bed. The clean gas – generally referred to as sweet gas – is rich in methane and therefore reformed in the pre-reformer using steam as a reforming agent and in the presence of a Nickel-Alumina (Ni (15%) –Al2O3 (85%)) in the reformer. Steam used in pre-reformer is produced by heat recovery from combustion flue gases (after gaining heat from syngas). Steam reforming as an endothermic reaction requires heating energy, which is provided by combusting process off-gases from the downstream Pressure Swing Adsorption (PSA) unit, as well as natural gas as fuel. Methane as well as other alkanes are transformed into syngas components via the reforming process and exit the reactor at a high temperature (above 900 C) which passes through a heat recovery unit system to exchange their heat, cool down somewhat and produce steam. The product gas passes through three Water-Gas-Shift (WGS) reaction steps. The WGS hydrogen-adjusted product goes through an adsorption process within the PSA unit, where hydrogen gas is separated. Finally, hydrogen gas is compressed using medium pressure compressors to 60 bar followed by cooling to reach the storage conditions. The emissions from this SMR process are off-gases from the reforming unit. Carbon capture system is considered for capturing the emitted carbon dioxide (CO2).",hydrogen_steam_methane_reforming_of_natural_gas_wi
+Data quality,,hydrogen_steam_methane_reforming_of_natural_gas_wi
+Process schema,,hydrogen_steam_methane_reforming_of_natural_gas_wi
+Data quality entry,,hydrogen_steam_methane_reforming_of_natural_gas_wi
+Flow schema,,hydrogen_steam_methane_reforming_of_natural_gas_wi
+Social schema,,hydrogen_steam_methane_reforming_of_natural_gas_wi
+UUID,99acccb9-3529-4e25-bf37-cad3c010210e,hydrogen_wood_biomass_gasification_without_carbon_
+Name,"Hydrogen; wood biomass gasification, without carbon capture; at plant; 99.9%, 62.2 bar",hydrogen_wood_biomass_gasification_without_carbon_
+Category,NRC LCI/Hydrogen pathways/Hydrogen production,hydrogen_wood_biomass_gasification_without_carbon_
+Description,"This unit process produces hydrogen from wood biomass (wood chips) via gasification pathway without carbon capture.
+
+The functional unit of the process is the production of 1 kg of compressed gaseous hydrogen (LHV) at a default pressure level equal to 62.2 bar and ambient temperature (25◦C). 
+
+The gate-to-gate system boundary starts with the inputs of wood biomass as feedstock and ends with the production of industrial grade of hydrogen at gate, purity of 99.9%.
+
+The life cycle of hydrogen production includes acquisition/extraction of raw material, feedstock production and transportation, hydrogen production, and hydrogen compression. The foreground system comprises three subsystems: 1) considers the extraction and production of the feedstock, i.e. wood chips and its transportation through trucks to the gasification plant; 2) includes the feedstock pre-treatment (drying) and the hydrogen production and purification; and 3) refers to hydrogen compression to obtain hydrogen product that complies with the minimum specifications. 
+
+The process does not have co-products and all the environmental impacts are allocated to hydrogen production.",hydrogen_wood_biomass_gasification_without_carbon_
+Version,00.01.001,hydrogen_wood_biomass_gasification_without_carbon_
+Last change,2025-02-17 11:36:34.858000,hydrogen_wood_biomass_gasification_without_carbon_
+Tags,,hydrogen_wood_biomass_gasification_without_carbon_
+Time,,hydrogen_wood_biomass_gasification_without_carbon_
+Valid from,2017-01-01 00:00:00,hydrogen_wood_biomass_gasification_without_carbon_
+Valid until,2021-01-01 00:00:00,hydrogen_wood_biomass_gasification_without_carbon_
+Description,This process was designed based on state-of-art gasification production from wood chips. The process parameters were collected based on industrial technical reports and scientific literature from 2017 to 2021.,hydrogen_wood_biomass_gasification_without_carbon_
+Geography,,hydrogen_wood_biomass_gasification_without_carbon_
+Location,"Canada, British Columbia",hydrogen_wood_biomass_gasification_without_carbon_
+Description,"This process converts wood biomass from Canadian forest into high purity hydrogen, and hence representiave of Canadian context. However, the process may be used in other regions, in which the composition of wood chips is similar. 
+Wood chips ultimate analysis (%) (Rezaei et al., 2016):
+Carbon (48.02 ± 0.03)
+Hydrogen (6.14 ± 0.07)
+Nitrogen (Not detected)
+Oxygen (45.85 ± 0.05)",hydrogen_wood_biomass_gasification_without_carbon_
+Technology,,hydrogen_wood_biomass_gasification_without_carbon_
+Description,"Wet wood chips are fed into a biomass dryer, which can operate with low temperature waste heat from the process. In the dryer, the H2O mass fraction of the feedstock is reduced from about 32% to less than 20% (wet base). Dual Fluidized bed (DFB) steam gasification technology is the core of the process for hydrogen production from wood chips. The gasification reactor, where the gasification with steam, in the absence of oxygen takes place, is separated from the combustion reactor which provides the heat necessary for endothermic gasification. The gasification reactor is operated as a bubbling fluidized bed and is fluidized with steam, which acts as well as gasification agent. The combustion reactor is operated with air as a fast fluidized bed. Char is transported together with bed material (olivine) from the gasification to the combustion reactor, where is exothermically burns and produces heat needed for the gasification process.  After product gas is produced in the gasifier, this product gas pass through to gas cleaning, water gas shift rection (HT), tar removal (Rapeseed Methyl Ester (RME) scrubber), hydrogen purification, and cooling and compresion. The designed process needs steam which can be generated through heat recovery of streams and using several heat exchangers. ",hydrogen_wood_biomass_gasification_without_carbon_
+Data quality,,hydrogen_wood_biomass_gasification_without_carbon_
+Process schema,,hydrogen_wood_biomass_gasification_without_carbon_
+Data quality entry,,hydrogen_wood_biomass_gasification_without_carbon_
+Flow schema,,hydrogen_wood_biomass_gasification_without_carbon_
+Social schema,,hydrogen_wood_biomass_gasification_without_carbon_
+UUID,553f2134-86eb-4ae6-8edf-198ec7c5f0fb,hydrogen_wood_biomass_gasification_with_carbon_cap
+Name,"Hydrogen; wood biomass gasification, with carbon capture; at plant; 99.9%, 62.2 bar",hydrogen_wood_biomass_gasification_with_carbon_cap
+Category,NRC LCI/Hydrogen pathways/Hydrogen production,hydrogen_wood_biomass_gasification_with_carbon_cap
+Description,"This unit process produces hydrogen from wood biomass (wood chips) via gasification pathway with carbon capture.
+
+The functional unit of the process is the production of 1 kg of compressed gaseous hydrogen (LHV) at a default pressure level equal to 62.2 bar and ambient temperature (25◦C). 
+
+The gate-to-gate system boundary starts with the inputs of wood biomass as feedstock and ends with the production of industrial grade of hydrogen at gate, purity of 99.9%.
+
+The life cycle of hydrogen production includes acquisition/extraction of raw material, feedstock production and transportation, hydrogen production, and hydrogen compression. The foreground system comprises three subsystems: 1) considers the extraction and production of the feedstock, i.e. wood chips and its transportation through trucks to the gasification plant; 2) includes the feedstock pre-treatment (drying) and the hydrogen production and purification; and 3) refers to hydrogen compression to obtain hydrogen product that complies with the minimum specifications. 
+
+The process does not have co-products and all the environmental impacts are allocated to hydrogen production.",hydrogen_wood_biomass_gasification_with_carbon_cap
+Version,00.01.002,hydrogen_wood_biomass_gasification_with_carbon_cap
+Last change,2025-02-17 11:36:10.425000,hydrogen_wood_biomass_gasification_with_carbon_cap
+Tags,,hydrogen_wood_biomass_gasification_with_carbon_cap
+Time,,hydrogen_wood_biomass_gasification_with_carbon_cap
+Valid from,2017-01-01 00:00:00,hydrogen_wood_biomass_gasification_with_carbon_cap
+Valid until,2021-01-01 00:00:00,hydrogen_wood_biomass_gasification_with_carbon_cap
+Description,This process was designed based on state-of-art gasification production from wood chips. The process parameters were collected based on industrial technical reports and scientific literature from 2017 to 2021.,hydrogen_wood_biomass_gasification_with_carbon_cap
+Geography,,hydrogen_wood_biomass_gasification_with_carbon_cap
+Location,"Canada, British Columbia",hydrogen_wood_biomass_gasification_with_carbon_cap
+Description,"This process converts wood biomass from Canadian forest into high purity hydrogen, and hence representiave of Canadian context. However, the process may be used in other regions, in which the composition of wood chips is similar. 
+Wood chips ultimate analysis (%) (Rezaei et al., 2016):
+Carbon (48.02 ± 0.03)
+Hydrogen (6.14 ± 0.07)
+Nitrogen (Not detected)
+Oxygen (45.85 ± 0.05)",hydrogen_wood_biomass_gasification_with_carbon_cap
+Technology,,hydrogen_wood_biomass_gasification_with_carbon_cap
+Description,"Wet wood chips are fed into a biomass dryer, which can operate with low temperature waste heat from the process. In the dryer, the H2O mass fraction of the feedstock is reduced from about 32% to less than 20% (wet base). Dual Fluidized bed (DFB) steam gasification technology is the core of the process for hydrogen production from wood chips. The gasification reactor, where the gasification with steam, in the absence of oxygen takes place, is separated from the combustion reactor which provides the heat necessary for endothermic gasification. The gasification reactor is operated as a bubbling fluidized bed and is fluidized with steam, which acts as well as gasification agent. The combustion reactor is operated with air as a fast fluidized bed. Char is transported together with bed material (olivine) from the gasification to the combustion reactor, where is exothermically burns and produces heat needed for the gasification process.  After product gas is produced in the gasifier, this product gas pass through to gas cleaning, water gas shift rection (HT), tar removal (Rapeseed Methyl Ester (RME) scrubber), hydrogen purification, and cooling and compresion. The designed process needs steam which can be generated through heat recovery of streams and using several heat exchangers. ",hydrogen_wood_biomass_gasification_with_carbon_cap
+Data quality,,hydrogen_wood_biomass_gasification_with_carbon_cap
+Process schema,,hydrogen_wood_biomass_gasification_with_carbon_cap
+Data quality entry,,hydrogen_wood_biomass_gasification_with_carbon_cap
+Flow schema,,hydrogen_wood_biomass_gasification_with_carbon_cap
+Social schema,,hydrogen_wood_biomass_gasification_with_carbon_cap
+
