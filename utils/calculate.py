@@ -95,13 +95,30 @@ def calculate_impacts(mapped_df: pd.DataFrame, idemat_datasheet: str, column_of_
             mapped_flow = flow_to_use
             if mapped_flow in lookup_series.index:
                 # Get units
-                source_unit = row['Unit'] # caution, capital U
-                dest_unit = unit_series[mapped_flow]
+                source_unit = row.get('Unit', None)  # caution, capital U
+                dest_unit = None
+                if mapped_flow in unit_series.index:
+                    dest_unit = unit_series[mapped_flow]
+                
+                # Check if units are valid
+                if pd.isna(dest_unit) or dest_unit is None or str(dest_unit).strip() == "":
+                    # If dest_unit is missing, try to use source_unit or skip conversion
+                    if source_unit and pd.notna(source_unit) and str(source_unit).strip() != "":
+                        dest_unit = source_unit
+                    else:
+                        # No valid units, skip this flow
+                        skipped_categories[contribution_cat] = skipped_categories.get(contribution_cat, 0) + 1
+                        continue
+                
+                if not source_unit or pd.isna(source_unit) or str(source_unit).strip() == "":
+                    # No source unit, skip this flow
+                    skipped_categories[contribution_cat] = skipped_categories.get(contribution_cat, 0) + 1
+                    continue
                 
                 try:
                     # Convert amount to destination unit
-                    source_quantity = row['Amount'] * ureg(source_unit)
-                    dest_quantity = source_quantity.to(dest_unit)
+                    source_quantity = row['Amount'] * ureg(str(source_unit))
+                    dest_quantity = source_quantity.to(str(dest_unit))
                     converted_amount = dest_quantity.magnitude
                     
                     # Calculate result with converted amount
@@ -112,34 +129,30 @@ def calculate_impacts(mapped_df: pd.DataFrame, idemat_datasheet: str, column_of_
                         'Category': row['Category']
                     }
                     
-                    # Add Contribution Category if available, else use Category as default
-                    # Use the contribution_cat we already extracted, or get it from row if needed
-                    result_contribution_cat = contribution_cat
+                    # Add Contribution Category from input data, preserving user's custom values
+                    # Use the contribution_cat we already extracted (from row or Category fallback)
                     if 'Contribution Category' in row:
                         result_contribution_cat = row['Contribution Category']
-                        # Check if it's a valid user-selected category (not empty, not NaN)
+                        # Use the Contribution Category from input data if it's not empty/NaN
                         if pd.notna(result_contribution_cat) and str(result_contribution_cat).strip() != "":
-                            # Verify it's one of the valid dropdown options
-                            valid_categories = ["Feedstock", "Materials", "Energy", "Waste", "Direct Emissions"]
-                            if str(result_contribution_cat).strip() in valid_categories:
-                                result_record['Contribution Category'] = str(result_contribution_cat).strip()
-                            else:
-                                # Not a valid user selection, use Category
-                                result_record['Contribution Category'] = row['Category']
+                            result_record['Contribution Category'] = str(result_contribution_cat).strip()
                         else:
                             # Empty or NaN, use Category as default
                             result_record['Contribution Category'] = row['Category']
                     else:
-                        # No Contribution Category column, use Category
-                        result_record['Contribution Category'] = row['Category']
+                        # No Contribution Category column, use the contribution_cat we extracted earlier (which falls back to Category)
+                        result_record['Contribution Category'] = contribution_cat if contribution_cat else row['Category']
                     
                     # Track which categories were successfully processed
                     final_cat = result_record.get('Contribution Category', 'Unknown')
                     processed_categories[final_cat] = processed_categories.get(final_cat, 0) + 1
                     
                     results.append(result_record)
-                except pint.errors.DimensionalityError:
+                except (pint.errors.DimensionalityError, AttributeError, ValueError, TypeError) as e:
+                    # Skip flows with unit conversion errors
                     skipped_categories[contribution_cat] = skipped_categories.get(contribution_cat, 0) + 1
+                    with open(log_file, 'a') as f:
+                        f.write(f"Skipped {mapped_flow}: Unit conversion error - {str(e)}\n")
                     continue
             else:
                 # Flow not found in lookup_series

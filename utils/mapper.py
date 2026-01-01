@@ -77,19 +77,13 @@ def map_flows(source_df: pd.DataFrame, destination_file: str) -> dict:
                 'original_flow': flow
             }
             
-            # Add 'Contribution Category' if it exists in source_df and is non-empty, otherwise use Category as default
-            contribution_cat = None
+            # Add 'Contribution Category' from input data, preserving user's custom values
+            # Use whatever Contribution Category is in the input data, or fall back to Category
             if 'Contribution Category' in row:
                 contribution_cat = row['Contribution Category']
-                # Check if it's a valid user-selected category (not empty, not NaN)
+                # Use the Contribution Category from input data if it's not empty/NaN
                 if pd.notna(contribution_cat) and str(contribution_cat).strip() != "":
-                    # Verify it's one of the valid dropdown options
-                    valid_categories = ["Feedstock", "Materials", "Energy", "Waste", "Direct Emissions"]
-                    if str(contribution_cat).strip() in valid_categories:
-                        mapping_dict['contribution_category'] = str(contribution_cat).strip()
-                    else:
-                        # Not a valid user selection, use Category
-                        mapping_dict['contribution_category'] = row['Category']
+                    mapping_dict['contribution_category'] = str(contribution_cat).strip()
                 else:
                     # Empty or NaN, use Category as default
                     mapping_dict['contribution_category'] = row['Category']

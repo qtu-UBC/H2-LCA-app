@@ -1,0 +1,20 @@
+Inputs_Flows,Location_Locations,Original_Provider
+DHA from glycerol,RoW,oxidation of glycerol
+Electricity,Global,"Electricity, medium voltage"
+Gengard GN8071,Global,Maleic anhydride
+Gengard GN8301,Global,Sodium tripolyphosphate
+Gypsum,Ecoinvent 3.6,Waste gypsum
+Nitrogen,Global,"Nitrogen, liquid"
+Steam,Global,"Steam, in chemical industry"
+Water,Global,"Water, decarbonised, at user"
+cooling water,RoW,cooling water production_customized
+"electricity, medium voltage",RoW,"electricity, medium voltage"
+glycerine,RoW,esterification of soybean oil
+"hazardous waste, for incineration",RoW,"hazardous waste, hazardous waste incineration"
+lactic acid from electrocatalysis,RoW,lactic acid production from electrocatalysis
+lime,RoW,"lime production, milled, loose"
+methanol,GLO,methanol production
+sulfuric acid,RoW,sulfuric acid production
+tap water,RoW,"tap water production, conventional treatment"
+waste gypsum,RoW,"waste gypsum, sanitary landfill"
+"water, completely softened, from decarbonised water, at user",RoW,"water production, completely softened, from decarbonised water, at user"
