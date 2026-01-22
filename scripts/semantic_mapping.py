@@ -201,11 +201,11 @@ class SemanticMapper:
             idemat_file: Path to IDEMAT Excel file
             
         Returns:
-            MD5 hash string of the file
+            SHA-256 hash string of the file
         """
         try:
             with open(idemat_file, 'rb') as f:
-                file_hash = hashlib.md5(f.read()).hexdigest()
+                file_hash = hashlib.sha256(f.read()).hexdigest()
             return file_hash
         except Exception as e:
             logger.warning(f"Could not hash IDEMAT file: {e}")

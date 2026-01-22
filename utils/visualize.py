@@ -171,7 +171,11 @@ def generate_impact_piechart(results_df: pd.DataFrame) -> plt:
     
     # Generate pie chart with all categories - matplotlib will handle zero values
     # Use explode to separate slices for better visibility
-    explode = [0.05 if val == 0 or val/total < 0.01 else 0 for val in values]
+    # Fix divide-by-zero: check total > 0 before dividing
+    if total > 0:
+        explode = [0.05 if val == 0 or val/total < 0.01 else 0 for val in values]
+    else:
+        explode = [0.05] * len(values)  # All slices exploded if total is 0
     
     wedges, texts, autotexts = ax.pie(
         values,
