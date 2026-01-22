@@ -44,4 +44,4 @@ Thumbs.db
 output/
 log/
 #config/
-input/
+input/cache/

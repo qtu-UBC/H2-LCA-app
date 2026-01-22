@@ -1,0 +1,129 @@
+Unique Flow Name,Location,Most Similar Process
+acrylic acid,,"Acrylic acids and derivatives (n=2, std=0.10)"
+"activated carbon, granular",,Walnut FSC/PEFC 670 (kg/m3)
+"aluminium oxide, metallurgical",,Aluminium Nitride
+"chlorine, liquid",,"Carbon dioxide, liquid"
+copper oxide,,"Carbon dioxide, liquid"
+Deionized water,,"Water based paint, transparent"
+"electricity, high voltage",,"PE (HDPE, High density Polyethylene)"
+"electricity, high voltage, renewable energy products",,Moulded fibre products.
+"electricity, medium voltage",,"Electricity Low Voltage, domestic use General"
+"heat, district or industrial, natural gas",,"Revap LNG (liquified natural gas) from US in EU for heat, ex"
+monoethanolamine,,film PP+PVDC 62 mu in power plant
+"natural gas, high pressure",,"CNG (compressed natural gas) for transport, excl. combustion"
+"nickel, class 1",,"Organobromides (class) (n=2, std=0.15)"
+palladium,,"Palladium, CRM (primary)"
+"sodium hydroxide, without water, in 50% solution state",,"Sodium Hydroxide, NaOH (European Chlor-Alkali Industry 2022)"
+sulfuric acid,,"Sulfuric acid esters (n=1, std=-)"
+"Water, cooling, unspecified natural origin, CA",,"Padouk, African natural forest 740 (kg/m3)"
+"water, deionised",,Electricity Illinois production
+"wood chips, wet, measured as dry mass",,Shaving hardwood per kg dry mass removed
+zinc oxide,,Zinc Oxide
+"market for zinc oxide | zinc oxide | Cutoff, U",Global,Zinc Oxide
+"market for zinc oxide | zinc oxide | Cutoff, U","Canada, Québec",Zinc Oxide
+"market for zinc oxide | zinc oxide | Cutoff, U","Canada, Alberta",Zinc Oxide
+"market for zinc oxide | zinc oxide | Cutoff, U","Canada, British Columbia",Zinc Oxide
+"market for zinc oxide | zinc oxide | Cutoff, U",Rest-of-World,Zinc Oxide
+"market for zinc oxide | zinc oxide | Cutoff, U",Canada,Zinc Oxide
+"market for activated carbon, granular | activated carbon, granular | Cutoff, U",Global,"Silicon (purified) for electronics and PV cells, gross"
+"market for activated carbon, granular | activated carbon, granular | Cutoff, U","Canada, Québec","Silicon (purified) for electronics and PV cells, gross"
+"market for activated carbon, granular | activated carbon, granular | Cutoff, U","Canada, Alberta","Silicon (purified) for electronics and PV cells, gross"
+"market for activated carbon, granular | activated carbon, granular | Cutoff, U","Canada, British Columbia","Silicon (purified) for electronics and PV cells, gross"
+"market for activated carbon, granular | activated carbon, granular | Cutoff, U",Rest-of-World,"Silicon (purified) for electronics and PV cells, gross"
+"market for activated carbon, granular | activated carbon, granular | Cutoff, U",Canada,"Silicon (purified) for electronics and PV cells, gross"
+"market group for electricity, medium voltage | electricity, medium voltage | Cutoff, U",Global,"Electricity Low Voltage, domestic use General"
+"market group for electricity, medium voltage | electricity, medium voltage | Cutoff, U","Canada, Québec",Electricity Quebec production
+"market group for electricity, medium voltage | electricity, medium voltage | Cutoff, U","Canada, Alberta",Electricity Alberta production
+"market group for electricity, medium voltage | electricity, medium voltage | Cutoff, U","Canada, British Columbia",Electricity British Columbia production
+"market group for electricity, medium voltage | electricity, medium voltage | Cutoff, U",Rest-of-World,"Electricity Low Voltage, domestic use General"
+"market group for electricity, medium voltage | electricity, medium voltage | Cutoff, U",Canada,"Electricity Low Voltage, domestic use General"
+"market for acrylic acid | acrylic acid | Cutoff, U",Global,Formic acid by butane oxidation
+"market for acrylic acid | acrylic acid | Cutoff, U","Canada, Québec",Formic acid by butane oxidation
+"market for acrylic acid | acrylic acid | Cutoff, U","Canada, Alberta",Formic acid by butane oxidation
+"market for acrylic acid | acrylic acid | Cutoff, U","Canada, British Columbia",Formic acid by butane oxidation
+"market for acrylic acid | acrylic acid | Cutoff, U",Rest-of-World,Formic acid by butane oxidation
+"market for acrylic acid | acrylic acid | Cutoff, U",Canada,Formic acid by butane oxidation
+"market for sodium hydroxide, without water, in 50% solution state | sodium hydroxide, without water, in 50% solution state | Cutoff, U",Global,"Sodium Hydroxide, NaOH (European Chlor-Alkali Industry 2022)"
+"market for sodium hydroxide, without water, in 50% solution state | sodium hydroxide, without water, in 50% solution state | Cutoff, U","Canada, Québec","Sodium Hydroxide, NaOH (European Chlor-Alkali Industry 2022)"
+"market for sodium hydroxide, without water, in 50% solution state | sodium hydroxide, without water, in 50% solution state | Cutoff, U","Canada, Alberta","Sodium Hydroxide, NaOH (European Chlor-Alkali Industry 2022)"
+"market for sodium hydroxide, without water, in 50% solution state | sodium hydroxide, without water, in 50% solution state | Cutoff, U","Canada, British Columbia","Sodium Hydroxide, NaOH (European Chlor-Alkali Industry 2022)"
+"market for sodium hydroxide, without water, in 50% solution state | sodium hydroxide, without water, in 50% solution state | Cutoff, U",Rest-of-World,"Sodium Hydroxide, NaOH (European Chlor-Alkali Industry 2022)"
+"market for sodium hydroxide, without water, in 50% solution state | sodium hydroxide, without water, in 50% solution state | Cutoff, U",Canada,"Sodium Hydroxide, NaOH (European Chlor-Alkali Industry 2022)"
+"market for natural gas, high pressure | natural gas, high pressure | Cutoff, U",Global,"CNG (compressed natural gas) for transport, excl. combustion"
+"market for natural gas, high pressure | natural gas, high pressure | Cutoff, U","Canada, Québec","CNG (compressed natural gas) for transport, excl. combustion"
+"market for natural gas, high pressure | natural gas, high pressure | Cutoff, U","Canada, Alberta","CNG (compressed natural gas) for transport, excl. combustion"
+"market for natural gas, high pressure | natural gas, high pressure | Cutoff, U","Canada, British Columbia","CNG (compressed natural gas) for transport, excl. combustion"
+"market for natural gas, high pressure | natural gas, high pressure | Cutoff, U",Rest-of-World,"CNG (compressed natural gas) for transport, excl. combustion"
+"market for natural gas, high pressure | natural gas, high pressure | Cutoff, U",Canada,"CNG (compressed natural gas) for transport, excl. combustion"
+"market for palladium | palladium | Cutoff, U",Global,"Palladium, CRM (primary)"
+"market for palladium | palladium | Cutoff, U","Canada, Québec","Palladium, CRM (primary)"
+"market for palladium | palladium | Cutoff, U","Canada, Alberta","Palladium, CRM (primary)"
+"market for palladium | palladium | Cutoff, U","Canada, British Columbia","Palladium, CRM (primary)"
+"market for palladium | palladium | Cutoff, U",Rest-of-World,"Palladium, CRM (primary)"
+"market for palladium | palladium | Cutoff, U",Canada,"Palladium, CRM (primary)"
+"market for aluminium oxide, metallurgical | aluminium oxide, metallurgical | Cutoff, U",Global,Silicon (metallurgical) for steel
+"market for aluminium oxide, metallurgical | aluminium oxide, metallurgical | Cutoff, U","Canada, Québec",Silicon (metallurgical) for steel
+"market for aluminium oxide, metallurgical | aluminium oxide, metallurgical | Cutoff, U","Canada, Alberta",Silicon (metallurgical) for steel
+"market for aluminium oxide, metallurgical | aluminium oxide, metallurgical | Cutoff, U","Canada, British Columbia",Silicon (metallurgical) for steel
+"market for aluminium oxide, metallurgical | aluminium oxide, metallurgical | Cutoff, U",Rest-of-World,Silicon (metallurgical) for steel
+"market for aluminium oxide, metallurgical | aluminium oxide, metallurgical | Cutoff, U",Canada,Silicon (metallurgical) for steel
+"market for monoethanolamine | monoethanolamine | Cutoff, U",Global,"Silicon (purified) for electronics and PV cells, gross"
+"market for monoethanolamine | monoethanolamine | Cutoff, U","Canada, Québec","Silicon (purified) for electronics and PV cells, gross"
+"market for monoethanolamine | monoethanolamine | Cutoff, U","Canada, Alberta","Silicon (purified) for electronics and PV cells, gross"
+"market for monoethanolamine | monoethanolamine | Cutoff, U","Canada, British Columbia","Silicon (purified) for electronics and PV cells, gross"
+"market for monoethanolamine | monoethanolamine | Cutoff, U",Rest-of-World,"Silicon (purified) for electronics and PV cells, gross"
+"market for monoethanolamine | monoethanolamine | Cutoff, U",Canada,"Silicon (purified) for electronics and PV cells, gross"
+"market for wood chips, wet, measured as dry mass | wood chips, wet, measured as dry mass | Cutoff, U",Global,Shaving hardwood per kg dry mass removed
+"market for wood chips, wet, measured as dry mass | wood chips, wet, measured as dry mass | Cutoff, U","Canada, Québec",Shaving hardwood per kg dry mass removed
+"market for wood chips, wet, measured as dry mass | wood chips, wet, measured as dry mass | Cutoff, U","Canada, Alberta",Shaving hardwood per kg dry mass removed
+"market for wood chips, wet, measured as dry mass | wood chips, wet, measured as dry mass | Cutoff, U","Canada, British Columbia",Shaving hardwood per kg dry mass removed
+"market for wood chips, wet, measured as dry mass | wood chips, wet, measured as dry mass | Cutoff, U",Rest-of-World,Shaving hardwood per kg dry mass removed
+"market for wood chips, wet, measured as dry mass | wood chips, wet, measured as dry mass | Cutoff, U",Canada,Shaving hardwood per kg dry mass removed
+"market for nickel, class 1 | nickel, class 1 | Cutoff, U",Global,Guaiacum wood natural forest 1250 (kg/m3)
+"market for nickel, class 1 | nickel, class 1 | Cutoff, U","Canada, Québec",Guaiacum wood natural forest 1250 (kg/m3)
+"market for nickel, class 1 | nickel, class 1 | Cutoff, U","Canada, Alberta",Guaiacum wood natural forest 1250 (kg/m3)
+"market for nickel, class 1 | nickel, class 1 | Cutoff, U","Canada, British Columbia",Guaiacum wood natural forest 1250 (kg/m3)
+"market for nickel, class 1 | nickel, class 1 | Cutoff, U",Rest-of-World,Guaiacum wood natural forest 1250 (kg/m3)
+"market for nickel, class 1 | nickel, class 1 | Cutoff, U",Canada,Guaiacum wood natural forest 1250 (kg/m3)
+"market for electricity, medium voltage | electricity, medium voltage | Cutoff, U",Global,"Electricity Low Voltage, domestic use General"
+"market for electricity, medium voltage | electricity, medium voltage | Cutoff, U","Canada, Québec",Electricity Quebec production
+"market for electricity, medium voltage | electricity, medium voltage | Cutoff, U","Canada, Alberta",Electricity Alberta production
+"market for electricity, medium voltage | electricity, medium voltage | Cutoff, U","Canada, British Columbia",Electricity British Columbia production
+"market for electricity, medium voltage | electricity, medium voltage | Cutoff, U",Rest-of-World,"Electricity Low Voltage, domestic use General"
+"market for electricity, medium voltage | electricity, medium voltage | Cutoff, U",Canada,"Electricity Low Voltage, domestic use General"
+"market for wastewater, average | wastewater, average | Cutoff, U",Global,"Chlorine (average of USLCI, Plasticseurope, EU chlor-alkali ind.)"
+"market for wastewater, average | wastewater, average | Cutoff, U","Canada, Québec","Chlorine (average of USLCI, Plasticseurope, EU chlor-alkali ind.)"
+"market for wastewater, average | wastewater, average | Cutoff, U","Canada, Alberta","Chlorine (average of USLCI, Plasticseurope, EU chlor-alkali ind.)"
+"market for wastewater, average | wastewater, average | Cutoff, U","Canada, British Columbia","Chlorine (average of USLCI, Plasticseurope, EU chlor-alkali ind.)"
+"market for wastewater, average | wastewater, average | Cutoff, U",Rest-of-World,"Chlorine (average of USLCI, Plasticseurope, EU chlor-alkali ind.)"
+"market for wastewater, average | wastewater, average | Cutoff, U",Canada,"Chlorine (average of USLCI, Plasticseurope, EU chlor-alkali ind.)"
+"market for heat, district or industrial, natural gas | heat, district or industrial, natural gas | Cutoff, U",Global,"Revap LNG (liquified natural gas) from US in EU for heat, excl. combustion"
+"market for heat, district or industrial, natural gas | heat, district or industrial, natural gas | Cutoff, U","Canada, Québec","Revap LNG (liquified natural gas) from US in EU for heat, excl. combustion"
+"market for heat, district or industrial, natural gas | heat, district or industrial, natural gas | Cutoff, U","Canada, Alberta","Revap LNG (liquified natural gas) from US in EU for heat, excl. combustion"
+"market for heat, district or industrial, natural gas | heat, district or industrial, natural gas | Cutoff, U","Canada, British Columbia","Revap LNG (liquified natural gas) from US in EU for heat, excl. combustion"
+"market for heat, district or industrial, natural gas | heat, district or industrial, natural gas | Cutoff, U",Rest-of-World,"Revap LNG (liquified natural gas) from US in EU for heat, excl. combustion"
+"market for heat, district or industrial, natural gas | heat, district or industrial, natural gas | Cutoff, U",Canada,"Revap LNG (liquified natural gas) from US in EU for heat, excl. combustion"
+"market for copper oxide | copper oxide | Cutoff, U",Global,"Carbon dioxide, liquid"
+"market for copper oxide | copper oxide | Cutoff, U","Canada, Québec","Carbon dioxide, liquid"
+"market for copper oxide | copper oxide | Cutoff, U","Canada, Alberta","Carbon dioxide, liquid"
+"market for copper oxide | copper oxide | Cutoff, U","Canada, British Columbia","Carbon dioxide, liquid"
+"market for copper oxide | copper oxide | Cutoff, U",Rest-of-World,"Carbon dioxide, liquid"
+"market for copper oxide | copper oxide | Cutoff, U",Canada,"Carbon dioxide, liquid"
+"market for water, deionised | water, deionised | Cutoff, U",Global,"Silicon (purified) for electronics and PV cells, gross"
+"market for water, deionised | water, deionised | Cutoff, U","Canada, Québec","Silicon (purified) for electronics and PV cells, gross"
+"market for water, deionised | water, deionised | Cutoff, U","Canada, Alberta","Silicon (purified) for electronics and PV cells, gross"
+"market for water, deionised | water, deionised | Cutoff, U","Canada, British Columbia","Silicon (purified) for electronics and PV cells, gross"
+"market for water, deionised | water, deionised | Cutoff, U",Rest-of-World,"Silicon (purified) for electronics and PV cells, gross"
+"market for water, deionised | water, deionised | Cutoff, U",Canada,"Silicon (purified) for electronics and PV cells, gross"
+"market for sulfuric acid | sulfuric acid | Cutoff, U",Global,"Sulfuric acid esters (n=1, std=-)"
+"market for sulfuric acid | sulfuric acid | Cutoff, U","Canada, Québec","Sulfuric acid esters (n=1, std=-)"
+"market for sulfuric acid | sulfuric acid | Cutoff, U","Canada, Alberta","Sulfuric acid esters (n=1, std=-)"
+"market for sulfuric acid | sulfuric acid | Cutoff, U","Canada, British Columbia","Sulfuric acid esters (n=1, std=-)"
+"market for sulfuric acid | sulfuric acid | Cutoff, U",Rest-of-World,"Sulfuric acid esters (n=1, std=-)"
+"market for sulfuric acid | sulfuric acid | Cutoff, U",Canada,"Sulfuric acid esters (n=1, std=-)"
+"market for chlorine, liquid | chlorine, liquid | Cutoff, U",Global,"Carbon dioxide, liquid"
+"market for chlorine, liquid | chlorine, liquid | Cutoff, U","Canada, Québec","Carbon dioxide, liquid"
+"market for chlorine, liquid | chlorine, liquid | Cutoff, U","Canada, Alberta","Carbon dioxide, liquid"
+"market for chlorine, liquid | chlorine, liquid | Cutoff, U","Canada, British Columbia","Carbon dioxide, liquid"
+"market for chlorine, liquid | chlorine, liquid | Cutoff, U",Rest-of-World,"Carbon dioxide, liquid"
+"market for chlorine, liquid | chlorine, liquid | Cutoff, U",Canada,"Carbon dioxide, liquid"

@@ -1,0 +1,49 @@
+Flow,Amount,Unit,Category,Location
+"electricity, high voltage",100,kWh,Energy,Global
+"natural gas, high pressure",50,m3,Energy,"Canada, Québec"
+"water, deionised",1000,kg,Materials,Global
+"sodium hydroxide, without water, in 50% solution state",25,kg,Materials,Canada
+"copper oxide",10,kg,Materials,Global
+"zinc oxide",5,kg,Materials,"Canada, Alberta"
+"activated carbon, granular",15,kg,Materials,Canada
+"aluminium oxide, metallurgical",20,kg,Materials,"Canada, Québec"
+"heat, district or industrial, natural gas",200,MJ,Energy,"Canada, Alberta"
+"wood chips, wet, measured as dry mass",500,kg,Feedstock,Global
+"nickel, class 1",2,kg,Materials,Global
+"palladium",0.1,kg,Materials,Canada
+"sulfuric acid",30,kg,Materials,Global
+"chlorine, liquid",15,kg,Materials,"Canada, Québec"
+"monoethanolamine",20,kg,Materials,"Canada, Alberta"
+"acrylic acid",10,kg,Materials,Canada
+"hydrogen, compressed, 200 bar",100,kg,Energy,Global
+"carbon dioxide, liquid",200,kg,Emissions,Global
+"steam, from natural gas",150,kg,Energy,"Canada, British Columbia"
+"nitrogen, liquid",50,kg,Materials,Canada
+"oxygen, liquid",30,kg,Materials,Global
+"ammonia, liquid",40,kg,Materials,"Canada, Québec"
+"methanol",25,kg,Materials,Global
+"ethanol",20,kg,Materials,"Canada, Alberta"
+"diesel",100,L,Energy,Canada
+"gasoline",80,L,Energy,Global
+"wastewater, average",500,kg,Waste,"Canada, British Columbia"
+"iron ore",1000,kg,Materials,Global
+"steel, primary",500,kg,Materials,Canada
+"cement, Portland",200,kg,Materials,"Canada, Québec"
+"lime",50,kg,Materials,Global
+"limestone",300,kg,Materials,"Canada, Alberta"
+"gravel",1000,kg,Materials,Canada
+"sand",800,kg,Materials,Global
+"polyethylene, high density, HDPE",100,kg,Materials,"Canada, British Columbia"
+"polypropylene, PP",80,kg,Materials,Global
+"glass, unprocessed",200,kg,Materials,Canada
+"paper, unbleached",150,kg,Materials,"Canada, Québec"
+"silicon",10,kg,Materials,Global
+"titanium dioxide",5,kg,Materials,"Canada, Alberta"
+"chromium",2,kg,Materials,Canada
+"cobalt",1,kg,Materials,Global
+"platinum",0.5,kg,Materials,"Canada, British Columbia"
+"silver",1,kg,Materials,Global
+"gold",0.1,kg,Materials,Canada
+"lithium carbonate",5,kg,Materials,"Canada, Québec"
+"lithium",2,kg,Materials,Global
+

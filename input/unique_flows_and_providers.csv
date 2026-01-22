@@ -1,0 +1,20 @@
+Inputs_Flows,Outputs_Flows,Providers_Providers,Location_Locations
+"wood chips, wet, measured as dry mass",Hydrogen sulfide,"market for zinc oxide | zinc oxide | Cutoff, U",Global
+"natural gas, high pressure","Hydrogen, 99.97%, 62.3 bar","market for activated carbon, granular | activated carbon, granular | Cutoff, U","Canada, Québec"
+"carbon dioxide, liquid","Hydrogen, 99.9%, 62.2 bar","market group for electricity, medium voltage | electricity, medium voltage | Cutoff, U","Canada, Alberta"
+"Water, cooling, unspecified natural origin, CA",Butane,"market for acrylic acid | acrylic acid | Cutoff, U","Canada, British Columbia"
+"electricity, high voltage",Magnesium,"market for sodium hydroxide, without water, in 50% solution state | sodium hydroxide, without water, in 50% solution state | Cutoff, U",Rest-of-World
+copper oxide,Pentane,"market for natural gas, high pressure | natural gas, high pressure | Cutoff, U",Canada
+"water, deionised","Hydrogen, 99.9%, 33 bar","market for palladium | palladium | Cutoff, U",
+"electricity, medium voltage","Carbon dioxide, fossil","market for aluminium oxide, metallurgical | aluminium oxide, metallurgical | Cutoff, U",
+acrylic acid,Nitrogen dioxide,"market for monoethanolamine | monoethanolamine | Cutoff, U",
+"aluminium oxide, metallurgical","carbon dioxide, liquid","market for wood chips, wet, measured as dry mass | wood chips, wet, measured as dry mass | Cutoff, U",
+zinc oxide,Carbon monoxide,"market for nickel, class 1 | nickel, class 1 | Cutoff, U",
+"activated carbon, granular",Hexane,"market for electricity, medium voltage | electricity, medium voltage | Cutoff, U",
+"sodium hydroxide, without water, in 50% solution state","wastewater, average","market for wastewater, average | wastewater, average | Cutoff, U",
+"heat, district or industrial, natural gas","Carbon dioxide, non-fossil","market for heat, district or industrial, natural gas | heat, district or industrial, natural gas | Cutoff, U",
+"nickel, class 1",Calcium,"market for copper oxide | copper oxide | Cutoff, U",
+palladium,Propane,"market for water, deionised | water, deionised | Cutoff, U",
+sulfuric acid,Ethane,"market for sulfuric acid | sulfuric acid | Cutoff, U",
+monoethanolamine,N-methyldiethanolamine,"market for chlorine, liquid | chlorine, liquid | Cutoff, U",
+"chlorine, liquid",Carbonyl sulfide,,

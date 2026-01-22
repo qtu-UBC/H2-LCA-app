@@ -77,6 +77,20 @@ def map_flows(source_df: pd.DataFrame, destination_file: str) -> dict:
                 'original_flow': flow
             }
             
+            # Add 'Contribution Category' from input data, preserving user's custom values
+            # Use whatever Contribution Category is in the input data, or fall back to Category
+            if 'Contribution Category' in row:
+                contribution_cat = row['Contribution Category']
+                # Use the Contribution Category from input data if it's not empty/NaN
+                if pd.notna(contribution_cat) and str(contribution_cat).strip() != "":
+                    mapping_dict['contribution_category'] = str(contribution_cat).strip()
+                else:
+                    # Empty or NaN, use Category as default
+                    mapping_dict['contribution_category'] = row['Category']
+            else:
+                # No Contribution Category column, use Category
+                mapping_dict['contribution_category'] = row['Category']
+            
             # Add 'Is reference?' if it exists in source_df
             if 'Is reference?' in row:
                 mapping_dict['is_reference'] = row['Is reference?']
