@@ -224,6 +224,26 @@ with left_col:
         ]
         matching_source_files.extend(partial_matches)
 
+    # Also include Source_File values from inputs/outputs that belong to this pathway
+    # (avoids missing rows when data files use a slightly different or truncated string)
+    def source_belongs_to_pathway(row_source: str, selected: str) -> bool:
+        if not row_source or (isinstance(row_source, float) and pd.isna(row_source)):
+            return False
+        r = str(row_source).strip().lower().replace("_", " ")
+        s = selected.strip().lower().replace("_", " ")
+        if r == s:
+            return True
+        if len(r) >= 30 and (s.startswith(r) or r.startswith(s)):
+            return True
+        return s in r or r in s
+
+    for _df in (inputs_df, outputs_df):
+        if "Source_File" not in _df.columns or _df.empty:
+            continue
+        for val in _df["Source_File"].dropna().unique():
+            if source_belongs_to_pathway(val, selected_source_file):
+                matching_source_files.append(val)
+
     matching_source_files = list(dict.fromkeys(matching_source_files))
 
     st.markdown(
@@ -290,9 +310,13 @@ with left_col:
     ):
         st.markdown("#### Input Data")
 
-        # ✅ Define filtered_inputs BEFORE using it
-        if selected_pathway and matching_source_files and "Source_File" in inputs_df.columns:
-            filtered_inputs = inputs_df[inputs_df["Source_File"].isin(matching_source_files)]
+        # ✅ Define filtered_inputs BEFORE using it (include all rows whose Source_File belongs to this pathway)
+        if selected_pathway and "Source_File" in inputs_df.columns and not inputs_df.empty:
+            mask = inputs_df["Source_File"].apply(
+                lambda x: source_belongs_to_pathway(x, selected_source_file)
+                if pd.notna(x) else False
+            )
+            filtered_inputs = inputs_df.loc[mask]
         else:
             filtered_inputs = pd.DataFrame()
         
@@ -418,11 +442,15 @@ with left_col:
     ):
         st.markdown("#### Output Data")
 
-        if selected_pathway and matching_source_files and "Source_File" in outputs_df.columns:
-            filtered_outputs = outputs_df[outputs_df["Source_File"].isin(matching_source_files)]
+        if selected_pathway and "Source_File" in outputs_df.columns and not outputs_df.empty:
+            mask_out = outputs_df["Source_File"].apply(
+                lambda x: source_belongs_to_pathway(x, selected_source_file)
+                if pd.notna(x) else False
+            )
+            filtered_outputs = outputs_df.loc[mask_out]
         else:
             filtered_outputs = pd.DataFrame()
-        
+
         if not filtered_outputs.empty:
             existing_out = (
                 filtered_outputs["Location"].dropna().astype(str).str.strip().unique().tolist()
