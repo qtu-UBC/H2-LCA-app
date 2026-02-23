@@ -13,9 +13,11 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 INPUT_DIR = os.path.join(PROJECT_ROOT, "input")
 
 # Define paths to input files and folders
-IDEMAT_SHEET = os.path.join(INPUT_DIR, "idemat_datasheet_speacial_made.xlsx")
+# NRC-modified Idemat database with Electricity/Water/Natural gas/Wood chip/Waste water Canada processes
+IDEMAT_SHEET = os.path.join(INPUT_DIR, "idemat_datasheet_speacial_made_NRC_modified.xlsx")
 H2_LCI_FOLDER = os.path.join(INPUT_DIR, "exported LCI models")
-MAPPING_FILE = os.path.join(INPUT_DIR, "mockup_semantic_similarity_table.csv")
+# Pre-loaded mapping for 3 pathways (ATR, Biomass Gasification, PEM Electrolysis) to NRC Idemat processes
+MAPPING_FILE = os.path.join(INPUT_DIR, "mockup_semantic_similarity_table_NRC_3pathways.csv")
 INPUTS_FILE = os.path.join(INPUT_DIR, "inputs.csv") # need to be updated every time parser is run
 OUTPUTS_FILE = os.path.join(INPUT_DIR, "outputs.csv") # need to be updated every time parser is run
 UNIQUE_FLOWS_PROVIDERS_FILE = os.path.join(INPUT_DIR, "unique_flows_and_providers.csv") # need to be updated every time parser is run

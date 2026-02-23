@@ -27,6 +27,23 @@ from config.config import (
     RECIPE_CF_FILE,
 )
 
+# Canadian provinces and territories for Location dropdown
+CANADIAN_PROVINCES = [
+    "Alberta",
+    "British Columbia",
+    "Manitoba",
+    "New Brunswick",
+    "Newfoundland and Labrador",
+    "Northwest Territories",
+    "Nova Scotia",
+    "Nunavut",
+    "Ontario",
+    "Prince Edward Island",
+    "Quebec",
+    "Saskatchewan",
+    "Yukon",
+]
+
 # Add scripts directory to path for importing the processor
 sys.path.append(str(Path(__file__).parent / "scripts"))
 
@@ -40,6 +57,40 @@ def safe_read_csv(path: str) -> pd.DataFrame:
         st.error(f"Failed to read CSV: {path}\n\n{e}")
         return pd.DataFrame()
 
+
+# Editable column styling: medium green background, light text (readable in light and dark mode)
+EDITABLE_BG = "#43a047"
+EDITABLE_TEXT = "#f5f5f5"
+
+
+def _preview_table_html(df: pd.DataFrame, editable_cols: list) -> str:
+    """Build HTML table with editable columns styled (background #43a047, text #f5f5f5)."""
+    df = df.fillna("").astype(str)
+    cols = list(df.columns)
+    green_set = set(editable_cols)
+    buf = ['<table style="width:100%; border-collapse:collapse; font-size:0.9rem;">']
+    buf.append("<thead><tr>")
+    for c in cols:
+        if c in green_set:
+            style = f"background-color:{EDITABLE_BG}; color:{EDITABLE_TEXT};"
+        else:
+            style = ""
+        label = "Type/Location" if c == "Location" else c
+        buf.append(f'<th style="padding:8px; border:1px solid #ddd; text-align:left;{style}">{label}</th>')
+    buf.append("</tr></thead><tbody>")
+    for _, row in df.iterrows():
+        buf.append("<tr>")
+        for c in cols:
+            if c in green_set:
+                style = f"background-color:{EDITABLE_BG}; color:{EDITABLE_TEXT};"
+            else:
+                style = ""
+            buf.append(f'<td style="padding:8px; border:1px solid #ddd;{style}">{row[c]}</td>')
+        buf.append("</tr>")
+    buf.append("</tbody></table>")
+    return "".join(buf)
+
+
 general_info_df = safe_read_csv(GENERAL_INFO_FILE)
 inputs_df = safe_read_csv(INPUTS_FILE)
 outputs_df = safe_read_csv(OUTPUTS_FILE)
@@ -48,7 +99,29 @@ unique_locations_df = safe_read_csv(UNIQUE_FLOWS_PROVIDERS_FILE)
 # Set up the Streamlit page with full width
 st.set_page_config(layout="wide")
 
-st.title("H2 Manufacturing LCI Data Explorer")
+st.title("Hydrogen Environmental Impact Calculator")
+
+# -----------------------------
+# INSTRUCTIONS (expand/collapse on click)
+# -----------------------------
+with st.expander("📋 **Instructions**", expanded=False):
+    st.markdown("""
+The app allows you to calculate environmental impact of hydrogen production pathways and test important parameters that affect the analysis. The calculator uses the Idemat open-source LCA database for background data. Follow the steps below for the calculation.
+
+**1.** Select the H₂ production pathway (e.g., autothermal reforming) and variant (with or without carbon capture) from the drop-down menus of **Pathway File** and **Select File Variant**. This selection loads life cycle inventory (LCI) data from the openLCA collaboration server of NRC Datahub.
+
+**2.** Select the **Input Data** button or scroll down to the Input Data panel. This panel lists inputs to the H₂ production process. The columns **Amount**, **Type/Location** and **Contribution Category** can be changed by the user. For example, these modifications can be used to test the sensitivity of electricity consumption of the H₂ production process and electricity grid mix. Contribution category allows you to categorize flows for representation of the results. When you edit a cell and press Enter (or the app re-runs), your changes are used immediately for mapping and impact in the current session. To save your changes to file so they persist, click **Update Input Values** below the table.
+
+**3.** Select the **Output Data** button or scroll down to the Output Data panel. This panel lists outputs from the H₂ production process. The columns **Amount**, **Type/Location** and **Contribution Category** can be changed by the user. Currently, there is no allocation for by-products and all environmental impacts are allocated to hydrogen production. When you edit a cell and press Enter (or the app re-runs), your changes are used immediately for mapping and impact in the current session. To save your changes to file so they persist, click **Update Output Values** below the table.
+
+**4.** Check that **Input Mapping** and **Output Mapping** are correct. The original LCI data from NRC Datahub openLCA collaboration server uses the ecoinvent database as background data. This app uses the open-source Idemat database as background data. The Input and Output mapping panels show the mapping between ecoinvent and Idemat flows. Please check that the mappings are correct.
+
+**5.** Select the **Climate Change Impact** button or scroll down to the Climate Change Impact panel to see the climate change impact of each input and output. Total climate change impact is calculated as the sum of individual impacts.
+
+**6.** Select the **Visualization** button or scroll down to the Visualization panel. Select Pie Chart and click **Generate Chart**. A figure will be generated categorized by the contribution categories entered in the Input Data and Output Data panels.
+
+**7.** Change **Amount** and **Type/Location** in the Input and Output Data panels to evaluate sensitivities of individual inputs and outputs on the final climate change impact.
+""")
 
 # Feature flag for PDF export (disabled by default)
 ENABLE_PDF_EXPORT = False
@@ -179,7 +252,7 @@ with left_col:
         </style>
     """, unsafe_allow_html=True)
 
-    nav_col1, nav_col2, nav_col3, nav_col4 = st.columns(4)
+    nav_col1, nav_col2, nav_col3 = st.columns(3)
 
     def create_nav_button(label: str, section_key: str, button_key: str):
         current_section = st.session_state.get("expanded_section", None)
@@ -203,15 +276,11 @@ with left_col:
         create_nav_button("🔗 Output Mapping", "output_mapping", "nav_output_mapping")
 
     with nav_col3:
-        create_nav_button("📊 Pathway Comparison", "pathway_comparison", "nav_pathway_comp")
-        create_nav_button("🌍 GWP Analysis", "gwp_analysis", "nav_gwp")
-
-    with nav_col4:
-        create_nav_button("📈 Impact Results", "impact_results", "nav_impact")
+        create_nav_button("📈 Climate Change Impact", "impact_results", "nav_impact")
         create_nav_button("📊 Visualization", "visualization", "nav_viz")
 
     st.markdown("---")
-
+    
     # -----------------------------
     # INPUT DATA
     # -----------------------------
@@ -228,11 +297,13 @@ with left_col:
             filtered_inputs = pd.DataFrame()
         
         if not filtered_inputs.empty:
-            available_locations = (
-                unique_locations_df["Location_Locations"].astype(str).unique().tolist()
-                if "Location_Locations" in unique_locations_df.columns
+            # Type/Location dropdown: Canadian provinces/territories + any existing values in data
+            existing_locations = (
+                filtered_inputs["Location"].dropna().astype(str).str.strip().unique().tolist()
+                if "Location" in filtered_inputs.columns
                 else []
             )
+            available_locations = list(dict.fromkeys(CANADIAN_PROVINCES + [x for x in existing_locations if x and x not in CANADIAN_PROVINCES]))
 
             base_columns = ["Flow", "Category", "Amount", "Unit", "Provider", "Location"]
             if "Contribution Category" in filtered_inputs.columns:
@@ -254,17 +325,21 @@ with left_col:
                     if pd.isna(current_contrib) or str(current_contrib).strip() == "":
                         default_idx = (list(display_df.index).index(idx)) % len(default_options)
                         display_df.loc[idx, "Contribution Category"] = default_options[default_idx]
-            
+
+            editable_cols = ["Amount", "Location", "Contribution Category"]
+
             edited_inputs = st.data_editor(
                 display_df,
                 column_config={
+                    "Flow": st.column_config.TextColumn("Flow", disabled=True),
+                    "Unit": st.column_config.TextColumn("Unit", disabled=True),
                     "Amount": st.column_config.NumberColumn(
                         "Amount",
-                        help="Edit the amount value", 
+                        help="Edit the amount value",
                         step=0.01,
                     ),
                     "Location": st.column_config.SelectboxColumn(
-                        "Location",
+                        "Type/Location",
                         help="Select a location",
                         options=available_locations,
                     ),
@@ -276,34 +351,38 @@ with left_col:
                 },
                 hide_index=True,
                 key="inputs_editor",
-                use_container_width=True,
+            )
+
+            st.caption("Editable columns (Amount, Type/Location, Contribution Category). Changes apply to mapping and impact immediately; click **Update Input Values** below to save to file.")
+            st.markdown(
+                _preview_table_html(display_df, editable_cols),
+                unsafe_allow_html=True,
             )
 
             saved_df_inputs = edited_inputs.copy()
-            
+
             if "Contribution Category" in saved_df_inputs.columns and "Category" in saved_df_inputs.columns:
                 saved_df_inputs["Contribution Category"] = saved_df_inputs["Contribution Category"].replace("", pd.NA)
                 saved_df_inputs["Contribution Category"] = saved_df_inputs["Contribution Category"].fillna(
                     saved_df_inputs["Category"]
                 )
-            
-            # Store in session_state for mapping section
+
             st.session_state["saved_df_inputs"] = saved_df_inputs
-            
+
             update_inputs = st.button("Update Input Values", key="update_inputs")
-            
+
             if update_inputs:
                 try:
                     if "Contribution Category" not in inputs_df.columns:
                         inputs_df["Contribution Category"] = ""
-                    
+
                     filtered_indices = filtered_inputs.index.tolist()
-                    
+
                     for i, orig_idx in enumerate(filtered_indices):
                         if i >= len(saved_df_inputs):
                             break
                         edited_row = saved_df_inputs.iloc[i]
-                        
+
                         contrib_cat = edited_row.get("Contribution Category", "")
                         if pd.notna(contrib_cat) and str(contrib_cat).strip() and str(contrib_cat).lower() != "nan":
                             inputs_df.loc[orig_idx, "Contribution Category"] = str(contrib_cat).strip()
@@ -316,7 +395,6 @@ with left_col:
                     inputs_df.to_csv(INPUTS_FILE, index=False)
                     st.success(f"✓ Input values saved to {INPUTS_FILE}")
                     st.info("💡 Your custom Contribution Category values have been saved!")
-                    inputs_df = pd.read_csv(INPUTS_FILE)
                     st.rerun()
                 except Exception as e:
                     st.error(f"Error saving input values: {str(e)}")
@@ -346,11 +424,11 @@ with left_col:
             filtered_outputs = pd.DataFrame()
         
         if not filtered_outputs.empty:
-            available_locations = (
-                unique_locations_df["Location_Locations"].astype(str).unique().tolist()
-                if "Location_Locations" in unique_locations_df.columns
-                else []
+            existing_out = (
+                filtered_outputs["Location"].dropna().astype(str).str.strip().unique().tolist()
+                if "Location" in filtered_outputs.columns else []
             )
+            available_locations = list(dict.fromkeys(CANADIAN_PROVINCES + [x for x in existing_out if x and x not in CANADIAN_PROVINCES]))
 
             base_columns = [
                 "Is reference?",
@@ -379,7 +457,9 @@ with left_col:
                 if pd.isna(current_contrib) or str(current_contrib).strip() == "":
                     default_idx = (list(display_df.index).index(idx)) % len(default_options)
                     display_df.loc[idx, "Contribution Category"] = default_options[default_idx]
-            
+
+            editable_cols = ["Amount", "Location", "Contribution Category"]
+
             edited_outputs = st.data_editor(
                 display_df,
                 column_config={
@@ -389,7 +469,7 @@ with left_col:
                         step=0.01,
                     ),
                     "Location": st.column_config.SelectboxColumn(
-                        "Location",
+                        "Type/Location",
                         help="Select a location",
                         options=available_locations,
                     ),
@@ -401,34 +481,38 @@ with left_col:
                 },
                 hide_index=True,
                 key="outputs_editor",
-                use_container_width=True,
+            )
+
+            st.caption("Editable columns (Amount, Type/Location, Contribution Category). Changes apply to mapping and impact immediately; click **Update Output Values** below to save to file.")
+            st.markdown(
+                _preview_table_html(display_df, editable_cols),
+                unsafe_allow_html=True,
             )
 
             saved_df_outputs = edited_outputs.copy()
-            
+
             if "Contribution Category" in saved_df_outputs.columns and "Category" in saved_df_outputs.columns:
                 saved_df_outputs["Contribution Category"] = saved_df_outputs["Contribution Category"].replace("", pd.NA)
                 saved_df_outputs["Contribution Category"] = saved_df_outputs["Contribution Category"].fillna(
                     saved_df_outputs["Category"]
                 )
-            
-            # Store in session_state for mapping section
+
             st.session_state["saved_df_outputs"] = saved_df_outputs
-            
+
             update_outputs = st.button("Update Output Values", key="update_outputs")
-            
+
             if update_outputs:
                 try:
                     if "Contribution Category" not in outputs_df.columns:
                         outputs_df["Contribution Category"] = ""
-                    
+
                     filtered_indices = filtered_outputs.index.tolist()
-                    
+
                     for i, orig_idx in enumerate(filtered_indices):
                         if i >= len(saved_df_outputs):
                             break
                         edited_row = saved_df_outputs.iloc[i]
-                        
+
                         contrib_cat = edited_row.get("Contribution Category", "")
                         if pd.notna(contrib_cat) and str(contrib_cat).strip() and str(contrib_cat).lower() != "nan":
                             outputs_df.loc[orig_idx, "Contribution Category"] = str(contrib_cat).strip()
@@ -441,7 +525,6 @@ with left_col:
                     outputs_df.to_csv(OUTPUTS_FILE, index=False)
                     st.success(f"✓ Output values saved to {OUTPUTS_FILE}")
                     st.info("💡 Your custom Contribution Category values have been saved!")
-                    outputs_df = pd.read_csv(OUTPUTS_FILE)
                     st.rerun()
                 except Exception as e:
                     st.error(f"Error saving output values: {str(e)}")
@@ -455,6 +538,31 @@ with left_col:
     # Ensure saved_df_outputs is available (use session_state if not set locally)
     if "saved_df_outputs" not in locals() or saved_df_outputs.empty:
         saved_df_outputs = st.session_state.get("saved_df_outputs", pd.DataFrame())
+
+    # -----------------------------
+    # PATHWAY COMPARISON (commented out — uses same logic as Climate Change Impact for consistency)
+    # Uncomment to show comparison of up to 3 pathways; uses compute_pathway_impact (CSV + map_flows + IDEMAT).
+    # -----------------------------
+    # from utils.calculate import compute_pathway_impact
+    # _available = general_info_df["Source_File"].unique().tolist() if "Source_File" in general_info_df.columns else []
+    # _pathway_opts = []
+    # for pname, pinfo in PATHWAY_MAPPINGS.items():
+    #     for f in pinfo["files"]:
+    #         _pathway_opts.append({"label": f"{pname} – {f['label']}", "source_file": f["source_file"]})
+    # _labels = [o["label"] for o in _pathway_opts]
+    # _sel1 = st.selectbox("Pathway 1", ["None"] + _labels, key="pc1")
+    # _sel2 = st.selectbox("Pathway 2", ["None"] + _labels, key="pc2")
+    # _sel3 = st.selectbox("Pathway 3", ["None"] + _labels, key="pc3")
+    # _selected = [o for s in [_sel1, _sel2, _sel3] if s != "None" and (o := next((x for x in _pathway_opts if x["label"] == s), None))]
+    # if _selected:
+    #     _rows = []
+    #     for o in _selected:
+    #         _sf = o["source_file"]
+    #         _exact = [x for x in _available if x == _sf]
+    #         _match = _exact if _exact else [x for x in _available if _sf.lower().replace("_", " ") in x.lower().replace("_", " ") or x.lower().replace("_", " ") in _sf.lower().replace("_", " ")]
+    #         _total = compute_pathway_impact(inputs_df, outputs_df, _match, MAPPING_FILE, IDEMAT_SHEET, "Carbon footprint (kg CO2 equiv.)")
+    #         _rows.append({"Pathway": o["label"], "Climate Change Impact (kg CO₂ eq./kg H2)": _total})
+    #     st.dataframe(pd.DataFrame(_rows), hide_index=True, use_container_width=True)
 
     # -----------------------------
     # MAPPING SECTION
@@ -474,7 +582,69 @@ with left_col:
         saved_df_inputs = st.session_state["saved_df_inputs"]
     if saved_df_outputs.empty and "saved_df_outputs" in st.session_state:
         saved_df_outputs = st.session_state["saved_df_outputs"]
-    
+
+    # If still empty but we have a pathway selected, build from CSV so mapping can run without opening Input/Output Data first
+    # Match using Source_File from the data files (inputs_df/outputs_df)
+    if saved_df_inputs.empty and selected_pathway and "Source_File" in inputs_df.columns and not inputs_df.empty:
+        all_sources = inputs_df["Source_File"].dropna().astype(str).unique()
+        sel_norm = selected_source_file.lower().replace("_", " ")
+        matching = [
+            s for s in all_sources
+            if s == selected_source_file
+            or sel_norm in s.lower().replace("_", " ")
+            or s.lower().replace("_", " ") in sel_norm
+        ]
+        if not matching and matching_source_files:
+            matching = [s for s in all_sources if any(m in s for m in matching_source_files)]
+        if not matching:
+            # Fallback: match by pathway name keyword in Source_File
+            kw = selected_pathway.lower().replace(" ", "")
+            if "autothermal" in kw or "reforming" in kw:
+                kw = "autothermal"
+            elif "pem" in kw or "electrolysis" in kw:
+                kw = "pem"
+            elif "biomass" in kw or "gasification" in kw:
+                kw = "biomass"
+            else:
+                kw = selected_pathway.lower()[:20]
+            matching = [s for s in all_sources if kw in s.lower().replace("_", " ").replace(" ", "")]
+            if not matching:
+                matching = list(all_sources)
+        filtered = inputs_df[inputs_df["Source_File"].astype(str).isin(matching)]
+        if not filtered.empty:
+            base_cols = [c for c in ["Flow", "Category", "Amount", "Unit", "Provider", "Location", "Contribution Category"] if c in filtered.columns]
+            saved_df_inputs = filtered[base_cols].copy()
+            st.session_state["saved_df_inputs"] = saved_df_inputs
+    if saved_df_outputs.empty and selected_pathway and "Source_File" in outputs_df.columns and not outputs_df.empty:
+        all_sources = outputs_df["Source_File"].dropna().astype(str).unique()
+        sel_norm = selected_source_file.lower().replace("_", " ")
+        matching = [
+            s for s in all_sources
+            if s == selected_source_file
+            or sel_norm in s.lower().replace("_", " ")
+            or s.lower().replace("_", " ") in sel_norm
+        ]
+        if not matching and matching_source_files:
+            matching = [s for s in all_sources if any(m in s for m in matching_source_files)]
+        if not matching:
+            kw = selected_pathway.lower().replace(" ", "")
+            if "autothermal" in kw or "reforming" in kw:
+                kw = "autothermal"
+            elif "pem" in kw or "electrolysis" in kw:
+                kw = "pem"
+            elif "biomass" in kw or "gasification" in kw:
+                kw = "biomass"
+            else:
+                kw = selected_pathway.lower()[:20]
+            matching = [s for s in all_sources if kw in s.lower().replace("_", " ").replace(" ", "")]
+            if not matching:
+                matching = list(all_sources)
+        filtered = outputs_df[outputs_df["Source_File"].astype(str).isin(matching)]
+        if not filtered.empty:
+            base_cols = [c for c in ["Flow", "Category", "Amount", "Unit", "Provider", "Location", "Contribution Category", "Is reference?"] if c in filtered.columns]
+            saved_df_outputs = filtered[base_cols].copy()
+            st.session_state["saved_df_outputs"] = saved_df_outputs
+
     # Map both inputs and outputs to database
     try:
         for df_name, df in [("inputs", saved_df_inputs), ("outputs", saved_df_outputs)]:
@@ -536,7 +706,6 @@ with left_col:
                     "Category": st.column_config.Column("Category", help="Category of the flow")
                 },
                 hide_index=True,
-                use_container_width=True
             )
 
     with st.expander(
@@ -560,214 +729,7 @@ with left_col:
                     "Category": st.column_config.Column("Category", help="Category of the flow")
                 },
                 hide_index=True,
-                use_container_width=True
             )
-
-    # -----------------------------
-    # PATHWAY COMPARISON
-    # -----------------------------
-    with st.expander(
-        "📊 **Pathway Comparison**",
-        expanded=(st.session_state.get("expanded_section") == "pathway_comparison"),
-    ):
-        st.markdown("### Pathway Comparison")
-        st.markdown("#### Select Pathways for Comparison (up to 3)")
-        st.info("Select up to 3 pathways to compare their data side by side.")
-
-        def get_pathway_options():
-            options = []
-            for pathway_name, pinfo in PATHWAY_MAPPINGS.items():
-                for file_info in pinfo["files"]:
-                    option_label = f"{pathway_name} - {file_info['label']}"
-                    options.append(
-                        {
-                            "label": option_label,
-                            "pathway": pathway_name,
-                            "file_label": file_info["label"],
-                            "source_file": file_info["source_file"],
-                        }
-                    )
-            return options
-
-        pathway_options_list = get_pathway_options()
-        pathway_option_labels = [opt["label"] for opt in pathway_options_list]
-
-        comp_col1, comp_col2, comp_col3 = st.columns(3)
-        selected_comparison_pathways = []
-
-        with comp_col1:
-            pathway1_comp = st.selectbox(
-                "Pathway 1:",
-                options=["None"] + pathway_option_labels,
-                key="pathway1_comp",
-            )
-            if pathway1_comp != "None":
-                selected_comparison_pathways.append(
-                    next(opt for opt in pathway_options_list if opt["label"] == pathway1_comp)
-                )
-
-        with comp_col2:
-            pathway2_comp = st.selectbox(
-                "Pathway 2:",
-                options=["None"] + pathway_option_labels,
-                key="pathway2_comp",
-            )
-            if pathway2_comp != "None" and pathway2_comp not in [p["label"] for p in selected_comparison_pathways]:
-                selected_comparison_pathways.append(
-                    next(opt for opt in pathway_options_list if opt["label"] == pathway2_comp)
-                )
-
-        with comp_col3:
-            pathway3_comp = st.selectbox(
-                "Pathway 3:",
-                options=["None"] + pathway_option_labels,
-                key="pathway3_comp",
-            )
-            if pathway3_comp != "None" and pathway3_comp not in [p["label"] for p in selected_comparison_pathways]:
-                selected_comparison_pathways.append(
-                    next(opt for opt in pathway_options_list if opt["label"] == pathway3_comp)
-                )
-
-        if selected_comparison_pathways:
-            st.markdown("---")
-            st.markdown("#### Pathway Comparison Results")
-
-            from utils.calculate import calculate_impacts
-
-            available_source_files = (
-                general_info_df["Source_File"].unique()
-                if "Source_File" in general_info_df.columns
-                else []
-            )
-
-            comparison_data = []
-
-            for pathway_opt in selected_comparison_pathways:
-                source_file = pathway_opt["source_file"]
-
-                matching_files = []
-                exact_matches = [sf for sf in available_source_files if sf == source_file]
-                if exact_matches:
-                    matching_files.extend(exact_matches)
-                else:
-                    partial_matches = [
-                        sf
-                        for sf in available_source_files
-                        if source_file.lower().replace("_", " ") in sf.lower().replace("_", " ")
-                        or sf.lower().replace("_", " ") in source_file.lower().replace("_", " ")
-                    ]
-                    matching_files.extend(partial_matches)
-
-                if not matching_files:
-                    continue
-
-                pathway_inputs = (
-                    inputs_df[inputs_df["Source_File"].isin(matching_files)]
-                    if "Source_File" in inputs_df.columns
-                    else pd.DataFrame()
-                )
-                pathway_outputs = (
-                    outputs_df[outputs_df["Source_File"].isin(matching_files)]
-                    if "Source_File" in outputs_df.columns
-                    else pd.DataFrame()
-                )
-
-                num_input_flows = len(pathway_inputs)
-                num_output_flows = len(pathway_outputs)
-                total_flows = num_input_flows + num_output_flows
-
-                total_co2_eq = 0.0
-
-                try:
-                    # inputs
-                    if not pathway_inputs.empty:
-                        inputs_mapping = map_flows(pathway_inputs, MAPPING_FILE)
-                        tmp_inputs_map_df = pd.DataFrame(
-                            [
-                                {
-                                    "Mapped Flow": m.get("mapped_flow", ""),
-                                    "Amount": m.get("amount", None),
-                                    "Unit": m.get("unit", ""),
-                                    "Category": m.get("category", ""),
-                                    "Contribution Category": m.get("contribution_category", m.get("category", "")),
-                                }
-                                for m in inputs_mapping.values()
-                            ]
-                        )
-                        if not tmp_inputs_map_df.empty:
-                            inputs_results = calculate_impacts(
-                                tmp_inputs_map_df, IDEMAT_SHEET, "Carbon footprint (kg CO2 equiv.)"
-                            )
-                            if not inputs_results.empty and "Calculated Result" in inputs_results.columns:
-                                total_co2_eq += float(inputs_results["Calculated Result"].sum())
-
-                    # outputs
-                    if not pathway_outputs.empty:
-                        outputs_mapping = map_flows(pathway_outputs, MAPPING_FILE)
-                        tmp_outputs_map_df = pd.DataFrame(
-                            [
-                                {
-                                    "Mapped Flow": m.get("mapped_flow", ""),
-                                    "Amount": m.get("amount", None),
-                                    "Unit": m.get("unit", ""),
-                                    "Category": m.get("category", ""),
-                                    "Contribution Category": m.get("contribution_category", m.get("category", "")),
-                                }
-                                for m in outputs_mapping.values()
-                            ]
-                        )
-                        if not tmp_outputs_map_df.empty:
-                            try:
-                                outputs_results = calculate_impacts(
-                                    tmp_outputs_map_df, IDEMAT_SHEET, "Carbon footprint (kg CO2 equiv.)"
-                                )
-                                if not outputs_results.empty and "Calculated Result" in outputs_results.columns:
-                                    total_co2_eq += float(outputs_results["Calculated Result"].sum())
-                            except Exception as e:
-                                st.warning(f"Could not calculate CO2 eq for {pathway_opt['label']}: {str(e)}")
-                except Exception as e:
-                    st.warning(f"Could not process pathway {pathway_opt['label']}: {str(e)}")
-
-                comparison_data.append(
-                    {
-                        "Pathway": pathway_opt["label"],
-                        "Number of Flows": total_flows,
-                        "CO₂ eq (kg CO₂ eq)": total_co2_eq,
-                        "Total GWP (kg CO₂ eq)": total_co2_eq,
-                    }
-                )
-
-            if comparison_data:
-                comparison_df = pd.DataFrame(comparison_data)
-                
-                avg_gwp = comparison_df["Total GWP (kg CO₂ eq)"].mean() if not comparison_df.empty else 0.0
-
-                st.markdown("##### Summary Metrics")
-                summary_col1, summary_col2, summary_col3, summary_col4 = st.columns(4)
-
-                with summary_col1:
-                    st.metric("Number of Pathways", len(comparison_df))
-
-                with summary_col2:
-                    st.metric("Total Flows", int(comparison_df["Number of Flows"].sum()))
-
-                with summary_col3:
-                    st.metric("Average GWP", f"{avg_gwp:.3f} kg CO₂ eq")
-
-                with summary_col4:
-                    st.metric(
-                        "Total GWP (All Pathways)",
-                        f"{comparison_df['Total GWP (kg CO₂ eq)'].sum():.3f} kg CO₂ eq",
-                    )
-
-                st.markdown("---")
-                st.markdown("##### Detailed Comparison")
-                st.dataframe(comparison_df, hide_index=True, use_container_width=True)
-
-                st.session_state["selected_comparison_pathways"] = selected_comparison_pathways
-                st.session_state["pathway_comparison_results"] = comparison_df
-            else:
-                st.warning("No comparison results available (no matching files found).")
 
 # -----------------------------
 # RIGHT COLUMN
@@ -781,64 +743,32 @@ with right_col:
     )
 
     # -----------------------------
-    # GWP ANALYSIS
+    # GWP ANALYSIS (commented out — uses same logic as Climate Change Impact for consistency)
+    # Uncomment to show GWP for all pathways; uses compute_pathway_impact (CSV + map_flows + IDEMAT), not process_lci/ReCiPe.
     # -----------------------------
-    with st.expander(
-        "🌍 **GWP Analysis**",
-        expanded=(st.session_state.get("expanded_section") == "gwp_analysis"),
-    ):
-        st.markdown("### GWP Analysis")
-    
-        if st.button("Calculate GWP for All Pathways", key="gwp_calc_btn"):
-            try:
-                from process_lci import LCIProcessor
-                
-                with st.spinner("Processing all LCI data..."):
-                    processor = LCIProcessor()
-                    _ = processor.load_all_lci_data()
-                    _ = processor.load_recipe_data()
-                    gwp_results = processor.calculate_gwp()
-                
-                if gwp_results is not None and not gwp_results.empty:
-                    st.markdown("#### Pathway GWP Results")
-                    st.dataframe(gwp_results, hide_index=True, use_container_width=True)
-
-                    col1, col2, col3 = st.columns(3)
-                    
-                    with col1:
-                        best_gwp = float(gwp_results.iloc[-1]["total_gwp_kgco2e"])
-                        st.metric("Best Pathway GWP", f"{best_gwp:.3f} kg CO₂-eq")
-                    
-                    with col2:
-                        worst_gwp = float(gwp_results.iloc[0]["total_gwp_kgco2e"])
-                        st.metric("Worst Pathway GWP", f"{worst_gwp:.3f} kg CO₂-eq")
-                    
-                    with col3:
-                        improvement = ((worst_gwp - best_gwp) / worst_gwp * 100) if worst_gwp > 0 else 0.0
-                        st.metric("Improvement Potential", f"{improvement:.1f}%")
-                    
-                    csv = gwp_results.to_csv(index=False)
-                    st.download_button(
-                        label="📥 Download GWP Results",
-                        data=csv,
-                        file_name="pathway_gwp_results.csv",
-                        mime="text/csv",
-                    )
-                else:
-                    st.warning("No GWP results available")
-                
-            except Exception as e:
-                st.error(f"Error calculating GWP: {str(e)}")
-            st.info("Make sure the LCI Excel files are in the 'input/exported LCI models/' directory")
+    # from utils.calculate import compute_pathway_impact
+    # _available_sf = general_info_df["Source_File"].unique().tolist() if "Source_File" in general_info_df.columns else []
+    # if st.button("Calculate GWP for All Pathways (consistent with Climate Change Impact)", key="gwp_btn"):
+    #     _gwp_rows = []
+    #     for pname, pinfo in PATHWAY_MAPPINGS.items():
+    #         for f in pinfo["files"]:
+    #             _sf = f["source_file"]
+    #             _exact = [x for x in _available_sf if x == _sf]
+    #             _match = _exact if _exact else [x for x in _available_sf if _sf.lower().replace("_", " ") in x.lower().replace("_", " ") or x.lower().replace("_", " ") in _sf.lower().replace("_", " ")]
+    #             _total = compute_pathway_impact(inputs_df, outputs_df, _match, MAPPING_FILE, IDEMAT_SHEET, "Carbon footprint (kg CO2 equiv.)")
+    #             _gwp_rows.append({"Pathway": f"{pname} – {f['label']}", "Climate Change Impact (kg CO₂ eq./kg H2)": _total})
+    #     _gwp_df = pd.DataFrame(_gwp_rows)
+    #     if not _gwp_df.empty:
+    #         st.dataframe(_gwp_df.sort_values("Climate Change Impact (kg CO₂ eq./kg H2)", ascending=False), hide_index=True, use_container_width=True)
 
     # -----------------------------
-    # IMPACT RESULTS
+    # CLIMATE CHANGE IMPACT
     # -----------------------------
     with st.expander(
-        "📈 **Impact Results**",
+        "📈 **Climate Change Impact**",
         expanded=(st.session_state.get("expanded_section") == "impact_results"),
     ):
-        st.markdown("### Impact Results")
+        st.markdown("### Climate Change Impact")
 
         # Initialize results DataFrames
         inputs_results_df = pd.DataFrame()
@@ -912,11 +842,18 @@ with right_col:
                     ]
 
             st.markdown("#### Total Impact")
-            st.dataframe(total_results_df, hide_index=True, use_container_width=True)
+            col_config = {"Calculated Result": st.column_config.NumberColumn("Calculated Result (kg CO2 eq.)", format="%.3f")}
+            if "Note" in total_results_df.columns:
+                col_config["Note"] = st.column_config.TextColumn("Note", help="Reason for 0 or conversion used")
+            st.dataframe(
+                total_results_df,
+                hide_index=True,
+                column_config=col_config,
+            )
 
             if "Calculated Result" in total_results_df.columns:
                 total_impact = float(total_results_df["Calculated Result"].sum())
-                st.metric("Total CO₂ eq Impact", f"{total_impact:.3f} kg CO₂ eq")
+                st.metric("Climate Change Impact per 1 kg of Hydrogen", f"{total_impact:.3f} kg CO₂ eq./kg H2")
         else:
             if inputs_mapping_df.empty and outputs_mapping_df.empty:
                 st.info("No input or output mapping data available")
@@ -939,9 +876,8 @@ with right_col:
         )
 
         if st.button("Generate Chart", key="generate_chart_btn"):
-            chart_data = total_results_df if "total_results_df" in locals() and not total_results_df.empty else (
-                inputs_results_df if "inputs_results_df" in locals() and not inputs_results_df.empty else outputs_results_df
-            )
+            # Get chart data from session_state (stored in Impact Results section)
+            chart_data = st.session_state.get("impact_results", pd.DataFrame())
 
             if chart_data is None or chart_data.empty:
                 st.warning("No data available for chart generation")
@@ -952,15 +888,17 @@ with right_col:
                     category_impacts = prepare_category_data(chart_data)
                     total_impact = float(category_impacts.sum()) if category_impacts is not None else 0.0
 
+                    # Plotly config: use config dict to avoid deprecated kwargs warning
+                    plotly_config = {"displayModeBar": True, "responsive": True}
                     if chart_type == "Pie Chart":
                         fig, color_mapping = generate_impact_piechart_plotly(chart_data)
-                        st.plotly_chart(fig, use_container_width=True)
+                        st.plotly_chart(fig, config=plotly_config, use_container_width=True)
                     elif chart_type == "Bar Chart":
                         fig, color_mapping = generate_impact_barchart_plotly(chart_data)
-                        st.plotly_chart(fig, use_container_width=True)
+                        st.plotly_chart(fig, config=plotly_config, use_container_width=True)
                     else:
                         fig, color_mapping = generate_impact_linechart_plotly(chart_data)
-                        st.plotly_chart(fig, use_container_width=True)
+                        st.plotly_chart(fig, config=plotly_config, use_container_width=True)
 
                     st.markdown("---")
                     st.markdown("#### **Category Legend**")
@@ -991,7 +929,7 @@ with right_col:
                                             {category}
                                         </p>
                                         <p style="margin: 5px 0 0 0; color: #34495e; font-size: 12px; font-weight: 500;">
-                                            {impact_value:.3f} kg CO₂ eq ({percentage:.2f}%)
+                                            {impact_value:.3f} kg CO₂ eq./kg H2 ({percentage:.2f}%)
                                         </p>
                                     </div>
                                     """,
