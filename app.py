@@ -300,7 +300,18 @@ with left_col:
         create_nav_button("📊 Visualization", "visualization", "nav_viz")
 
     st.markdown("---")
-    
+
+    def _default_contribution(flow_val):
+        """Default contribution category by flow type: electricity -> Electricity, water -> Water Supply, else Materials."""
+        if pd.isna(flow_val):
+            return "Materials"
+        s = str(flow_val).strip().lower()
+        if "electricity" in s:
+            return "Electricity"
+        if "water" in s or "deionised" in s or "deionized" in s:
+            return "Water Supply"
+        return "Materials"
+
     # -----------------------------
     # INPUT DATA
     # -----------------------------
@@ -342,13 +353,15 @@ with left_col:
             if "Contribution Category" not in display_df.columns:
                 display_df["Contribution Category"] = ""
 
-            default_options = ["Electricity", "Materials", "Water Supply"]
-            if "Contribution Category" in display_df.columns:
+            if "Contribution Category" in display_df.columns and "Flow" in display_df.columns:
+                default_options = ("Electricity", "Materials", "Water Supply")
                 for idx in display_df.index:
-                    current_contrib = display_df.loc[idx, "Contribution Category"]
-                    if pd.isna(current_contrib) or str(current_contrib).strip() == "":
-                        default_idx = (list(display_df.index).index(idx)) % len(default_options)
-                        display_df.loc[idx, "Contribution Category"] = default_options[default_idx]
+                    current = display_df.loc[idx, "Contribution Category"]
+                    current_str = "" if pd.isna(current) else str(current).strip()
+                    suggested = _default_contribution(display_df.loc[idx, "Flow"])
+                    # Set when empty, or when current is one of the three defaults but wrong for this flow
+                    if not current_str or (current_str in default_options and current_str != suggested):
+                        display_df.loc[idx, "Contribution Category"] = suggested
 
             editable_cols = ["Amount", "Location", "Contribution Category"]
 
@@ -479,12 +492,14 @@ with left_col:
             if "Contribution Category" not in display_df.columns:
                 display_df["Contribution Category"] = ""
 
-            default_options = ["Electricity", "Materials", "Water Supply"]
-            for idx in display_df.index:
-                current_contrib = display_df.loc[idx, "Contribution Category"]
-                if pd.isna(current_contrib) or str(current_contrib).strip() == "":
-                    default_idx = (list(display_df.index).index(idx)) % len(default_options)
-                    display_df.loc[idx, "Contribution Category"] = default_options[default_idx]
+            if "Contribution Category" in display_df.columns and "Flow" in display_df.columns:
+                default_options = ("Electricity", "Materials", "Water Supply")
+                for idx in display_df.index:
+                    current = display_df.loc[idx, "Contribution Category"]
+                    current_str = "" if pd.isna(current) else str(current).strip()
+                    suggested = _default_contribution(display_df.loc[idx, "Flow"])
+                    if not current_str or (current_str in default_options and current_str != suggested):
+                        display_df.loc[idx, "Contribution Category"] = suggested
 
             editable_cols = ["Amount", "Location", "Contribution Category"]
 

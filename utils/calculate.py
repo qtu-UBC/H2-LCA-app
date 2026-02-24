@@ -40,12 +40,21 @@ def calculate_impacts(mapped_df: pd.DataFrame, idemat_datasheet: str, column_of_
         # Create lookup series from idemat datasheet (index = Process name)
         idemat_df = idemat_df.dropna(subset=['Process'])
         idemat_df['Process'] = idemat_df['Process'].astype(str).str.strip()
+        # Deduplicate by Process so indexing never returns a Series (avoids "truth value of a Series is ambiguous")
+        idemat_unique = idemat_df.drop_duplicates(subset=['Process'], keep='first')
         lookup_series = pd.Series(
-            idemat_df.set_index('Process')[column_of_interest]
+            idemat_unique.set_index('Process')[column_of_interest]
         )
         unit_series = pd.Series(
-            idemat_df.set_index('Process')['unit']
+            idemat_unique.set_index('Process')['unit']
         )
+
+        def _scalar(s, key):
+            """Get scalar from series lookup; if duplicate index returns Series, take first."""
+            v = s.get(key) if hasattr(s, 'get') else (s[key] if key in s.index else None)
+            if hasattr(v, 'iloc'):
+                return v.iloc[0]
+            return v
         # Case-insensitive fallback: map normalized (lowercase, strip) name -> exact Idemat Process name
         # so LCI names like "argon", "carbon dioxide, liquid" match Idemat "Argon", "Carbon dioxide, liquid"
         process_names = lookup_series.index.tolist()
@@ -106,176 +115,183 @@ def calculate_impacts(mapped_df: pd.DataFrame, idemat_datasheet: str, column_of_
         
         # Calculate results by multiplying Amount with looked up values
         for _, row in mapped_df.iterrows():
-            mapped_flow = row['Mapped Flow']
+            mapped_flow = row.get('Mapped Flow', 'Unknown')
+            contribution_cat = row.get('Contribution Category') or row.get('Category', 'Unknown')
+            try:
+                mapped_flow = row['Mapped Flow']
             
-            # Get Contribution Category for tracking
-            contribution_cat = None
-            if 'Contribution Category' in row:
-                contribution_cat = row['Contribution Category']
-            if not contribution_cat or pd.isna(contribution_cat) or str(contribution_cat).strip() == "":
-                contribution_cat = row.get('Category', 'Unknown')
+                # Get Contribution Category for tracking
+                contribution_cat = None
+                if 'Contribution Category' in row:
+                    contribution_cat = row['Contribution Category']
+                if not contribution_cat or pd.isna(contribution_cat) or str(contribution_cat).strip() == "":
+                    contribution_cat = row.get('Category', 'Unknown')
             
-            # Helper to add a result row (used for both successful and skipped flows so Impact Results shows all flows)
-            def add_result_row(mapped_flow_name, calculated_val, contrib_cat, cat, note=""):
-                result_record = {
-                    'Mapped Flow': mapped_flow_name,
-                    'Calculated Result': calculated_val,
-                    'Category': cat,
-                    'Note': note,
-                }
-                result_record['Contribution Category'] = (contrib_cat if contrib_cat and str(contrib_cat).strip() else cat) if cat else (contrib_cat or 'Unknown')
-                results.append(result_record)
+                # Helper to add a result row (used for both successful and skipped flows so Impact Results shows all flows)
+                def add_result_row(mapped_flow_name, calculated_val, contrib_cat, cat, note=""):
+                    result_record = {
+                        'Mapped Flow': mapped_flow_name,
+                        'Calculated Result': calculated_val,
+                        'Category': cat,
+                        'Note': note,
+                    }
+                    result_record['Contribution Category'] = (contrib_cat if contrib_cat and str(contrib_cat).strip() else cat) if cat else (contrib_cat or 'Unknown')
+                    results.append(result_record)
 
-            # Reference product: still calculate impact (so we don't show a false zero).
-            # Result will be 0 only if there is no match in Idemat.
-            is_reference = 'Is reference?' in row and pd.notna(row['Is reference?'])
+                # Reference product: still calculate impact (so we don't show a false zero).
+                # Result will be 0 only if there is no match in Idemat.
+                is_reference = 'Is reference?' in row and pd.notna(row['Is reference?'])
             
-            # Resolve to Idemat Process name: exact match, then case-insensitive, then PubChem synonyms
-            idemat_process = resolve_idemat_process(mapped_flow)
-            if idemat_process is None:
-                try:
-                    compounds = pcp.get_compounds(mapped_flow, 'name')
-                    if compounds:
-                        for synonym in compounds[0].synonyms:
-                            idemat_process = resolve_idemat_process(synonym)
-                            if idemat_process is not None:
-                                break
-                except Exception:
-                    pass
-            if idemat_process is not None:
-                # Get units (strip spaces; Idemat Excel may have e.g. 'kg ')
-                source_unit = row.get('Unit', None)  # caution, capital U
-                if source_unit is not None and not pd.isna(source_unit):
-                    source_unit = str(source_unit).strip() or None
-                dest_unit = None
-                if idemat_process in unit_series.index:
-                    du = unit_series[idemat_process]
-                    if du is not None and not pd.isna(du):
-                        dest_unit = str(du).strip() or None
+                # Resolve to Idemat Process name: exact match, then case-insensitive, then PubChem synonyms
+                idemat_process = resolve_idemat_process(mapped_flow)
+                if idemat_process is None:
+                    try:
+                        compounds = pcp.get_compounds(mapped_flow, 'name')
+                        if compounds:
+                            for synonym in compounds[0].synonyms:
+                                idemat_process = resolve_idemat_process(synonym)
+                                if idemat_process is not None:
+                                    break
+                    except Exception:
+                        pass
+                if idemat_process is not None:
+                    # Get units (strip spaces; Idemat Excel may have e.g. 'kg ')
+                    source_unit = row.get('Unit', None)  # caution, capital U
+                    if source_unit is not None and not pd.isna(source_unit):
+                        source_unit = str(source_unit).strip() or None
+                    dest_unit = None
+                    if idemat_process in unit_series.index:
+                        du = _scalar(unit_series, idemat_process)
+                        if du is not None and not pd.isna(du):
+                            dest_unit = str(du).strip() or None
                 
-                # Check if units are valid
-                if pd.isna(dest_unit) or dest_unit is None or str(dest_unit).strip() == "":
-                    # If dest_unit is missing, try to use source_unit or skip conversion
-                    if source_unit and pd.notna(source_unit) and str(source_unit).strip() != "":
-                        dest_unit = source_unit
-                    else:
-                        # No valid units, still show in results with 0
+                    # Check if units are valid
+                    if pd.isna(dest_unit) or dest_unit is None or str(dest_unit).strip() == "":
+                        # If dest_unit is missing, try to use source_unit or skip conversion
+                        if source_unit and pd.notna(source_unit) and str(source_unit).strip() != "":
+                            dest_unit = source_unit
+                        else:
+                            # No valid units, still show in results with 0
+                            skipped_categories[contribution_cat] = skipped_categories.get(contribution_cat, 0) + 1
+                            add_result_row(idemat_process, 0.0, contribution_cat, row['Category'], note="Missing unit in Idemat")
+                            continue
+                
+                    if not source_unit or pd.isna(source_unit) or str(source_unit).strip() == "":
+                        # No source unit, still show in results with 0
                         skipped_categories[contribution_cat] = skipped_categories.get(contribution_cat, 0) + 1
-                        add_result_row(idemat_process, 0.0, contribution_cat, row['Category'], note="Missing unit in Idemat")
+                        add_result_row(idemat_process, 0.0, contribution_cat, row['Category'], note="Missing source unit")
                         continue
                 
-                if not source_unit or pd.isna(source_unit) or str(source_unit).strip() == "":
-                    # No source unit, still show in results with 0
-                    skipped_categories[contribution_cat] = skipped_categories.get(contribution_cat, 0) + 1
-                    add_result_row(idemat_process, 0.0, contribution_cat, row['Category'], note="Missing source unit")
-                    continue
-                
-                try:
-                    # Convert amount to destination unit
-                    source_unit_s = str(source_unit).strip()
-                    dest_unit_s = str(dest_unit).strip()
-                    source_quantity = row['Amount'] * ureg(source_unit_s)
-                    dest_quantity = source_quantity.to(dest_unit_s)
-                    converted_amount = dest_quantity.magnitude
+                    try:
+                        # Convert amount to destination unit
+                        source_unit_s = str(source_unit).strip()
+                        dest_unit_s = str(dest_unit).strip()
+                        source_quantity = row['Amount'] * ureg(source_unit_s)
+                        dest_quantity = source_quantity.to(dest_unit_s)
+                        converted_amount = dest_quantity.magnitude
                     
-                    # Get CF value (treat NaN as 0 so result is 0, not NaN)
-                    cf_value = lookup_series[idemat_process]
-                    if pd.isna(cf_value):
-                        cf_value = 0.0
+                        # Get CF value (treat NaN as 0 so result is 0, not NaN)
+                        cf_value = _scalar(lookup_series, idemat_process)
+                        if cf_value is None or pd.isna(cf_value):
+                            cf_value = 0.0
                     
-                    # Calculate result with converted amount
-                    calculated_result = converted_amount * cf_value
-                    result_record = {
-                        'Mapped Flow': idemat_process,
-                        'Calculated Result': calculated_result,
-                        'Category': row['Category'],
-                        'Note': '',
-                    }
-                    
-                    # Add Contribution Category from input data, preserving user's custom values
-                    # Use the contribution_cat we already extracted (from row or Category fallback)
-                    if 'Contribution Category' in row:
-                        result_contribution_cat = row['Contribution Category']
-                        # Use the Contribution Category from input data if it's not empty/NaN
-                        if pd.notna(result_contribution_cat) and str(result_contribution_cat).strip() != "":
-                            result_record['Contribution Category'] = str(result_contribution_cat).strip()
-                        else:
-                            # Empty or NaN, use Category as default
-                            result_record['Contribution Category'] = row['Category']
-                    else:
-                        # No Contribution Category column, use the contribution_cat we extracted earlier (which falls back to Category)
-                        result_record['Contribution Category'] = contribution_cat if contribution_cat else row['Category']
-                    
-                    # Track which categories were successfully processed
-                    final_cat = result_record.get('Contribution Category', 'Unknown')
-                    processed_categories[final_cat] = processed_categories.get(final_cat, 0) + 1
-                    if is_reference:
-                        result_record['Note'] = 'Reference product'
-                    results.append(result_record)
-                except (pint.errors.DimensionalityError, AttributeError, ValueError, TypeError) as e:
-                    # Try water volume<->mass fallback: 1 L water ≈ 1 kg (common for deionized water, wastewater)
-                    converted_amount = None
-                    su = str(source_unit).strip().lower() if source_unit else ""
-                    du = str(dest_unit).strip().lower() if dest_unit else ""
-                    vol_units = ('l', 'liter', 'litre', 'm3', 'dm3')
-                    mass_units = ('kg', 'g')
-                    amount = row['Amount']
-                    if su in vol_units and du in mass_units:
-                        if su in ('m3',):
-                            converted_amount = amount * 1000.0  # 1 m3 water ≈ 1000 kg
-                        else:
-                            converted_amount = amount  # 1 L water ≈ 1 kg
-                    elif su in mass_units and du in vol_units:
-                        if du == 'm3':
-                            converted_amount = amount / 1000.0
-                        else:
-                            converted_amount = amount
-                    if converted_amount is not None:
-                        cf_value = lookup_series.get(idemat_process)
-                        if pd.isna(cf_value) or cf_value == 0:
-                            # Use a water-supply process with non-zero CF to avoid false zero
-                            water_processes_kg = [
-                                "Deionized water production",
-                                "drinking water europe",
-                                "industrial reverse osmosis water europe",
-                            ]
-                            for wp in water_processes_kg:
-                                if wp in lookup_series.index:
-                                    cv = lookup_series[wp]
-                                    if pd.notna(cv) and cv != 0:
-                                        idemat_process = wp
-                                        cf_value = float(cv)
-                                        break
-                            else:
-                                cf_value = 0.0
-                        else:
-                            cf_value = float(cf_value)
+                        # Calculate result with converted amount
                         calculated_result = converted_amount * cf_value
                         result_record = {
                             'Mapped Flow': idemat_process,
                             'Calculated Result': calculated_result,
                             'Category': row['Category'],
-                            'Note': 'Volume–mass conversion (water, 1 L≈1 kg)',
+                            'Note': '',
                         }
-                        if 'Contribution Category' in row and pd.notna(row['Contribution Category']) and str(row['Contribution Category']).strip():
-                            result_record['Contribution Category'] = str(row['Contribution Category']).strip()
+                    
+                        # Add Contribution Category from input data, preserving user's custom values
+                        if 'Contribution Category' in row:
+                            result_contribution_cat = row['Contribution Category']
+                            if pd.notna(result_contribution_cat) and str(result_contribution_cat).strip() != "":
+                                result_record['Contribution Category'] = str(result_contribution_cat).strip()
+                            else:
+                                result_record['Contribution Category'] = row['Category']
                         else:
                             result_record['Contribution Category'] = contribution_cat if contribution_cat else row['Category']
+                    
+                        final_cat = result_record.get('Contribution Category', 'Unknown')
+                        processed_categories[final_cat] = processed_categories.get(final_cat, 0) + 1
                         if is_reference:
-                            result_record['Note'] = 'Reference product; ' + result_record['Note']
+                            result_record['Note'] = 'Reference product'
                         results.append(result_record)
+                    except (pint.errors.DimensionalityError, AttributeError, ValueError, TypeError) as e:
+                        # Try water volume<->mass fallback: 1 L water ≈ 1 kg
+                        converted_amount = None
+                        su = str(source_unit).strip().lower() if source_unit else ""
+                        du = str(dest_unit).strip().lower() if dest_unit else ""
+                        vol_units = ('l', 'liter', 'litre', 'm3', 'dm3')
+                        mass_units = ('kg', 'g')
+                        amount = row['Amount']
+                        if su in vol_units and du in mass_units:
+                            if su in ('m3',):
+                                converted_amount = amount * 1000.0
+                            else:
+                                converted_amount = amount
+                        elif su in mass_units and du in vol_units:
+                            if du == 'm3':
+                                converted_amount = amount / 1000.0
+                            else:
+                                converted_amount = amount
+                        if converted_amount is not None:
+                            cf_value = _scalar(lookup_series, idemat_process)
+                            if cf_value is None or pd.isna(cf_value) or cf_value == 0:
+                                water_processes_kg = [
+                                    "Deionized water production",
+                                    "drinking water europe",
+                                    "industrial reverse osmosis water europe",
+                                ]
+                                for wp in water_processes_kg:
+                                    if wp in lookup_series.index:
+                                        cv = _scalar(lookup_series, wp)
+                                        if cv is not None and pd.notna(cv) and cv != 0:
+                                            idemat_process = wp
+                                            cf_value = float(cv)
+                                            break
+                                else:
+                                    cf_value = 0.0
+                            else:
+                                cf_value = float(cf_value)
+                            calculated_result = converted_amount * cf_value
+                            result_record = {
+                                'Mapped Flow': idemat_process,
+                                'Calculated Result': calculated_result,
+                                'Category': row['Category'],
+                                'Note': 'Volume–mass conversion (water, 1 L≈1 kg)',
+                            }
+                            if 'Contribution Category' in row and pd.notna(row['Contribution Category']) and str(row['Contribution Category']).strip():
+                                result_record['Contribution Category'] = str(row['Contribution Category']).strip()
+                            else:
+                                result_record['Contribution Category'] = contribution_cat if contribution_cat else row['Category']
+                            if is_reference:
+                                result_record['Note'] = 'Reference product; ' + result_record['Note']
+                            results.append(result_record)
+                            continue
+                        skipped_categories[contribution_cat] = skipped_categories.get(contribution_cat, 0) + 1
+                        with open(log_file, 'a') as f:
+                            f.write(f"Skipped {idemat_process}: Unit conversion error - {str(e)}\n")
+                        add_result_row(idemat_process, 0.0, contribution_cat, row['Category'], note="Unit conversion error")
                         continue
-                    # No fallback: record 0 with reason
+                else:
+                    # Flow not found in Idemat lookup: still show in results with 0 so Impact Results lists all flows
                     skipped_categories[contribution_cat] = skipped_categories.get(contribution_cat, 0) + 1
-                    with open(log_file, 'a') as f:
-                        f.write(f"Skipped {idemat_process}: Unit conversion error - {str(e)}\n")
-                    add_result_row(idemat_process, 0.0, contribution_cat, row['Category'], note="Unit conversion error")
-                    continue
-            else:
-                # Flow not found in Idemat lookup: still show in results with 0 so Impact Results lists all flows
-                skipped_categories[contribution_cat] = skipped_categories.get(contribution_cat, 0) + 1
-                add_result_row(mapped_flow, 0.0, contribution_cat, row['Category'], note="No match in Idemat")
-                
+                    add_result_row(mapped_flow, 0.0, contribution_cat, row['Category'], note="No match in Idemat")
+            except Exception as e:
+                # Ensure this flow still appears in the table (no missing flows)
+                results.append({
+                    'Mapped Flow': mapped_flow,
+                    'Calculated Result': 0.0,
+                    'Category': row.get('Category', ''),
+                    'Contribution Category': contribution_cat,
+                    'Note': 'Calculation error',
+                })
+                with open(log_file, 'a') as f:
+                    f.write(f"Error for flow {mapped_flow}: {e}\n")
+
         # Create results DataFrame from results list
         if len(results) > 0:
             results_df = pd.DataFrame(results)
