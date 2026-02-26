@@ -836,7 +836,7 @@ with right_col:
             column_of_interest = "Carbon footprint (kg CO2 equiv.)"
             
             try:
-                inputs_results_df = calculate_impacts(inputs_mapping_df, IDEMAT_SHEET, column_of_interest)
+                inputs_results_df = calculate_impacts(inputs_mapping_df, IDEMAT_SHEET, column_of_interest, flow_direction="input")
             except Exception as e:
                 st.error(f"Error calculating inputs impacts: {str(e)}")
                 import traceback
@@ -852,7 +852,7 @@ with right_col:
             column_of_interest = "Carbon footprint (kg CO2 equiv.)"
             
             try:
-                outputs_results_df = calculate_impacts(outputs_mapping_df, IDEMAT_SHEET, column_of_interest)
+                outputs_results_df = calculate_impacts(outputs_mapping_df, IDEMAT_SHEET, column_of_interest, flow_direction="output")
             except Exception as e:
                 st.error(f"Error calculating outputs impacts: {str(e)}")
                 import traceback
@@ -871,7 +871,13 @@ with right_col:
             total_results_df = outputs_results_df.copy()
         
         if not total_results_df.empty:
-            st.session_state["impact_results"] = total_results_df
+            total_results_display_df = total_results_df.copy()
+            if "Note" in total_results_display_df.columns:
+                total_results_display_df = total_results_display_df[
+                    ~total_results_display_df["Note"].fillna("").str.contains("Reference product", regex=False)
+                ].copy()
+
+            st.session_state["impact_results"] = total_results_display_df
             st.session_state["selected_pathway"] = selected_pathway
 
             if matching_source_files:
@@ -886,16 +892,16 @@ with right_col:
 
             st.markdown("#### Total Impact")
             col_config = {"Calculated Result": st.column_config.NumberColumn("Calculated Result (kg CO2 eq.)", format="%.3f")}
-            if "Note" in total_results_df.columns:
+            if "Note" in total_results_display_df.columns:
                 col_config["Note"] = st.column_config.TextColumn("Note", help="Reason for 0 or conversion used")
             st.dataframe(
-                total_results_df,
+                total_results_display_df,
                 hide_index=True,
                 column_config=col_config,
             )
 
-            if "Calculated Result" in total_results_df.columns:
-                total_impact = float(total_results_df["Calculated Result"].sum())
+            if "Calculated Result" in total_results_display_df.columns:
+                total_impact = float(total_results_display_df["Calculated Result"].sum())
                 st.metric("Climate Change Impact per 1 kg of Hydrogen", f"{total_impact:.3f} kg CO₂ eq./kg H2")
         else:
             if inputs_mapping_df.empty and outputs_mapping_df.empty:

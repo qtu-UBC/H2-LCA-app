@@ -1,9 +1,18 @@
+import os
+import re
+from typing import Optional
+
 import pandas as pd
 import pint
-import os
+
 from config.config import LOG_DIR
 
-def calculate_impacts(mapped_df: pd.DataFrame, idemat_datasheet: str, column_of_interest: str) -> pd.DataFrame:
+def calculate_impacts(
+    mapped_df: pd.DataFrame,
+    idemat_datasheet: str,
+    column_of_interest: str,
+    flow_direction: Optional[str] = None,
+) -> pd.DataFrame:
     """
     Looks up values from Idemat datasheet and multiplies with Amount column to calculate results.
     
@@ -112,6 +121,68 @@ def calculate_impacts(mapped_df: pd.DataFrame, idemat_datasheet: str, column_of_
 
         # Initialize Pint unit registry
         ureg = pint.UnitRegistry()
+
+        def _normalize_pint_unit(unit_val):
+            """Normalize CSV/Idemat unit spellings to Pint-compatible units."""
+            if unit_val is None or pd.isna(unit_val):
+                return None
+            u = str(unit_val).strip()
+            if not u:
+                return None
+            unit_map = {
+                "m3": "meter**3",
+                "m^3": "meter**3",
+                "m³": "meter**3",
+                "dm3": "decimeter**3",
+                "dm^3": "decimeter**3",
+                "cm3": "centimeter**3",
+                "cm^3": "centimeter**3",
+                "l": "liter",
+                "L": "liter",
+                "kWh": "kilowatt_hour",
+            }
+            return unit_map.get(u, u)
+
+        def _extract_original_flow_name(row_obj, fallback_name):
+            raw = row_obj.get('Original Flow', fallback_name)
+            if raw is None or (isinstance(raw, float) and pd.isna(raw)):
+                raw = fallback_name
+            s = str(raw).strip()
+            if "_" in s:
+                head, tail = s.rsplit("_", 1)
+                if tail.isdigit():
+                    return head
+            return s
+
+        def _is_elementary_category(cat):
+            if cat is None or (isinstance(cat, float) and pd.isna(cat)):
+                return False
+            return "elementary flows" in str(cat).strip().lower()
+
+        def _is_likely_ghg(flow_name):
+            if not flow_name:
+                return False
+            s = str(flow_name).strip().lower()
+            ghg_patterns = [
+                r"\bcarbon dioxide\b",
+                r"\bmethane\b",
+                r"\bnitrous oxide\b",
+                r"\bdinitrogen monoxide\b",
+                r"\bsulfur hexafluoride\b",
+                r"\bnitrogen trifluoride\b",
+                r"\bhfc[-\s]?\d+\b",
+                r"\bpfc[-\s]?\d+\b",
+                r"\bperfluoro",
+                r"\bhydrofluoro",
+                r"\bcf4\b",
+                r"\bc2f6\b",
+                r"\bc3f8\b",
+                r"\bc4f10\b",
+                r"\bcfc[-\s]?\d+\b",
+                r"\bsf6\b",
+                r"\bnf3\b",
+            ]
+            return any(re.search(p, s) for p in ghg_patterns)
         
         # Calculate results by multiplying Amount with looked up values
         for _, row in mapped_df.iterrows():
@@ -138,9 +209,28 @@ def calculate_impacts(mapped_df: pd.DataFrame, idemat_datasheet: str, column_of_
                     result_record['Contribution Category'] = (contrib_cat if contrib_cat and str(contrib_cat).strip() else cat) if cat else (contrib_cat or 'Unknown')
                     results.append(result_record)
 
-                # Reference product: still calculate impact (so we don't show a false zero).
-                # Result will be 0 only if there is no match in Idemat.
-                is_reference = 'Is reference?' in row and pd.notna(row['Is reference?'])
+                is_reference = False
+                if 'Is reference?' in row and pd.notna(row['Is reference?']):
+                    ref_val = str(row['Is reference?']).strip().lower()
+                    is_reference = ref_val in {"x", "true", "1", "yes", "y"}
+
+                category_value = row.get('Category', '')
+                original_flow_name = _extract_original_flow_name(row, mapped_flow)
+                is_elementary = _is_elementary_category(category_value)
+
+                # Reference product and non-elementary outputs (incl. co-products) are not
+                # characterized as climate-change contributors in this app view.
+                if is_reference:
+                    add_result_row(mapped_flow, 0.0, contribution_cat, category_value, note="Reference product")
+                    continue
+                if (flow_direction or "").lower() == "output" and not is_elementary:
+                    add_result_row(mapped_flow, 0.0, contribution_cat, category_value, note="Output non-elementary flow")
+                    continue
+
+                # For elementary flows, only GHGs should contribute to climate change.
+                if is_elementary and not _is_likely_ghg(original_flow_name):
+                    add_result_row(mapped_flow, 0.0, contribution_cat, category_value, note="Elementary non-GHG flow")
+                    continue
             
                 # Resolve to Idemat Process name: exact match, then case-insensitive, then PubChem synonyms
                 idemat_process = resolve_idemat_process(mapped_flow)
@@ -184,8 +274,8 @@ def calculate_impacts(mapped_df: pd.DataFrame, idemat_datasheet: str, column_of_
                 
                     try:
                         # Convert amount to destination unit
-                        source_unit_s = str(source_unit).strip()
-                        dest_unit_s = str(dest_unit).strip()
+                        source_unit_s = _normalize_pint_unit(source_unit)
+                        dest_unit_s = _normalize_pint_unit(dest_unit)
                         source_quantity = row['Amount'] * ureg(source_unit_s)
                         dest_quantity = source_quantity.to(dest_unit_s)
                         converted_amount = dest_quantity.magnitude
@@ -216,8 +306,6 @@ def calculate_impacts(mapped_df: pd.DataFrame, idemat_datasheet: str, column_of_
                     
                         final_cat = result_record.get('Contribution Category', 'Unknown')
                         processed_categories[final_cat] = processed_categories.get(final_cat, 0) + 1
-                        if is_reference:
-                            result_record['Note'] = 'Reference product'
                         results.append(result_record)
                     except (pint.errors.DimensionalityError, AttributeError, ValueError, TypeError) as e:
                         # Try water volume<->mass fallback: 1 L water ≈ 1 kg
@@ -267,8 +355,6 @@ def calculate_impacts(mapped_df: pd.DataFrame, idemat_datasheet: str, column_of_
                                 result_record['Contribution Category'] = str(row['Contribution Category']).strip()
                             else:
                                 result_record['Contribution Category'] = contribution_cat if contribution_cat else row['Category']
-                            if is_reference:
-                                result_record['Note'] = 'Reference product; ' + result_record['Note']
                             results.append(result_record)
                             continue
                         skipped_categories[contribution_cat] = skipped_categories.get(contribution_cat, 0) + 1
@@ -373,7 +459,12 @@ def compute_pathway_impact(
             mapping_df = pd.DataFrame(mapping_records)
             if mapping_df.empty:
                 continue
-            results = calculate_impacts(mapping_df, idemat_sheet, column_of_interest)
+            results = calculate_impacts(
+                mapping_df,
+                idemat_sheet,
+                column_of_interest,
+                flow_direction=("input" if _name == "inputs" else "output"),
+            )
             if not results.empty and "Calculated Result" in results.columns:
                 # Exclude reference product from pathway total (it's the functional unit, not an input)
                 mask = ~results["Note"].fillna("").str.contains("Reference product", regex=False)

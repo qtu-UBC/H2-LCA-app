@@ -92,13 +92,13 @@ x,"Hydrogen, 99.9%, 62.2 bar",NRC - LCI/Hydrogen production,1.0,kg,,,log-normal,
 ,Oxygen,Elementary flows/Emission to air/unspecified,37.448954,kg,,,,,,,,,,,,,hydrogen_wood_biomass_gasification_without_carbon_,
 ,"wastewater, average","E:Water supply; sewerage, waste management and remediation activities/37:Sewerage/370:Sewerage/3700:Sewerage",15.013078,l,,,,,,,,,"market for wastewater, average | wastewater, average | Cutoff, U",,Rest-of-World,,hydrogen_wood_biomass_gasification_without_carbon_,
 ,Water,Elementary flows/Emission to air/unspecified,9.050282,l,,,,,,,,,,,,,hydrogen_wood_biomass_gasification_without_carbon_,
-,"carbon dioxide, liquid","C:Manufacturing/20:Manufacture of chemicals and chemical products/201:Manufacture of basic chemicals, fertilizers and nitrogen compounds, plastics/2011:Manufacture of basic chemicals",16.536528,kg,,,,,,,,,,,,"The CO2 is in the form of vapour; however, ""carbon dioxide, liquid"" is considered here as a proxy.",hydrogen_wood_biomass_gasification_with_carbon_cap,
-,"Carbon dioxide, non-fossil",Elementary flows/Emission to air/unspecified,4.525554,kg,,,,,,,,,,(3;5;4;3;1),,,hydrogen_wood_biomass_gasification_with_carbon_cap,
-,"Carbon monoxide, biogenic",Elementary flows/Emission to air/unspecified,1e-06,kg,,,,,,,,,,(3;5;4;3;1),,,hydrogen_wood_biomass_gasification_with_carbon_cap,
-x,"Hydrogen, 99.9%, 62.2 bar",NRC - LCI/Hydrogen production,1.0,kg,,,,,,,,,,(3;5;4;3;1),,Hydrogen production from gasification technology.,hydrogen_wood_biomass_gasification_with_carbon_cap,
-,Methane,Elementary flows/Emission to air/unspecified,2e-06,kg,,,,,,,,,,,,,hydrogen_wood_biomass_gasification_with_carbon_cap,
-,N-methyldiethanolamine,Elementary flows/Emission to air/unspecified,0.000181,kg,,,,,,,,,,,,MDEA,hydrogen_wood_biomass_gasification_with_carbon_cap,
-,Nitrogen,Elementary flows/Emission to air/unspecified,25.929034,kg,,,,,,,,,,,,,hydrogen_wood_biomass_gasification_with_carbon_cap,
-,Oxygen,Elementary flows/Emission to air/unspecified,0.063166,kg,,,,,,,,,,,,,hydrogen_wood_biomass_gasification_with_carbon_cap,
-,"wastewater, average","E:Water supply; sewerage, waste management and remediation activities/37:Sewerage/370:Sewerage/3700:Sewerage",4.718775,l,,,,,,,,,"market for wastewater, average | wastewater, average | Cutoff, U",,Rest-of-World,,hydrogen_wood_biomass_gasification_with_carbon_cap,
-,Water,Elementary flows/Emission to air/unspecified,2.591587,l,,,,,,,,,,,,,hydrogen_wood_biomass_gasification_with_carbon_cap,
+,"carbon dioxide, liquid","C:Manufacturing/20:Manufacture of chemicals and chemical products/201:Manufacture of basic chemicals, fertilizers and nitrogen compounds, plastics/2011:Manufacture of basic chemicals",16.536528,kg,,,,,,,,,,,,"The CO2 is in the form of vapour; however, ""carbon dioxide, liquid"" is considered here as a proxy.",hydrogen_wood_biomass_gasification_with_carbon_cap,Electricity
+,"Carbon dioxide, non-fossil",Elementary flows/Emission to air/unspecified,4.525554,kg,,,,,,,,,,(3;5;4;3;1),,,hydrogen_wood_biomass_gasification_with_carbon_cap,Materials
+,"Carbon monoxide, biogenic",Elementary flows/Emission to air/unspecified,1e-06,kg,,,,,,,,,,(3;5;4;3;1),,,hydrogen_wood_biomass_gasification_with_carbon_cap,Water Supply
+x,"Hydrogen, 99.9%, 62.2 bar",NRC - LCI/Hydrogen production,1.0,kg,,,,,,,,,,(3;5;4;3;1),,Hydrogen production from gasification technology.,hydrogen_wood_biomass_gasification_with_carbon_cap,Electricity
+,Methane,Elementary flows/Emission to air/unspecified,2e-06,kg,,,,,,,,,,,,,hydrogen_wood_biomass_gasification_with_carbon_cap,Materials
+,N-methyldiethanolamine,Elementary flows/Emission to air/unspecified,0.000181,kg,,,,,,,,,,,,MDEA,hydrogen_wood_biomass_gasification_with_carbon_cap,Water Supply
+,Nitrogen,Elementary flows/Emission to air/unspecified,25.929034,kg,,,,,,,,,,,,,hydrogen_wood_biomass_gasification_with_carbon_cap,Electricity
+,Oxygen,Elementary flows/Emission to air/unspecified,0.063166,kg,,,,,,,,,,,,,hydrogen_wood_biomass_gasification_with_carbon_cap,Materials
+,"wastewater, average","E:Water supply; sewerage, waste management and remediation activities/37:Sewerage/370:Sewerage/3700:Sewerage",4.718775,l,,,,,,,,,"market for wastewater, average | wastewater, average | Cutoff, U",,Rest-of-World,,hydrogen_wood_biomass_gasification_with_carbon_cap,Water Supply
+,Water,Elementary flows/Emission to air/unspecified,2.591587,l,,,,,,,,,,,,,hydrogen_wood_biomass_gasification_with_carbon_cap,Electricity
