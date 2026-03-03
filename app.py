@@ -92,9 +92,22 @@ def _preview_table_html(df: pd.DataFrame, editable_cols: list) -> str:
 
 
 general_info_df = safe_read_csv(GENERAL_INFO_FILE)
+# Load from file only (never write except on explicit "Update" click)
 inputs_df = safe_read_csv(INPUTS_FILE)
 outputs_df = safe_read_csv(OUTPUTS_FILE)
 unique_locations_df = safe_read_csv(UNIQUE_FLOWS_PROVIDERS_FILE)
+
+# Snapshot of file content at session start: used by "Reset to default values" to restore original document values
+if "original_inputs_df" not in st.session_state:
+    st.session_state["original_inputs_df"] = inputs_df.copy()
+if "original_outputs_df" not in st.session_state:
+    st.session_state["original_outputs_df"] = outputs_df.copy()
+
+# Reset counter: increment on "Reset to default" so data_editor re-initializes with file data
+if "inputs_editor_reset_key" not in st.session_state:
+    st.session_state["inputs_editor_reset_key"] = 0
+if "outputs_editor_reset_key" not in st.session_state:
+    st.session_state["outputs_editor_reset_key"] = 0
 
 # Set up the Streamlit page with full width
 st.set_page_config(layout="wide")
@@ -110,9 +123,9 @@ The app allows you to calculate environmental impact of hydrogen production path
 
 **1.** Select the H₂ production pathway (e.g., autothermal reforming) and variant (with or without carbon capture) from the drop-down menus of **Pathway File** and **Select File Variant**. This selection loads life cycle inventory (LCI) data from the openLCA collaboration server of NRC Datahub.
 
-**2.** Select the **Input Data** button or scroll down to the Input Data panel. This panel lists inputs to the H₂ production process. The columns **Amount**, **Type/Location** and **Contribution Category** can be changed by the user. Edits are **temporary** until you click **Update Input Values** (they apply to mapping and impact in the current session only). Click **Update Input Values** to save to file; click **Reset to default values** to reload from file and discard unsaved edits.
+**2.** Select the **Input Data** button or scroll down to the Input Data panel. This panel lists inputs to the H₂ production process. The columns **Amount**, **Type/Location** and **Contribution Category** can be changed by the user. Edits are **temporary** until you click **Update Input Values** (they apply to mapping and impact in the current session only). Click **Update Input Values** to save to file; click **Reset to default values** to restore the table and file to the values from when you opened this session.
 
-**3.** Select the **Output Data** button or scroll down to the Output Data panel. This panel lists outputs from the H₂ production process. The columns **Amount**, **Type/Location** and **Contribution Category** can be changed by the user. Edits are **temporary** until you click **Update Output Values**. Click **Update Output Values** to save to file; click **Reset to default values** to reload from file and discard unsaved edits.
+**3.** Select the **Output Data** button or scroll down to the Output Data panel. This panel lists outputs from the H₂ production process. The columns **Amount**, **Type/Location** and **Contribution Category** can be changed by the user. Edits are **temporary** until you click **Update Output Values**. Click **Update Output Values** to save to file; click **Reset to default values** to restore the table and file to the values from when you opened this session.
 
 **4.** Check that **Input Mapping** and **Output Mapping** are correct. The original LCI data from NRC Datahub openLCA collaboration server uses the ecoinvent database as background data. This app uses the open-source Idemat database as background data. The Input and Output mapping panels show the mapping between ecoinvent and Idemat flows. Please check that the mappings are correct.
 
@@ -387,10 +400,10 @@ with left_col:
                     ),
                 },
                 hide_index=True,
-                key="inputs_editor",
+                key="inputs_editor_" + str(st.session_state.get("inputs_editor_reset_key", 0)),
             )
 
-            st.caption("Editable columns (Amount, Type/Location, Contribution Category). Changes are temporary until you click **Update Input Values** (to save) or **Reset to default values** (to reload from file).")
+            st.caption("Editable columns (Amount, Type/Location, Contribution Category). Your edits stay in the app only; the CSV file is **not** changed until you click **Update Input Values**. **Reset to default values** restores the table and file to the values from when you opened this session.")
             st.markdown(
                 _preview_table_html(display_df, editable_cols),
                 unsafe_allow_html=True,
@@ -408,13 +421,18 @@ with left_col:
 
             btn_col1, btn_col2 = st.columns(2)
             with btn_col1:
-                update_inputs = st.button("Update Input Values", key="update_inputs", help="Save current table to file (persists across sessions)")
+                update_inputs = st.button("Update Input Values", key="update_inputs", help="Write current table to the CSV file (this is the only action that changes the file)")
             with btn_col2:
-                reset_inputs = st.button("Reset to default values", key="reset_inputs", help="Reload from file and discard unsaved edits")
+                reset_inputs = st.button("Reset to default values", key="reset_inputs", help="Restore table and file to values from when you opened this session")
 
             if reset_inputs:
+                # Restore file to session-start snapshot so rerun shows original document values
+                orig = st.session_state.get("original_inputs_df")
+                if orig is not None and not orig.empty:
+                    orig.to_csv(INPUTS_FILE, index=False)
                 if "saved_df_inputs" in st.session_state:
                     del st.session_state["saved_df_inputs"]
+                st.session_state["inputs_editor_reset_key"] = st.session_state.get("inputs_editor_reset_key", 0) + 1
                 st.rerun()
 
             if update_inputs:
@@ -532,10 +550,10 @@ with left_col:
                     ),
                 },
                 hide_index=True,
-                key="outputs_editor",
+                key="outputs_editor_" + str(st.session_state.get("outputs_editor_reset_key", 0)),
             )
 
-            st.caption("Editable columns (Amount, Type/Location, Contribution Category). Changes are temporary until you click **Update Output Values** (to save) or **Reset to default values** (to reload from file).")
+            st.caption("Editable columns (Amount, Type/Location, Contribution Category). Your edits stay in the app only; the CSV file is **not** changed until you click **Update Output Values**. **Reset to default values** restores the table and file to the values from when you opened this session.")
             st.markdown(
                 _preview_table_html(display_df, editable_cols),
                 unsafe_allow_html=True,
@@ -553,13 +571,18 @@ with left_col:
 
             out_btn_col1, out_btn_col2 = st.columns(2)
             with out_btn_col1:
-                update_outputs = st.button("Update Output Values", key="update_outputs", help="Save current table to file (persists across sessions)")
+                update_outputs = st.button("Update Output Values", key="update_outputs", help="Write current table to the CSV file (this is the only action that changes the file)")
             with out_btn_col2:
-                reset_outputs = st.button("Reset to default values", key="reset_outputs", help="Reload from file and discard unsaved edits")
+                reset_outputs = st.button("Reset to default values", key="reset_outputs", help="Restore table and file to values from when you opened this session")
 
             if reset_outputs:
+                # Restore file to session-start snapshot so rerun shows original document values
+                orig_out = st.session_state.get("original_outputs_df")
+                if orig_out is not None and not orig_out.empty:
+                    orig_out.to_csv(OUTPUTS_FILE, index=False)
                 if "saved_df_outputs" in st.session_state:
                     del st.session_state["saved_df_outputs"]
+                st.session_state["outputs_editor_reset_key"] = st.session_state.get("outputs_editor_reset_key", 0) + 1
                 st.rerun()
 
             if update_outputs:
