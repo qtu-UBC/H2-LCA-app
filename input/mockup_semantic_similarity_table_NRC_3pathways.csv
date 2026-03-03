@@ -92,6 +92,12 @@ zinc oxide,,Zinc Oxide
 "market for electricity, medium voltage | electricity, medium voltage | Cutoff, U","Canada, British Columbia",Electricity Canada production
 "market for electricity, medium voltage | electricity, medium voltage | Cutoff, U",Rest-of-World,Electricity Canada production
 "market for electricity, medium voltage | electricity, medium voltage | Cutoff, U",Canada,Electricity Canada production
+"market for electricity, high voltage | electricity, high voltage | Cutoff, U",Global,Electricity Canada production
+"market for electricity, high voltage | electricity, high voltage | Cutoff, U","Canada, Québec",Electricity Canada production
+"market for electricity, high voltage | electricity, high voltage | Cutoff, U","Canada, Alberta",Electricity Canada production
+"market for electricity, high voltage | electricity, high voltage | Cutoff, U","Canada, British Columbia",Electricity Canada production
+"market for electricity, high voltage | electricity, high voltage | Cutoff, U",Rest-of-World,Electricity Canada production
+"market for electricity, high voltage | electricity, high voltage | Cutoff, U",Canada,Electricity Canada production
 "market for wastewater, average | wastewater, average | Cutoff, U",Global,Waste water treatment
 "market for wastewater, average | wastewater, average | Cutoff, U","Canada, Québec",Waste water treatment
 "market for wastewater, average | wastewater, average | Cutoff, U","Canada, Alberta",Waste water treatment

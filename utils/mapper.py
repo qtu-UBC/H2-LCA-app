@@ -76,7 +76,18 @@ def map_flows(source_df: pd.DataFrame, destination_file: str) -> dict:
             
             if mapped_flow is None and flow and flow in simple_mapping_series.index:
                 mapped_flow = simple_mapping_series[flow]
-            elif mapped_flow is None:
+            # Fallback: try Flow column (e.g. "electricity, high voltage") when Provider didn't match
+            if mapped_flow is None:
+                flow_name = row.get('Flow', '')
+                if pd.notna(flow_name) and str(flow_name).strip():
+                    fn = str(flow_name).strip()
+                    if fn in simple_mapping_series.index:
+                        mapped_flow = simple_mapping_series[fn]
+                    else:
+                        composite_flow = fn + '|' + (str(row.get('Location', '')).strip() if pd.notna(row.get('Location')) else '')
+                        if composite_flow in mapping_series.index:
+                            mapped_flow = mapping_series[composite_flow]
+            if mapped_flow is None:
                 mapped_flow = flow
 
             flow_str = flow

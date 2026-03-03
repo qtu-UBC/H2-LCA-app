@@ -110,9 +110,9 @@ The app allows you to calculate environmental impact of hydrogen production path
 
 **1.** Select the H₂ production pathway (e.g., autothermal reforming) and variant (with or without carbon capture) from the drop-down menus of **Pathway File** and **Select File Variant**. This selection loads life cycle inventory (LCI) data from the openLCA collaboration server of NRC Datahub.
 
-**2.** Select the **Input Data** button or scroll down to the Input Data panel. This panel lists inputs to the H₂ production process. The columns **Amount**, **Type/Location** and **Contribution Category** can be changed by the user. For example, these modifications can be used to test the sensitivity of electricity consumption of the H₂ production process and electricity grid mix. Contribution category allows you to categorize flows for representation of the results. When you edit a cell and press Enter (or the app re-runs), your changes are used immediately for mapping and impact in the current session. To save your changes to file so they persist, click **Update Input Values** below the table.
+**2.** Select the **Input Data** button or scroll down to the Input Data panel. This panel lists inputs to the H₂ production process. The columns **Amount**, **Type/Location** and **Contribution Category** can be changed by the user. Edits are **temporary** until you click **Update Input Values** (they apply to mapping and impact in the current session only). Click **Update Input Values** to save to file; click **Reset to default values** to reload from file and discard unsaved edits.
 
-**3.** Select the **Output Data** button or scroll down to the Output Data panel. This panel lists outputs from the H₂ production process. The columns **Amount**, **Type/Location** and **Contribution Category** can be changed by the user. Currently, there is no allocation for by-products and all environmental impacts are allocated to hydrogen production. When you edit a cell and press Enter (or the app re-runs), your changes are used immediately for mapping and impact in the current session. To save your changes to file so they persist, click **Update Output Values** below the table.
+**3.** Select the **Output Data** button or scroll down to the Output Data panel. This panel lists outputs from the H₂ production process. The columns **Amount**, **Type/Location** and **Contribution Category** can be changed by the user. Edits are **temporary** until you click **Update Output Values**. Click **Update Output Values** to save to file; click **Reset to default values** to reload from file and discard unsaved edits.
 
 **4.** Check that **Input Mapping** and **Output Mapping** are correct. The original LCI data from NRC Datahub openLCA collaboration server uses the ecoinvent database as background data. This app uses the open-source Idemat database as background data. The Input and Output mapping panels show the mapping between ecoinvent and Idemat flows. Please check that the mappings are correct.
 
@@ -390,7 +390,7 @@ with left_col:
                 key="inputs_editor",
             )
 
-            st.caption("Editable columns (Amount, Type/Location, Contribution Category). Changes apply to mapping and impact immediately; click **Update Input Values** below to save to file.")
+            st.caption("Editable columns (Amount, Type/Location, Contribution Category). Changes are temporary until you click **Update Input Values** (to save) or **Reset to default values** (to reload from file).")
             st.markdown(
                 _preview_table_html(display_df, editable_cols),
                 unsafe_allow_html=True,
@@ -406,7 +406,16 @@ with left_col:
 
             st.session_state["saved_df_inputs"] = saved_df_inputs
 
-            update_inputs = st.button("Update Input Values", key="update_inputs")
+            btn_col1, btn_col2 = st.columns(2)
+            with btn_col1:
+                update_inputs = st.button("Update Input Values", key="update_inputs", help="Save current table to file (persists across sessions)")
+            with btn_col2:
+                reset_inputs = st.button("Reset to default values", key="reset_inputs", help="Reload from file and discard unsaved edits")
+
+            if reset_inputs:
+                if "saved_df_inputs" in st.session_state:
+                    del st.session_state["saved_df_inputs"]
+                st.rerun()
 
             if update_inputs:
                 try:
@@ -526,7 +535,7 @@ with left_col:
                 key="outputs_editor",
             )
 
-            st.caption("Editable columns (Amount, Type/Location, Contribution Category). Changes apply to mapping and impact immediately; click **Update Output Values** below to save to file.")
+            st.caption("Editable columns (Amount, Type/Location, Contribution Category). Changes are temporary until you click **Update Output Values** (to save) or **Reset to default values** (to reload from file).")
             st.markdown(
                 _preview_table_html(display_df, editable_cols),
                 unsafe_allow_html=True,
@@ -542,7 +551,16 @@ with left_col:
 
             st.session_state["saved_df_outputs"] = saved_df_outputs
 
-            update_outputs = st.button("Update Output Values", key="update_outputs")
+            out_btn_col1, out_btn_col2 = st.columns(2)
+            with out_btn_col1:
+                update_outputs = st.button("Update Output Values", key="update_outputs", help="Save current table to file (persists across sessions)")
+            with out_btn_col2:
+                reset_outputs = st.button("Reset to default values", key="reset_outputs", help="Reload from file and discard unsaved edits")
+
+            if reset_outputs:
+                if "saved_df_outputs" in st.session_state:
+                    del st.session_state["saved_df_outputs"]
+                st.rerun()
 
             if update_outputs:
                 try:
