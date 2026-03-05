@@ -352,7 +352,7 @@ with left_col:
                 base_columns.append("Contribution Category")
 
             base_columns = [c for c in base_columns if c in filtered_inputs.columns]
-            # Use session edits for this pathway when available; otherwise use file data
+            # Use saved session data when available (so "Update" keeps table showing applied values); otherwise file (new session / Reset)
             _saved = st.session_state.get("saved_df_inputs", pd.DataFrame())
             _path = st.session_state.get("saved_inputs_pathway")
             if not _saved.empty and _path == selected_source_file and set(base_columns).issubset(set(_saved.columns)):
@@ -485,7 +485,7 @@ with left_col:
                 base_columns.append("Contribution Category")
 
             base_columns = [c for c in base_columns if c in filtered_outputs.columns]
-            # Use session edits for this pathway when available; otherwise use file data
+            # Use saved session data when available (so "Update" keeps table showing applied values); otherwise file (new session / Reset)
             _saved_out = st.session_state.get("saved_df_outputs", pd.DataFrame())
             _path_out = st.session_state.get("saved_outputs_pathway")
             if not _saved_out.empty and _path_out == selected_source_file and set(base_columns).issubset(set(_saved_out.columns)):
