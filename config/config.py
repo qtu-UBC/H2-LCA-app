@@ -13,8 +13,10 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 INPUT_DIR = os.path.join(PROJECT_ROOT, "input")
 
 # Define paths to input files and folders
-# NRC-modified Idemat database with Electricity/Water/Natural gas/Wood chip/Waste water Canada processes
-IDEMAT_SHEET = os.path.join(INPUT_DIR, "idemat_datasheet_speacial_made_NRC_modified.xlsx")
+# NRC-modified Idemat database (original): Electricity/Water/Natural gas/Wood chip/Waste water Canada processes.
+# Prefer the original file path if it exists; otherwise use the copy in input/.
+_IDEMAT_ORIGINAL = "/Users/nikoo/Downloads/idemat_datasheet_speacial_made_NRC_modified (1).xlsx"
+IDEMAT_SHEET = _IDEMAT_ORIGINAL if os.path.isfile(_IDEMAT_ORIGINAL) else os.path.join(INPUT_DIR, "idemat_datasheet_speacial_made_NRC_modified.xlsx")
 H2_LCI_FOLDER = os.path.join(INPUT_DIR, "exported LCI models")
 # Pre-loaded mapping for 3 pathways (ATR, Biomass Gasification, PEM Electrolysis) to NRC Idemat processes
 MAPPING_FILE = os.path.join(INPUT_DIR, "mockup_semantic_similarity_table_NRC_3pathways.csv")
