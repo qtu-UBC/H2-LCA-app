@@ -107,14 +107,12 @@ def generate_impact_barchart_plotly(results_df: pd.DataFrame):
             'font': {'size': 24, 'color': '#2c3e50', 'family': 'Arial, sans-serif'}
         },
         xaxis=dict(
-            title='',
-            titlefont=dict(size=16, color='#2c3e50'),
+            title=dict(text='', font=dict(size=16, color='#2c3e50')),
             showgrid=False,
             showticklabels=False  # Hide category labels on x-axis
         ),
         yaxis=dict(
-            title='CO₂ eq Impact (kg CO₂ eq)',
-            titlefont=dict(size=18, color='#2c3e50'),
+            title=dict(text='CO₂ eq Impact (kg CO₂ eq)', font=dict(size=18, color='#2c3e50')),
             tickfont=dict(size=14, color='#34495e'),
             showgrid=True,
             gridcolor='#ecf0f1',
@@ -197,8 +195,7 @@ def generate_impact_piechart_plotly(results_df: pd.DataFrame):
                 text=f'<b>Total</b><br>{total:.2f}<br>kg CO₂ eq',
                 x=0.5,
                 y=0.5,
-                font_size=20,
-                font_color='#2c3e50',
+                font=dict(size=20, color='#2c3e50'),
                 showarrow=False
             )
         ]
@@ -263,14 +260,12 @@ def generate_impact_linechart_plotly(results_df: pd.DataFrame):
             'font': {'size': 24, 'color': '#2c3e50', 'family': 'Arial, sans-serif'}
         },
         xaxis=dict(
-            title='',
-            titlefont=dict(size=16, color='#2c3e50'),
+            title=dict(text='', font=dict(size=16, color='#2c3e50')),
             showgrid=False,
             showticklabels=False  # Hide category labels on x-axis
         ),
         yaxis=dict(
-            title='CO₂ eq Impact (kg CO₂ eq)',
-            titlefont=dict(size=18, color='#2c3e50'),
+            title=dict(text='CO₂ eq Impact (kg CO₂ eq)', font=dict(size=18, color='#2c3e50')),
             tickfont=dict(size=14, color='#34495e'),
             showgrid=True,
             gridcolor='#ecf0f1',
