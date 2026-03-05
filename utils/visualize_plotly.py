@@ -43,13 +43,22 @@ def prepare_category_data(results_df: pd.DataFrame) -> pd.Series:
         category_col = 'Category' if 'Category' in df_copy.columns else df_copy.columns[0]
     
     if 'Calculated Result' not in df_copy.columns:
-        raise ValueError("Missing 'Calculated Result' column in results DataFrame")
-    
+        raise ValueError(
+            "Missing 'Calculated Result' column in results DataFrame. "
+            "Run the Climate Change Impact section first, then generate the chart."
+        )
+
+    # Ensure numeric for sum (e.g. if CSV/state had strings)
+    df_copy['Calculated Result'] = pd.to_numeric(df_copy['Calculated Result'], errors='coerce').fillna(0)
+
     # Group and sum
     category_impacts = df_copy.groupby(category_col, dropna=False)['Calculated Result'].sum().sort_values(ascending=False)
-    
+
     if len(category_impacts) == 0:
-        raise ValueError("No impact values found to visualize")
+        raise ValueError(
+            "No impact values found to visualize. "
+            "Ensure the Climate Change Impact table has at least one row with a Contribution Category and a numeric result."
+        )
     
     # Replace any negative values with 0
     category_impacts = category_impacts.clip(lower=0)

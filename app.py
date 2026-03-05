@@ -928,7 +928,15 @@ with right_col:
             chart_data = st.session_state.get("impact_results", pd.DataFrame())
 
             if chart_data is None or chart_data.empty:
-                st.warning("No data available for chart generation")
+                st.warning(
+                    "No data available for chart generation. **Run the Climate Change Impact section first** "
+                    "(select a pathway and let the impact table load), then try Generate Chart again."
+                )
+            elif "Calculated Result" not in chart_data.columns:
+                st.error(
+                    "Impact data is missing the **Calculated Result** column. Re-run the Climate Change Impact section, "
+                    "then try again. If the problem persists, check that the Idemat file and mapping are loaded correctly."
+                )
             else:
                 try:
                     from utils.visualize_plotly import prepare_category_data
@@ -986,6 +994,14 @@ with right_col:
                     else:
                         st.info("No category impact breakdown available to display.")
 
+                except ModuleNotFoundError as e:
+                    if "plotly" in str(e).lower():
+                        st.error(
+                            "**Plotly is not installed.** Install it with: `pip install plotly` (or `pip install -r requirements.txt`). "
+                            "Then restart the app."
+                        )
+                    else:
+                        st.error(f"Missing dependency: {e}")
                 except Exception as e:
                     st.error(f"Error generating chart: {str(e)}")
                     import traceback
