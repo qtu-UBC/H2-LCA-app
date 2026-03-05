@@ -103,6 +103,14 @@ if "inputs_editor_reset_key" not in st.session_state:
 if "outputs_editor_reset_key" not in st.session_state:
     st.session_state["outputs_editor_reset_key"] = 0
 
+# New session only (reload/new tab): clear saved data and bump editor keys so table shows file values
+if "_session_initialized" not in st.session_state:
+    for key in ("saved_df_inputs", "saved_df_outputs", "saved_inputs_pathway", "saved_outputs_pathway"):
+        st.session_state.pop(key, None)
+    st.session_state["inputs_editor_reset_key"] = st.session_state.get("inputs_editor_reset_key", 0) + 1
+    st.session_state["outputs_editor_reset_key"] = st.session_state.get("outputs_editor_reset_key", 0) + 1
+    st.session_state["_session_initialized"] = True
+
 # Set up the Streamlit page with full width
 st.set_page_config(layout="wide")
 
@@ -339,20 +347,21 @@ with left_col:
             filtered_inputs = pd.DataFrame()
         
         if not filtered_inputs.empty:
-            # Type/Location dropdown: Canadian provinces/territories + any existing values in data
+            # Type/Location: Canada + Canadian provinces/territories + any existing values (dropdown is searchable – type to filter, Enter to select)
             existing_locations = (
                 filtered_inputs["Location"].dropna().astype(str).str.strip().unique().tolist()
                 if "Location" in filtered_inputs.columns
                 else []
             )
-            available_locations = list(dict.fromkeys(CANADIAN_PROVINCES + [x for x in existing_locations if x and x not in CANADIAN_PROVINCES]))
+            extra = [x for x in existing_locations if x and x not in CANADIAN_PROVINCES and x != "Canada"]
+            available_locations = list(dict.fromkeys(["Canada"] + CANADIAN_PROVINCES + extra))
 
             base_columns = ["Flow", "Category", "Amount", "Unit", "Provider", "Location"]
             if "Contribution Category" in filtered_inputs.columns:
                 base_columns.append("Contribution Category")
 
             base_columns = [c for c in base_columns if c in filtered_inputs.columns]
-            # Use saved session data when available (so "Update" keeps table showing applied values); otherwise file (new session / Reset)
+            # Use saved session data when available (so edits and Update persist in table); else file (new session / Reset)
             _saved = st.session_state.get("saved_df_inputs", pd.DataFrame())
             _path = st.session_state.get("saved_inputs_pathway")
             if not _saved.empty and _path == selected_source_file and set(base_columns).issubset(set(_saved.columns)):
@@ -390,8 +399,9 @@ with left_col:
                     ),
                     "Location": st.column_config.SelectboxColumn(
                         "Type/Location",
-                        help="Select a location",
+                        help="Select or type to search: Canada, provinces, or existing values; press Enter to apply",
                         options=available_locations,
+                        default="",
                     ),
                     "Contribution Category": st.column_config.TextColumn(
                         "Contribution Category",
@@ -422,21 +432,17 @@ with left_col:
 
             btn_col1, btn_col2 = st.columns(2)
             with btn_col1:
-                update_inputs = st.button("Update Input Values", key="update_inputs", help="Apply current table for this session only (file is not changed)")
+                update_inputs = st.button("Update Input Values", key="update_inputs", help="Apply current table for this session only (file is never changed)")
             with btn_col2:
-                reset_inputs = st.button("Reset to default values", key="reset_inputs", help="Discard session edits and reload from file")
+                reset_inputs = st.button("Reset to default values", key="reset_inputs", help="Reload table from file (discard session edits)")
 
             if reset_inputs:
-                if "saved_df_inputs" in st.session_state:
-                    del st.session_state["saved_df_inputs"]
-                if "saved_inputs_pathway" in st.session_state:
-                    del st.session_state["saved_inputs_pathway"]
                 st.session_state["inputs_editor_reset_key"] = st.session_state.get("inputs_editor_reset_key", 0) + 1
                 st.rerun()
 
             if update_inputs:
-                # Session only: do NOT write to INPUTS_FILE. Table state is in saved_df_inputs; file stays unchanged.
-                st.success("✓ Input values applied for this session. Reloading the app will load the original file.")
+                # Session only: do NOT write to file; table will show file again on next run (reload = original)
+                st.success("✓ Input values applied for this session. Reload or next run will show original file values.")
                 st.rerun()
         else:
             st.info("No input data available for the selected pathway.")
@@ -470,7 +476,8 @@ with left_col:
                 filtered_outputs["Location"].dropna().astype(str).str.strip().unique().tolist()
                 if "Location" in filtered_outputs.columns else []
             )
-            available_locations = list(dict.fromkeys(CANADIAN_PROVINCES + [x for x in existing_out if x and x not in CANADIAN_PROVINCES]))
+            extra_out = [x for x in existing_out if x and x not in CANADIAN_PROVINCES and x != "Canada"]
+            available_locations = list(dict.fromkeys(["Canada"] + CANADIAN_PROVINCES + extra_out))
 
             base_columns = [
                 "Is reference?",
@@ -485,7 +492,7 @@ with left_col:
                 base_columns.append("Contribution Category")
 
             base_columns = [c for c in base_columns if c in filtered_outputs.columns]
-            # Use saved session data when available (so "Update" keeps table showing applied values); otherwise file (new session / Reset)
+            # Use saved session data when available (so edits and Update persist in table); else file (new session / Reset)
             _saved_out = st.session_state.get("saved_df_outputs", pd.DataFrame())
             _path_out = st.session_state.get("saved_outputs_pathway")
             if not _saved_out.empty and _path_out == selected_source_file and set(base_columns).issubset(set(_saved_out.columns)):
@@ -520,8 +527,9 @@ with left_col:
                     ),
                     "Location": st.column_config.SelectboxColumn(
                         "Type/Location",
-                        help="Select a location",
+                        help="Select or type to search: Canada, provinces, or existing values; press Enter to apply",
                         options=available_locations,
+                        default="",
                     ),
                     "Contribution Category": st.column_config.TextColumn(
                         "Contribution Category",
@@ -552,21 +560,17 @@ with left_col:
 
             out_btn_col1, out_btn_col2 = st.columns(2)
             with out_btn_col1:
-                update_outputs = st.button("Update Output Values", key="update_outputs", help="Apply current table for this session only (file is not changed)")
+                update_outputs = st.button("Update Output Values", key="update_outputs", help="Apply current table for this session only (file is never changed)")
             with out_btn_col2:
-                reset_outputs = st.button("Reset to default values", key="reset_outputs", help="Discard session edits and reload from file")
+                reset_outputs = st.button("Reset to default values", key="reset_outputs", help="Reload table from file (discard session edits)")
 
             if reset_outputs:
-                if "saved_df_outputs" in st.session_state:
-                    del st.session_state["saved_df_outputs"]
-                if "saved_outputs_pathway" in st.session_state:
-                    del st.session_state["saved_outputs_pathway"]
                 st.session_state["outputs_editor_reset_key"] = st.session_state.get("outputs_editor_reset_key", 0) + 1
                 st.rerun()
 
             if update_outputs:
-                # Session only: do NOT write to OUTPUTS_FILE. Table state is in saved_df_outputs; file stays unchanged.
-                st.success("✓ Output values applied for this session. Reloading the app will load the original file.")
+                # Session only: do NOT write to file; table will show file again on next run (reload = original)
+                st.success("✓ Output values applied for this session. Reload or next run will show original file values.")
                 st.rerun()
         else:
             st.info("No output data available for the selected pathway.")
