@@ -123,7 +123,8 @@ def generate_impact_barchart_plotly(results_df: pd.DataFrame):
         height=700,  # Slightly smaller chart
         margin=dict(l=80, r=50, t=100, b=50),
         showlegend=False,
-        hovermode='closest'
+        hovermode='closest',
+        meta=dict(description='Bar chart of climate change impact by contribution category in kg CO2 equivalent. Use the category legend below for exact values.')
     )
     
     return fig, color_mapping
@@ -190,6 +191,7 @@ def generate_impact_piechart_plotly(results_df: pd.DataFrame):
         height=900,  # Much larger chart
         margin=dict(l=50, r=50, t=100, b=50),
         showlegend=False,  # Legend will be shown below chart
+        meta=dict(description='Pie chart of climate change impact by contribution category in kg CO2 equivalent. Use the category legend below for exact values.'),
         annotations=[
             dict(
                 text=f'<b>Total</b><br>{total:.2f}<br>kg CO₂ eq',
@@ -276,7 +278,8 @@ def generate_impact_linechart_plotly(results_df: pd.DataFrame):
         height=700,  # Slightly smaller chart
         margin=dict(l=80, r=50, t=100, b=50),
         showlegend=False,  # Legend will be shown below chart
-        hovermode='closest'
+        hovermode='closest',
+        meta=dict(description='Line chart of climate change impact by contribution category in kg CO2 equivalent. Use the category legend below for exact values.')
     )
     
     return fig, color_mapping
